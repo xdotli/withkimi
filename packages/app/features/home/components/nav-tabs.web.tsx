@@ -7,7 +7,7 @@ import {
   TabLayout,
   Tabs,
   TabsProps,
-  TabsTabProps
+  TabsTabProps,
 } from '@my/ui'
 import { useRouter as useNextRouter } from 'next/router'
 import { useState } from 'react'
@@ -40,7 +40,7 @@ export const NavTabs = (props: TabsProps) => {
 
   return (
     <Tabs
-      $gtSm={{ mb: '$-0.75', }} // for the active TabsRovingIndicator to look good
+      $gtSm={{ mb: '$-0.75' }} // for the active TabsRovingIndicator to look good
       value={currentTab}
       onValueChange={setCurrentTab}
       activationMode="manual"
@@ -68,18 +68,18 @@ export const NavTabs = (props: TabsProps) => {
             active
             {...(props.orientation === 'vertical'
               ? {
-                y: activeAt.y,
-                right: '$-1',
-                height: activeAt.height,
-                width: 3,
-              }
+                  y: activeAt.y,
+                  right: '$-1',
+                  height: activeAt.height,
+                  width: 3,
+                }
               : {
-                x: activeAt.x,
-                bottom: '$-1',
-                height: 3,
+                  x: activeAt.x,
+                  bottom: '$-1',
+                  height: 3,
 
-                width: activeAt.width,
-              })}
+                  width: activeAt.width,
+                })}
           />
         )}
       </AnimatePresence>

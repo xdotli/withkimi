@@ -1,5 +1,5 @@
 {
-  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.enabled": false,
   "explorer.fileNesting.patterns": {
     "package.json": "package-lock.json, yarn.lock",
     "*.js": "${capture}.js.map, ${capture}.d.ts, ${capture}.d.ts.map",

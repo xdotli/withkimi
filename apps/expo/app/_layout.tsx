@@ -3,11 +3,12 @@ import { Provider } from 'app/provider'
 import { supabase } from 'app/utils/supabase/client.native'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
+import * as React from 'react'
 import { useCallback, useEffect, useState } from 'react'
-import { View } from 'react-native'
-// import { LogBox } from 'react-native'
+// import { View } from 'react-native'
+import { View, LogBox } from 'react-native'
 
-// LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs()
 
 SplashScreen.preventAutoHideAsync()
 

@@ -4,6 +4,7 @@ import { LinearGradient } from '@tamagui/linear-gradient'
 import { Home, Plus } from '@tamagui/lucide-icons'
 import { useUser } from 'app/utils/useUser'
 import { Stack, Tabs } from 'expo-router'
+import * as React from 'react'
 import { SolitoImage } from 'solito/image'
 import { useRouter } from 'solito/router'
 
@@ -54,7 +55,7 @@ const ProfileTabIcon = ({ color, size }: TabBarIconProps) => {
   const { avatarUrl } = useUser()
   return (
     <YStack borderWidth="$1" borderColor={validToken(color)} borderRadius="$10">
-      <Avatar circular p="$1" size={size}>
+      <Avatar circular padding="$1" size={size}>
         <SolitoImage src={avatarUrl} alt="your avatar" width={size} height={size} />
       </Avatar>
     </YStack>
@@ -69,7 +70,7 @@ const PlusButton = ({ size }: TabBarIconProps) => {
   return (
     <Theme inverse>
       <Circle
-        pos="absolute"
+        position="absolute"
         bottom={5}
         backgroundColor="$color1"
         shadowColor="black"
@@ -90,17 +91,17 @@ const PlusButton = ({ size }: TabBarIconProps) => {
         width={size + 34}
         height={size + 34}
         borderRadius="$10"
-        pos="absolute"
+        position="absolute"
         bottom={5}
         pressStyle={{
           rotate: '20deg',
         }}
       />
       <YStack
-        pos="absolute"
+        position="absolute"
         bottom={5}
-        jc="center"
-        ai="center"
+        justifyContent="center"
+        alignItems="center"
         animation="quick"
         pointerEvents="none"
         height={size + 34}

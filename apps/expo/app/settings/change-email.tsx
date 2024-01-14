@@ -1,5 +1,6 @@
 import { ChangeEmailScreen } from 'app/features/settings/change-email-screen'
 import { Stack } from 'expo-router'
+import * as React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Screen() {

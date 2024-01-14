@@ -1,7 +1,7 @@
 import { IconProps } from '@tamagui/helpers-icon'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ChevronRight } from '@tamagui/lucide-icons'
-import React from 'react'
+import * as React from 'react'
 import { useLink } from 'solito/link'
 import { Button, Card, CardProps, H4, Progress, SizableText, YStack } from 'tamagui'
 

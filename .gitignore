@@ -50,3 +50,5 @@ thumbs.db
 
 # Turborepo
 .turbo
+.env
+.env

@@ -42,8 +42,8 @@ export const UniversalThemeProvider = ({ children }: { children: React.ReactNode
     return {
       set,
       themes: ['light', 'dark'],
-      onChangeTheme: (next: ThemeName) => {
-        setCurrent(next)
+      onChangeTheme: (next: string) => {
+        setCurrent(next as ThemeName)
         forceUpdate()
       },
       current,
@@ -86,12 +86,14 @@ export const useThemeSetting: typeof next_useThemeSetting = () => {
       context.onChangeTheme?.(value)
     },
     toggle: () => {
+      type themeKeyType = 'light' | 'dark' | 'system'
       const map = {
         light: 'dark',
         dark: 'system',
         system: 'light',
       }
-      context.onChangeTheme?.(map[context.current ?? 'system'])
+      const themeKey = (context.current ?? 'system') as themeKeyType
+      context.onChangeTheme?.(map[themeKey])
     },
   }
 
