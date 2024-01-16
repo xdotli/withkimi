@@ -40,6 +40,7 @@ const plugins = [
       'CheckBox',
       'Touchable',
       'FlatList',
+      'Animated',
       'Modal',
     ],
   }),
