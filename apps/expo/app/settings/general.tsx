@@ -1,6 +1,5 @@
 import { GeneralSettingsScreen } from 'app/features/settings/general-screen'
 import { Stack } from 'expo-router'
-import * as React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Screen() {

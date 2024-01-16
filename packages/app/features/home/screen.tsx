@@ -18,10 +18,10 @@ import {
   useMedia,
   validToken,
 } from '@my/ui'
+import { Platform } from 'react-native'
 import { ArrowRight, DollarSign, Edit2, User, Users } from '@tamagui/lucide-icons'
 import { api } from 'app/utils/api'
 import React from 'react'
-import { Platform } from 'react-native'
 import { useLink } from 'solito/link'
 
 const defaultAuthors = [
@@ -280,7 +280,7 @@ const OverviewSection = () => {
             badgeState="failure"
           />
 
-          <OverviewCard
+          {/* <OverviewCard
             $gtMd={{ minWidth: 200, flex: 1, flexBasis: 0 }}
             $md={{ width: 150 }}
             title="This week's new users"
@@ -296,7 +296,7 @@ const OverviewSection = () => {
             value="150,104"
             badgeText="+1%"
             badgeState="success"
-          />
+          /> */}
         </XStack>
       </ScrollAdapt>
     </YStack>

@@ -1,3 +1,11 @@
+⚠⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️️
+
+Please remember that Takeout is closed source and you should not make this code available in any public form!
+
+**Please note**: we've had a number of people create public repos on accident with Takeout. This isn't allowed per the license! Please be careful to keep the source private.
+
+⚠⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️️
+
 # Tamagui's Takeout Starter
 
 A good tutorial showing building a real app using Tamagui Takeout can be seen on the [notjust.dev YouTube stream](https://www.youtube.com/watch?v=XbKkKXH-dfc).

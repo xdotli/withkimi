@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base",
   "include": ["features", "provider", "utils", "index.ts", "types.d.ts", "../ui/src", "../api/src"],
   "compilerOptions": {
+    "noEmit": true,
     "composite": true
   },
   "references": []

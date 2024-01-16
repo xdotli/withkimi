@@ -4,7 +4,6 @@ import { LinearGradient } from '@tamagui/linear-gradient'
 import { Home, Plus } from '@tamagui/lucide-icons'
 import { useUser } from 'app/utils/useUser'
 import { Stack, Tabs } from 'expo-router'
-import * as React from 'react'
 import { SolitoImage } from 'solito/image'
 import { useRouter } from 'solito/router'
 
@@ -26,8 +25,8 @@ export default function Layout() {
         />
         <Tabs.Screen
           name="_create"
-          listeners={({ navigation }) => ({
-            tabPress: (event) => {
+          listeners={({ navigation }: any) => ({
+            tabPress: (event: any) => {
               event.preventDefault()
               navigation.navigate('create')
             },
@@ -55,7 +54,7 @@ const ProfileTabIcon = ({ color, size }: TabBarIconProps) => {
   const { avatarUrl } = useUser()
   return (
     <YStack borderWidth="$1" borderColor={validToken(color)} borderRadius="$10">
-      <Avatar circular padding="$1" size={size}>
+      <Avatar circular p="$1" size={size}>
         <SolitoImage src={avatarUrl} alt="your avatar" width={size} height={size} />
       </Avatar>
     </YStack>
@@ -70,7 +69,7 @@ const PlusButton = ({ size }: TabBarIconProps) => {
   return (
     <Theme inverse>
       <Circle
-        position="absolute"
+        pos="absolute"
         bottom={5}
         backgroundColor="$color1"
         shadowColor="black"
@@ -91,17 +90,17 @@ const PlusButton = ({ size }: TabBarIconProps) => {
         width={size + 34}
         height={size + 34}
         borderRadius="$10"
-        position="absolute"
+        pos="absolute"
         bottom={5}
         pressStyle={{
           rotate: '20deg',
         }}
       />
       <YStack
-        position="absolute"
+        pos="absolute"
         bottom={5}
-        justifyContent="center"
-        alignItems="center"
+        jc="center"
+        ai="center"
         animation="quick"
         pointerEvents="none"
         height={size + 34}

@@ -1,4 +1,3 @@
-import * as React from 'react'
 /**
  * dummy tab:
  * the _layout.tsx file will prevent rendering of this tab

@@ -31,12 +31,9 @@
     "sourceMap": false,
     "target": "ESNext",
     "types": ["node"],
+    "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "jsx": "react-native",
     "resolveJsonModule": true,
-    "paths": {
-      "react-native": ["react-native-web"]
-    },
     "plugins": [
       {
         // docs: https://github.com/nderscore/tamagui-typescript-plugin#readme
