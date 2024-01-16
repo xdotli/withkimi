@@ -45,7 +45,7 @@ export default function HomeLayout() {
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <Provider initialSession={initialSession}>
-        <Stack screenOptions={{ headerShown: true }} />
+        <Stack screenOptions={{ headerShown: false }} />
       </Provider>
     </View>
   )
