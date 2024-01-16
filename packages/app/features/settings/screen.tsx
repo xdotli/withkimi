@@ -1,5 +1,5 @@
 import { Paragraph, ScrollView, Separator, Settings, YStack, isWeb, useMedia, validToken } from '@my/ui'
-import { Book, Cog, Info, Lock, LogOut, Mail, Moon, Twitter } from '@tamagui/lucide-icons'
+import { Book, Cog, Lock, Mail, Moon, Twitter, User, LockKeyhole, Info, Flag, LogOut } from '@tamagui/lucide-icons'
 import { useThemeSetting } from 'app/provider/theme'
 import { redirect } from 'app/utils/redirect'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
@@ -9,10 +9,6 @@ import { useLink } from 'solito/link'
 import rootPackageJson from '../../../../package.json'
 // @ts-ignore
 import packageJson from '../../package.json'
-
-const brandColors = {
-  twitter: '#1DA1F2',
-}
 
 export const SettingsScreen = () => {
   const media = useMedia()
@@ -24,43 +20,24 @@ export const SettingsScreen = () => {
         <Settings mt="$6">
           <Settings.Items>
             <Settings.Group $gtSm={{ space: '$2' }}>
-              <Settings.Item
+              {/* <Settings.Item
                 icon={Cog}
                 isActive={pathname === '/settings' || pathname === 'settings/general'}
                 {...useLink({ href: media.sm ? '/settings/general' : '/settings' })}
                 accentColor="$green9"
               >
                 General
-              </Settings.Item>
-              <Settings.Item
-                icon={Lock}
-                isActive={pathname === '/settings/change-password'}
-                {...useLink({ href: '/settings/change-password' })}
-                accentColor="$green9"
-              >
-                Change Password
-              </Settings.Item>
-              <Settings.Item
-                icon={Mail}
-                isActive={pathname === '/settings/change-email'}
-                {...useLink({ href: '/settings/change-email' })}
-                accentColor="$green9"
-              >
-                Change Email
-              </Settings.Item>
-              {/* <Settings.Item
-                icon={Bell}
-                isActive={pathname === '/settings/notifications'}
-                {...useLink({ href: '/settings/notifications' })}
-                accentColor="$orange9"
-              >
-                Notifications
               </Settings.Item> */}
-            </Settings.Group>
-            <Separator borderColor="$color3" mx="$-4" borderWidth="$0.25" />
-            <Settings.Group>
               <Settings.Item
-                icon={Book}
+                icon={User}
+                isActive={pathname === 'settings/general'}
+                {...useLink({ href: media.sm ? '/settings/general' : '/settings' })}
+                accentColor="$green9"
+              >
+                Edit profile
+              </Settings.Item>
+              <Settings.Item
+                icon={LockKeyhole}
                 isActive={pathname === '/privacy-policy'}
                 {...useLink({ href: '/privacy-policy' })}
                 accentColor="$purple9"
@@ -68,35 +45,21 @@ export const SettingsScreen = () => {
                 Privacy Policy
               </Settings.Item>
               <Settings.Item
-                icon={Book}
+                icon={Info}
                 isActive={pathname === '/terms-of-service'}
                 {...useLink({ href: '/terms-of-service' })}
                 accentColor="$purple9"
               >
-                Terms Of Service
+                Terms and Policies
               </Settings.Item>
-              {/* removing about from web since landing pages are more common on web - feel free to add back if needed */}
-              {!isWeb && (
-                // isWeb is a constant so this isn't really a conditional hook
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                <Settings.Item icon={Info} {...useLink({ href: '/about' })} accentColor="$blue9">
-                  About
-                </Settings.Item>
-              )}
-            </Settings.Group>
-            <Separator borderColor="$color3" mx="$-4" borderWidth="$0.25" />
-            <Settings.Group>
               <Settings.Item
-                icon={Twitter}
-                onPress={() => redirect('https://twitter.com/tamagui_js')}
-                accentColor={validToken(brandColors.twitter)}
+                icon={Flag}
+                isActive={pathname === '/give-feedback'}
+                {...useLink({ href: '//give-feedback' })}
+                accentColor="$purple9"
               >
-                Our Twitter
+                Give Feedback
               </Settings.Item>
-            </Settings.Group>
-            <Separator borderColor="$color3" mx="$-4" borderWidth="$0.25" />
-            <Settings.Group>
-              <SettingsThemeAction />
               <SettingsItemLogoutAction />
             </Settings.Group>
           </Settings.Items>
