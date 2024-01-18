@@ -10,11 +10,11 @@ import { z } from 'zod'
 
 import { SocialLogin } from './components/SocialLogin'
 
-const { useParams, useUpdateParams } = createParam<{ email?: string }>()
+const { useParams, useUpdateParams } = createParam<{ phone?: string }>()
 
-const SignInSchema = z.object({
-  email: formFields.text.email().describe('Email // Enter your email'),
-  password: formFields.text.min(6).describe('Password // Enter your password'),
+const SignInPhoneSchema = z.object({
+  phone: formFields.text.min(5).max(22).describe('Phone // Enter your phone number'),
+  token: formFields.text.length(6).describe('Token // Enter the token you received'),
 })
 
 export const SignInScreen = () => {
@@ -24,26 +24,33 @@ export const SignInScreen = () => {
   const updateParams = useUpdateParams()
   useEffect(() => {
     // remove the persisted email from the url, mostly to not leak user's email in case they share it
-    if (params?.email) {
-      updateParams({ email: undefined }, { web: { replace: true } })
+    if (params?.phone) {
+      updateParams({ phone: undefined }, { web: { replace: true } })
     }
-  }, [params?.email, updateParams])
-  const form = useForm<z.infer<typeof SignInSchema>>()
+  }, [params?.phone, updateParams])
 
-  async function signInWithEmail({ email, password }: z.infer<typeof SignInSchema>) {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+  const formPhone = useForm<z.infer<typeof SignInPhoneSchema>>()
+
+  async function signInWithPhone({ phone, token }: z.infer<typeof SignInPhoneSchema>) {
+    // const { data, error } = await supabase.auth.signInWithOtp({
+    //   phone,
+    // })
+
+    const {
+      data: { session },
+      error: errorVeiry,
+    } = await supabase.auth.verifyOtp({
+      phone,
+      token,
+      type: 'sms',
     })
 
-    if (error) {
-      const errorMessage = error?.message.toLowerCase()
-      if (errorMessage.includes('email')) {
-        form.setError('email', { type: 'custom', message: errorMessage })
-      } else if (errorMessage.includes('password')) {
-        form.setError('password', { type: 'custom', message: errorMessage })
-      } else {
-        form.setError('password', { type: 'custom', message: errorMessage })
+    if (errorVeiry) {
+      const errorMessage = errorVeiry?.message.toLowerCase()
+      if (errorMessage.includes('phone')) {
+        formPhone.setError('phone', { type: 'custom', message: errorMessage })
+      } else if (errorMessage.includes('token')) {
+        formPhone.setError('token', { type: 'custom', message: errorMessage })
       }
     } else {
       router.replace('/')
@@ -51,21 +58,15 @@ export const SignInScreen = () => {
   }
 
   return (
-    <FormProvider {...form}>
+    <FormProvider {...formPhone}>
       <SchemaForm
-        form={form}
-        schema={SignInSchema}
+        form={formPhone}
+        schema={SignInPhoneSchema}
         defaultValues={{
-          email: params?.email || '',
-          password: '',
+          phone: params?.phone || '',
+          token: '',
         }}
-        onSubmit={signInWithEmail}
-        props={{
-          password: {
-            afterElement: <ForgotPasswordLink />,
-            secureTextEntry: true,
-          },
-        }}
+        onSubmit={signInWithPhone}
         renderAfter={({ submit }) => {
           return (
             <>
@@ -74,7 +75,7 @@ export const SignInScreen = () => {
                   Sign In
                 </SubmitButton>
               </Theme>
-              <SignUpLink />
+
               {isWeb && <SocialLogin />}
             </>
           )
@@ -96,28 +97,5 @@ export const SignInScreen = () => {
         )}
       </SchemaForm>
     </FormProvider>
-  )
-}
-
-const SignUpLink = () => {
-  const email = useWatch<z.infer<typeof SignInSchema>>({ name: 'email' })
-  return (
-    <Link href={`/sign-up?${new URLSearchParams(email ? { email } : undefined).toString()}`}>
-      <Paragraph textAlign="center" theme="alt1">
-        Don&apos;t have an account? <Text textDecorationLine="underline">Sign up</Text>
-      </Paragraph>
-    </Link>
-  )
-}
-
-const ForgotPasswordLink = () => {
-  const email = useWatch<z.infer<typeof SignInSchema>>({ name: 'email' })
-
-  return (
-    <Link href={`/reset-password?${new URLSearchParams(email ? { email } : undefined)}`}>
-      <Paragraph mt="$1" theme="alt2" textDecorationLine="underline">
-        Forgot your password?
-      </Paragraph>
-    </Link>
   )
 }

@@ -21,7 +21,7 @@ export const Link = ({
   const linkProps = { href, replace, scroll, shallow, prefetch, locale }
   return (
     <SolitoLink {...linkProps}>
-      <SizableText tag="span" {...props}>
+      <SizableText tag="div" {...props}>
         {children}
       </SizableText>
     </SolitoLink>

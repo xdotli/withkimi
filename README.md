@@ -1,4 +1,4 @@
-
+⚠️️ **Please note**: Takeout is closed source for now. We've had a number of people create public repos on accident. Please be careful to keep the source private as per the license.
 
 # Tamagui's Takeout Starter
 
@@ -49,7 +49,7 @@ Please reference [Supabase's documentation](https://supabase.com/docs/guides/sel
 
 ## Development
 
-Development scripts:
+### Development scripts
 
 - Web: `yarn web`
 - iOS: `yarn ios`
@@ -57,14 +57,23 @@ Development scripts:
 
 NOTE: When using tRPC, even if you just want to develop on native, you need to have the web server running to be able to make tRPC requests.
 
-Storybook scripts:
+### EAS dev builds
+
+In the apps/expo folder you can use EAS and a few helpful scripts:
+
+- `yarn eas:build:dev:simulator:android` for android
+- `yarn eas:build:dev:simulator:ios` for ios
+
+Add `--local` to build locally.
+
+### Storybook scripts
 
 - Storybook Web: `yarn storybook:web`
 - Storybook iOS: `yarn storybook:ios`
 - Storybook Android: `yarn storybook:android`
 - Publish to Chromatic: `yarn chromatic` (Need to set your token first in `apps/storybook/package.json -> scripts -> chromatic`)
 
-Code generation script:
+### Code generation script
 
 - Component: `yarn gen component`
 - Screen: `yarn gen screen`

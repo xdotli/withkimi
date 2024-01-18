@@ -1,8 +1,5 @@
 import { IconProps } from '@tamagui/helpers-icon'
-import { ChevronRight } from '@tamagui/lucide-icons'
 import { ListItem, ListItemProps, SizableText, XStack, YGroup, YStack } from 'tamagui'
-
-const iconAfterColors = '#a191da'
 
 export type SettingItemProps = {
   icon: React.FC<IconProps>
@@ -34,11 +31,10 @@ export const SettingItem = ({
         gap="$2"
         borderRadius="$10"
         backgroundColor={isActive ? '$backgroundFocus' : 'transparent'}
-        iconAfter={<ChevronRight color={iconAfterColors} size={22} />}
         {...props}
       >
         <YStack padding="$2" borderRadius="$3">
-          <Icon opacity={0.8} size={22} />
+          <Icon opacity={0.6} size={18} />
         </YStack>
         <SizableText flex={1}>{children}</SizableText>
         {!!rightLabel && (

@@ -1,45 +1,51 @@
-import { Onboarding, OnboardingStepInfo, StepContent } from '@my/ui'
-import { ArrowUp, Rocket, Sparkles } from '@tamagui/lucide-icons'
-import React from 'react'
+import { Avatar, Button, H2, Text, YStack } from '@my/ui'
+import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useRouter } from 'solito/router'
 
-const steps: OnboardingStepInfo[] = [
-  {
-    theme: 'orange',
-    Content: () => (
-      <StepContent
-        title="Kickstart"
-        icon={Sparkles}
-        description="Auth, profile, settings, adaptive layouts and many more ready for you to build on top of"
-      />
-    ),
-  },
-  {
-    theme: 'green',
-    Content: () => (
-      <StepContent
-        title="Updates"
-        icon={ArrowUp}
-        description="As we make the starter better, we'll keep sending PRs with our GitHub app so your app keeps improving"
-      />
-    ),
-  },
-  {
-    theme: 'blue',
-    Content: () => (
-      <StepContent
-        title="Deploy"
-        icon={Rocket}
-        description="The Takeout starter is the best way to go from zero to deploy and target all platforms at the same time."
-      />
-    ),
-  },
-]
-
-/**
- * note: this screen is used as a standalone page on native and as a sidebar on auth layout on web
- */
 export const OnboardingScreen = () => {
   const router = useRouter()
-  return <Onboarding autoSwipe onOnboarded={() => router.push('/sign-up')} steps={steps} />
+  const safeAreaInsets = useSafeAreaInsets()
+
+  return (
+    <YStack
+      flex={1}
+      jc="center"
+      ai="center"
+      gap="$15"
+      paddingBottom={safeAreaInsets.bottom}
+      paddingRight={safeAreaInsets.right}
+      paddingTop={safeAreaInsets.top}
+      paddingLeft={safeAreaInsets.left}
+    >
+      <YStack jc="center" ai="center">
+        <Avatar circular size="$16" padding="$0" margin="$0">
+          <Avatar.Image source={{ uri: require('packages/app/assets/greetings.png') }} />
+        </Avatar>
+        <H2 mt="$5">HELLO MY FRIEND</H2>
+        <Text color="#888888" fontWeight="500">
+          Welcome to Kimi. Have a good time!
+        </Text>
+      </YStack>
+      <YStack gap="$3">
+        <Button
+          width="$20"
+          height="$6"
+          borderRadius="$12"
+          backgroundColor="#A191DA"
+          onPress={() => {
+            router.push('/enter-phone')
+          }}
+        >
+          <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
+            Get Started
+          </Text>
+        </Button>
+        <Button height="$6" variant="outlined" borderRadius="$11">
+          <Text fontWeight="600" padding="$3" fontSize="$4">
+            Continue as Guest
+          </Text>
+        </Button>
+      </YStack>
+    </YStack>
+  )
 }

@@ -16,9 +16,9 @@ export function Provider({
   children: React.ReactNode
 }) {
   return (
-    // <AuthProvider initialSession={initialSession}>
-    <Providers>{children}</Providers>
-    // </AuthProvider>
+    <AuthProvider initialSession={initialSession}>
+      <Providers>{children}</Providers>
+    </AuthProvider>
   )
 }
 

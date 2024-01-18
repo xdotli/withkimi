@@ -1,3 +1,10 @@
+import { purple } from '@tamagui/colors'
+
+export const purpleExtended = {
+  ...purple,
+  purpleB1: 'hsl(253, 50%, 71%)',
+}
+
 export {
   blue,
   blueDark,

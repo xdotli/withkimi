@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, Circle, Theme, YStack, useThemeName, validToken } from '@my/ui'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { LinearGradient } from '@tamagui/linear-gradient'
@@ -25,7 +26,9 @@ export default function Layout() {
         />
         <Tabs.Screen
           name="_create"
+          // biome-ignore lint/suspicious/noExplicitAny: expo-router types are not complete
           listeners={({ navigation }: any) => ({
+            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
             tabPress: (event: any) => {
               event.preventDefault()
               navigation.navigate('create')
