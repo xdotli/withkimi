@@ -7,51 +7,61 @@ import {
   SubmitButton,
   Paragraph,
   Select,
+  Label,
   Adapt,
   FontSizeTokens,
   Sheet,
   getFontSize,
 } from '@my/ui'
 import { Back } from '@my/ui/src/icons/back'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
-import { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'solito/router'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { useMemo, useState } from 'react'
+
 import { z } from 'zod'
 
 import { usePhone, useCountryCode } from './onboard-hooks'
 
-const items = [{ name: '+1' }, { name: '+86' }, { name: '+852' }]
-
 const EnterPhoneSchema = z.object({
   phone: formFields.text.min(5).max(22),
-  countryCode: formFields.select,
 })
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+const BackIcon = (props: any) => {
+  const { color = '#2E2E2E', size, ...otherProps } = props
+  return (
+    <svg width={size} height={size} {...otherProps} viewBox="0 0 32 32">
+      <title>Rectangle 5</title>
+      <path
+        fill="#063855"
+        fillRule="evenodd"
+        d="m4.667 12.833-.707.707-.708-.707.708-.707.707.707Zm19.666 9.334a1 1 0 0 1-2 0h2Zm-14.54-2.793L3.96 13.54l1.414-1.414 5.833 5.834-1.414 1.414ZM3.96 12.126l5.833-5.833 1.414 1.414-5.833 5.833-1.414-1.414Zm.707-.293h12.666v2H4.667v-2Zm19.666 7v3.334h-2v-3.334h2Zm-7-7a7 7 0 0 1 7 7h-2a5 5 0 0 0-5-5v-2Z"
+      />
+    </svg>
+  )
+}
 
 export const EnterPhoneScreen = () => {
   const supabase = useSupabase()
   const router = useRouter()
-  const { setCountryCode } = useCountryCode()
-  const { setPhone } = usePhone()
+  const { countryCode, setCountryCode } = useCountryCode()
+  const { phone, setPhone } = usePhone()
 
   const formSendCode = useForm<z.infer<typeof EnterPhoneSchema>>()
 
-  async function sendCode({ phone, countryCode }: z.infer<typeof EnterPhoneSchema>) {
-    setCountryCode(countryCode)
-    const phoneWithCountryCode = `${countryCode}${phone}`
-    setPhone(phoneWithCountryCode)
-
-    const { error } = await supabase.auth.signInWithOtp({ phone: phoneWithCountryCode })
+  async function sendCode({ phone }: z.infer<typeof EnterPhoneSchema>) {
+    const { error } = await supabase.auth.signInWithOtp({ phone })
     if (error) {
       const errorMessage = error?.message.toLowerCase()
       if (errorMessage.includes('phone')) {
         formSendCode.setError('phone', { type: 'custom', message: errorMessage })
       }
     } else {
-      router.push({ pathname: '/enter-otp', query: { phone: phoneWithCountryCode } })
+      router.push('/enter-otp')
     }
   }
 
@@ -60,20 +70,8 @@ export const EnterPhoneScreen = () => {
       <SchemaForm
         form={formSendCode}
         schema={EnterPhoneSchema}
-        defaultValues={{ phone: '', countryCode: '+1' }}
+        defaultValues={{ phone: '' }}
         onSubmit={sendCode}
-        props={
-          {
-            phone: {},
-            countryCode: {
-              options: items.map((item) => ({
-                name: item.name,
-                value: item.name.toLowerCase(),
-              })),
-              native: true,
-            },
-          } as const
-        }
         renderAfter={({ submit }) => {
           return (
             <>
@@ -89,7 +87,7 @@ export const EnterPhoneScreen = () => {
             <YStack flex={1}>
               <XStack jc="flex-start" height="$8">
                 <Button
-                  icon={<Back size={38} />}
+                  icon={<BackIcon size={38} />}
                   height="$5"
                   width="$5"
                   onPress={() => {
@@ -115,15 +113,22 @@ export const EnterPhoneScreen = () => {
 
 export function SelectDemo() {
   return (
-    // <YStack space>
-    //   <XStack ai="center" space width="$8">
-    //     <SelectDemoItem />
-    //   </XStack>
-    // </YStack>
-    // <XStack ai="center" space width="$8">
-    //   <SelectDemoItem />
-    // </XStack>
-    <></>
+    <YStack space>
+      <XStack ai="center" space>
+        <Label f={1} fb={0}>
+          Custom
+        </Label>
+        <SelectDemoItem />
+      </XStack>
+
+      <XStack ai="center" space>
+        <Label f={1} fb={0}>
+          Native
+        </Label>
+
+        <SelectDemoItem native />
+      </XStack>
+    </YStack>
   )
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -164,14 +169,6 @@ export function SelectDemoItem(props: any) {
           <YStack zIndex={10}>
             <ChevronUp size={20} />
           </YStack>
-
-          <LinearGradient
-            start={[0, 0]}
-            end={[0, 1]}
-            fullscreen
-            colors={['$background', 'transparent']}
-            borderRadius="$4"
-          />
         </Select.ScrollUpButton>
         <Select.Viewport
           // to do animations:
@@ -232,16 +229,22 @@ export function SelectDemoItem(props: any) {
           <YStack zIndex={10}>
             <ChevronDown size={20} />
           </YStack>
-
-          <LinearGradient
-            start={[0, 0]}
-            end={[0, 1]}
-            fullscreen
-            colors={['transparent', '$background']}
-            borderRadius="$4"
-          />
         </Select.ScrollDownButton>
       </Select.Content>
     </Select>
   )
 }
+const items = [
+  { name: 'Apple' },
+  { name: 'Pear' },
+  { name: 'Blackberry' },
+  { name: 'Peach' },
+  { name: 'Apricot' },
+  { name: 'Melon' },
+  { name: 'Honeydew' },
+  { name: 'Starfruit' },
+  { name: 'Blueberry' },
+  { name: 'Raspberry' },
+  { name: 'Strawberry' },
+  { name: 'Mango' },
+]

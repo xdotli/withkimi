@@ -1,5 +1,5 @@
-import { Database } from '@my/supabase/types';
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@my/supabase/types'
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSideProps, PreviewData } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 
@@ -23,7 +23,7 @@ export function userProtectedGetSSP<
     if (!session) {
       return {
         redirect: {
-          destination: '/sign-in',
+          destination: '/onboarding',
           permanent: false,
         },
       }
@@ -32,7 +32,7 @@ export function userProtectedGetSSP<
     const getSSRResult = getServerSideProps ? await getServerSideProps(ctx) : { props: {} as Props }
     if ('props' in getSSRResult) {
       // add the initialSession to page's getServerSideProps
-      ; (getSSRResult.props as any).initialSession = session
+      ;(getSSRResult.props as any).initialSession = session
     }
     return getSSRResult
   }

@@ -10,7 +10,6 @@ const Page: NextPageWithLayout = () => (
     <Head>
       <title>Sign in</title>
     </Head>
-    <SignInScreen />
   </>
 )
 

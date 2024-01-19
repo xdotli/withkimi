@@ -1,3 +1,4 @@
+import { OnboardingScreen } from 'app/features/auth/onboarding-screen.web'
 import { guestOnlyGetSSP } from 'utils/guestOnly'
 
 /**
@@ -5,14 +6,14 @@ import { guestOnlyGetSSP } from 'utils/guestOnly'
  * onboarding slides are on a separate page on mobile (/onboarding) but as sidebar on web
  */
 export default function Page() {
-  return null
+  return <OnboardingScreen />
 }
 
-export const getServerSideProps = guestOnlyGetSSP(async () => {
-  return {
-    redirect: {
-      destination: '/sign-in',
-      permanent: false,
-    },
-  }
-})
+// export const getServerSideProps = guestOnlyGetSSP(async () => {
+//   return {
+//     redirect: {
+//       destination: '/onboarding',
+//       permanent: false,
+//     },
+//   }
+// })
