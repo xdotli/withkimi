@@ -38,7 +38,9 @@
     "lint:fix": "turbo lint:fix",
     "setup": "yarn create tamagui --template takeout-starter --skip-cloning",
     "generate": "turbo gen",
-    "gen": "yarn generate"
+    "gen": "yarn generate",
+    "release:version": "changeset status & changeset version",
+    "release:publish": "changeset publish"
   },
   "resolutions": {
     "react": "^18.2.0",
@@ -51,6 +53,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
+    "@changesets/cli": "^2.27.1",
     "@manypkg/cli": "^0.19.1",
     "@nderscore/tamagui-typescript-plugin": "^0.6.0",
     "@tamagui/cli": "^1.85.12",
@@ -65,5 +68,8 @@
     "turbo": "^1.10.14",
     "typescript": "^5.3.3"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.0.2",
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0"
+  }
 }

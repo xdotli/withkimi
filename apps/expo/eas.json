@@ -1,14 +1,16 @@
 {
   "cli": {
+    "appVersionSource": "remote",
     "version": ">= 3.14.0"
   },
   "build": {
-    "development:simulator": {
+    "development-simulator": {
       "distribution": "internal",
       "developmentClient": true,
-      "channel": "development",
       "env": {
-        "APP_ENV": "development"
+        "STAGE": "development",
+        "FLIPPER_DISABLE": "1",
+        "EXPO_NO_DOTENV": "1"
       },
       "ios": {
         "simulator": true,
@@ -18,9 +20,11 @@
     "development": {
       "distribution": "internal",
       "channel": "development",
+      "developmentClient": true,
       "env": {
-        "APP_ENV": "development",
-        "NODE_ENV": "development"
+        "STAGE": "development",
+        "FLIPPER_DISABLE": "1",
+        "EXPO_NO_DOTENV": "1"
       },
       "android": {
         "buildType": "apk"
@@ -29,11 +33,13 @@
         "image": "latest"
       }
     },
-    "staging": {
-      "distribution": "store",
-      "channel": "staging",
+    "preview": {
+      "distribution": "internal",
+      "channel": "preview",
       "env": {
-        "APP_ENV": "staging"
+        "STAGE": "test",
+        "FLIPPER_DISABLE": "1",
+        "EXPO_NO_DOTENV": "1"
       },
       "ios": {
         "image": "latest"
@@ -42,14 +48,14 @@
     },
     "production": {
       "env": {
-        "APP_ENV": "production",
-        "NODE_ENV": "production"
+        "STAGE": "production",
+        "FLIPPER_DISABLE": "1",
+        "EXPO_NO_DOTENV": "1"
       },
       "channel": "production"
     }
   },
   "submit": {
-    "production": {},
-    "staging": {}
+    "production": {}
   }
 }

@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "myapp",
-    "slug": "myapp",
+    "slug": "withkimi",
     "jsEngine": "hermes",
-    "scheme": "myapp",
-    "version": "1.0.0",
+    "scheme": "com.imaginix.withkimi",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -17,10 +17,13 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/your-project-id"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.acme.myapp"
+      "bundleIdentifier": "com.acme.myapp",
+      "buildNumber": "2"
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
@@ -29,7 +32,9 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.acme.myapp",
-      "permissions": ["android.permission.RECORD_AUDIO"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -58,12 +63,12 @@
         "origin": false
       },
       "eas": {
-        "projectId": "4f9a81f7-2bbf-4e5d-bda9-99df8466a39a"
+        "projectId": "ac9badf1-c550-4edc-b87c-586bf570f974"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "owner": "tamagui-team"
+    "owner": "imaginix"
   }
 }

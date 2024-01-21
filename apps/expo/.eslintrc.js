@@ -2,4 +2,7 @@
 module.exports = {
   extends: ['custom'],
   ignorePatterns: ['./android', './ios'],
+  env: {
+    node: true,
+  },
 }

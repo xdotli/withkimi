@@ -1,0 +1,23 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "imaginix-inc/withkimi"
+    }
+  ],
+  "commit": false,
+  "privatePackages": {
+    "version": true,
+    "tag": true
+  },
+  "fixed": [],
+  "linked": [],
+  "access": "restricted",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "storybook-app",
+    "storybook-rn-app"
+  ]
+}

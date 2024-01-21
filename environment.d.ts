@@ -15,6 +15,14 @@ declare global {
       EXPO_PUBLIC_SUPABASE_ANON_KEY: string;
       NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
 
+      APP_SCHEME: string
+      EXPO_PROJECT_ID: string
+      OWNER: string
+      UPDATES_URL: string
+      APP_HOST: string
+      NAKED_APP_HOST: string
+      OIA_HOST: string
+      NAKED_OIA_HOST: string
     }
   }
 }

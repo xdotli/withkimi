@@ -1,5 +1,6 @@
 import { Session } from '@supabase/supabase-js'
 import { Provider } from 'app/provider'
+import { checkHotUpdates } from 'app/utils/hotUpdates'
 import { supabase } from 'app/utils/supabase/client.native'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
@@ -36,6 +37,12 @@ export default function HomeLayout() {
       await SplashScreen.hideAsync()
     }
   }, [fontLoaded, sessionLoadAttempted])
+
+  useEffect(() => {
+    checkHotUpdates().catch(() => {
+      // TODO: Handle error
+    })
+  }, [])
 
   if (!fontLoaded || !sessionLoadAttempted) {
     return null

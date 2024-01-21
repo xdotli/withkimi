@@ -9,7 +9,7 @@ module.exports = function (api) {
       [
         'module:react-native-dotenv',
         {
-          envName: 'APP_ENV',
+          envName: 'STAGE',
           moduleName: '@env',
           path: '../../.env',
           blocklist: null,
