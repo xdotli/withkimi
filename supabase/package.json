@@ -1,6 +1,7 @@
 {
   "name": "@my/supabase",
   "version": "0.0.0",
+  "private": true,
   "files": [
     "./types.ts"
   ],
