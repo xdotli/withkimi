@@ -62,7 +62,7 @@ jobs:
           if [ "$RELEASE_TYPE" == "patch" ]; then
             cd apps/expo && yarn run update:preview
           elif [ "$RELEASE_TYPE" == "minor" ] || [ "$RELEASE_TYPE" == "major" ]; then
-            cd apps/expo && yarn run build:preview -p all
+            cd apps/expo && yarn run build:preview
           else
             echo "No release type detected"
           fi

@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - apps/expo/**
+      - packages/**
     inputs:
       platform:
         description: "Platform to submit (ios or android)"
