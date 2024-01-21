@@ -1,5 +1,15 @@
 # expo-app
 
+## 0.0.4
+
+### Patch Changes
+
+- [#25](https://github.com/imaginix-inc/withkimi/pull/25) [`d079bb9`](https://github.com/imaginix-inc/withkimi/commit/d079bb9dcbaa9a2907b7ee18c3047e4ad3d72e26) Thanks [@dohooo](https://github.com/dohooo)! - For Testing.
+
+- [#24](https://github.com/imaginix-inc/withkimi/pull/24) [`fd5053b`](https://github.com/imaginix-inc/withkimi/commit/fd5053b8ba5687790bfa3f731723b2a7186dcb0c) Thanks [@dohooo](https://github.com/dohooo)! - CI Testing.
+
+- [#24](https://github.com/imaginix-inc/withkimi/pull/24) [`fd5053b`](https://github.com/imaginix-inc/withkimi/commit/fd5053b8ba5687790bfa3f731723b2a7186dcb0c) Thanks [@dohooo](https://github.com/dohooo)! - For testing.
+
 ## 0.0.3
 
 ### Patch Changes
