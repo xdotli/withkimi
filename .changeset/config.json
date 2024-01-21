@@ -11,7 +11,7 @@
     "version": true,
     "tag": true
   },
-  "fixed": [],
+  "fixed": [["*"]],
   "linked": [],
   "access": "restricted",
   "baseBranch": "main",

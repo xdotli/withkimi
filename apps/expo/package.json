@@ -3,7 +3,6 @@
   "version": "0.0.4",
   "main": "index.js",
   "private": true,
-  "description": "Kimi App.",
   "scripts": {
     "clean": "react-native-clean-project",
     "start": "EXPO_NO_DOTENV=1 STAGE=development expo start --dev-client -c",
