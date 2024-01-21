@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - apps/expo/**
+      - packages/**
 
 jobs:
   update:
