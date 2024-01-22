@@ -4,18 +4,26 @@ import {
   BooleanCheckboxField,
   BooleanField,
   BooleanSwitchField,
+  Button,
   FieldError,
   Form,
   FormProps,
   FormWrapper,
   NumberField,
+  Paragraph,
   SelectField,
+  Text,
   TextAreaField,
   TextField,
   Theme,
+  ToggleGroup,
+  Tooltip,
+  TooltipProps,
+  XStack,
 } from '@my/ui'
+import { Star } from '@tamagui/lucide-icons'
 import { createTsForm, createUniqueFieldSchema } from '@ts-react/form'
-import { ComponentProps } from 'react'
+import React, { ComponentProps } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -46,11 +54,61 @@ export const formFields = {
    * example of how to handle more complex fields
    */
   address: createUniqueFieldSchema(AddressSchema, 'address'),
+  /**
+   * rating field on all platforms
+   */
+  rating: createUniqueFieldSchema(z.string(), 'rating'),
 }
 
 // function createFormSchema<T extends ZodRawShape>(getData: (fields: typeof formFields) => T) {
 //   return z.object(getData(formFields))
 // }
+
+type RatingFieldType = {
+  title: string
+  info?: string
+  rating?: string
+  count: number
+}
+
+const RatingField = (props: ComponentProps<typeof ToggleGroup> & RatingFieldType) => {
+  return (
+    <XStack jc="space-between" ai="center" pb="$3">
+      <XStack jc="flex-start" ai="center" gap="$2.5">
+        <Text fontSize="$2" color="#717171" fontWeight="600">
+          {props.title}
+        </Text>
+        {props.info && (
+          <Button
+            opacity={0.3}
+            borderColor="#121212"
+            size={15}
+            p="$0"
+            icon={
+              <Text textAlign="center" color="#121212" fontSize={12} fontWeight="600">
+                ?
+              </Text>
+            }
+            circular
+          />
+        )}
+      </XStack>
+      <ToggleGroup unstyled {...props}>
+        {Array.from(Array(props.count).keys()).map((i) => {
+          return (
+            <ToggleGroup.Item pressStyle={{ opacity: 0.3 }} unstyled w="$1.5" value={String(i + 1)}>
+              <Star
+                fill={Number(props.rating) >= i + 1 ? '#FFD646' : '#BCBCBC'}
+                strokeWidth={0}
+                size={20}
+              />
+            </ToggleGroup.Item>
+          )
+        })}
+      </ToggleGroup>
+    </XStack>
+  )
+}
 
 const mapping = [
   [formFields.text, TextField] as const,
@@ -61,6 +119,7 @@ const mapping = [
   [formFields.boolean_checkbox, BooleanCheckboxField] as const,
   [formFields.select, SelectField] as const,
   [formFields.address, AddressField] as const,
+  [formFields.rating, RatingField] as const,
 ] as const
 
 const FormComponent = (props: FormProps) => {
