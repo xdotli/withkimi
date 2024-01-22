@@ -10,7 +10,6 @@ export async function checkHotUpdates() {
   const update = await Updates.checkForUpdateAsync()
   if (update.isAvailable) {
     return await Updates.fetchUpdateAsync()
-  } else {
-    throw new Error('No updates available')
   }
+  throw new Error('No updates available')
 }

@@ -1,5 +1,8 @@
-export const gpt = handler(async (req: Request, res: Response) => {
-  const models: any = {
+import type { NextApiRequest, NextApiResponse } from 'next'
+import type { OpenAiModels, modelOptions } from 'utils/types'
+
+export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const models: OpenAiModels = {
     gptTurbo: 'gpt-4-1106-preview',
     gpt: 'gpt-4',
   }
@@ -18,7 +21,7 @@ export const gpt = handler(async (req: Request, res: Response) => {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: models[model],
+        model: models[model as modelOptions],
         messages,
         stream: true,
       }),
@@ -33,7 +36,7 @@ export const gpt = handler(async (req: Request, res: Response) => {
           break
         }
 
-        let chunk = decoder.decode(value)
+        const chunk = decoder.decode(value)
         if (brokenLine) {
           try {
             const { choices } = JSON.parse(brokenLine)
@@ -78,4 +81,4 @@ export const gpt = handler(async (req: Request, res: Response) => {
   } catch (err) {
     console.log('error: ', err)
   }
-})
+}

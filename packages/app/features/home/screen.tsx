@@ -1,10 +1,12 @@
-import { Button, Text, YStack, XStack, Avatar } from '@my/ui'
+import { Button, View, Text, YStack, XStack, Avatar } from '@my/ui'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
 import { ImageBackground, StyleSheet } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { useRouter } from 'solito/router'
+import * as DropdownMenu from 'zeego/dropdown-menu'
+import { DropdownMenuExample } from './menu'
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
@@ -38,8 +40,9 @@ export const HomeScreen = () => {
       jc="space-between"
     >
       <ImageBackground source={require('packages/app/assets/bg.png')} style={{ ...styles.image }}>
-        <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8">
-          <Button>For you</Button>
+        <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
+          {/* <Button>For you</Button> */}
+          <DropdownMenuExample />
           {/* <SelectScreen /> */}
           {/* '<Demo placement="bottom" Icon={ChevronDown} Name="bottom-popover" />' */}
           {/* <SelectDemo /> */}
@@ -80,7 +83,7 @@ export const HomeScreen = () => {
             onPress={() => {}}
           >
             <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
-              Recording
+              Record
             </Text>
           </Button>
         </XStack>

@@ -12132,6 +12132,7 @@ __metadata:
     react-hook-form: "npm:^7.46.1"
     react-native: "npm:0.72.6"
     react-native-safe-area-context: "npm:4.6.3"
+    react-native-sse: "npm:^1.2.0"
     solito: "npm:^4.0.1"
     superjson: "npm:^1.13.1"
     typescript: "npm:^5.3.3"
@@ -16721,6 +16722,7 @@ __metadata:
     eslint-plugin-import: "npm:^2.28.0"
     expo: "npm:^49.0.21"
     expo-apple-authentication: "npm:~6.1.0"
+    expo-av: "npm:~13.4.1"
     expo-build-properties: "npm:~0.8.3"
     expo-constants: "npm:~14.4.2"
     expo-crypto: "npm:~12.4.1"
@@ -16790,6 +16792,15 @@ __metadata:
     path-browserify: "npm:^1.0.0"
     url-parse: "npm:^1.5.9"
   checksum: 2b6ac86e16b3a05c9afb3435e86cc27edb4ede81b1eb1e9e09b2575c90c2def87184617ef410f1cf5602d08dd1fa5ccc39bff837f8fe2278a004cdaa44575850
+  languageName: node
+  linkType: hard
+
+"expo-av@npm:~13.4.1":
+  version: 13.4.1
+  resolution: "expo-av@npm:13.4.1"
+  peerDependencies:
+    expo: "*"
+  checksum: 44d7095c2127772d2b1137770b32ec4dfe6f599798231a7bf04eee8a15974b0e6a3df06ffb98998058eeba96409050039ef55ae28acbaa39c2703471cbbe9cfb
   languageName: node
   linkType: hard
 
@@ -24409,6 +24420,13 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 5f9d5ffb46c59189e6a466df2c036144b7e84ca37f10908dd54dcffe8a5d4124699758d3a65d49fa498fb65e9ddfcc016919f1152fd056d629f89a3cdbc30af9
+  languageName: node
+  linkType: hard
+
+"react-native-sse@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "react-native-sse@npm:1.2.0"
+  checksum: a3820984ba194a53dd5a2fc0ba2850fd63fb7f303a4ed6f793f9399468ae498bb8231ad2ff726aae9216ba05923affbc692073df9670c52d8615e412b9937fa6
   languageName: node
   linkType: hard
 

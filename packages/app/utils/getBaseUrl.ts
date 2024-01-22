@@ -2,6 +2,8 @@ import { isWeb } from '@my/ui'
 
 import { replaceLocalhost } from './getLocalhost.native'
 
+export const DOMAIN = getBaseUrl()
+
 export function _getBaseUrl() {
   if (isWeb && typeof window !== 'undefined') {
     // browser should use relative path
