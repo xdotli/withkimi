@@ -18,6 +18,6 @@ export const Page: NextPageWithLayout = () => {
 
 Page.getLayout = (page) => <HomeLayout>{page}</HomeLayout>
 
-export const getServerSideProps = userProtectedGetSSP()
+// export const getServerSideProps = userProtectedGetSSP()
 
 export default Page

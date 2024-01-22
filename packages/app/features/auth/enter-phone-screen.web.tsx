@@ -7,29 +7,21 @@ import {
   SubmitButton,
   Paragraph,
   Select,
-  Label,
   Adapt,
   FontSizeTokens,
   Sheet,
   getFontSize,
 } from '@my/ui'
-import { Back } from '@my/ui/src/icons/back'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
+import { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'solito/router'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import { useMemo, useState } from 'react'
-
 import { z } from 'zod'
 
 import { usePhone, useCountryCode } from './onboard-hooks'
 
-const EnterPhoneSchema = z.object({
-  phone: formFields.text.min(5).max(22),
-})
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const BackIcon = (props: any) => {
   const { color = '#2E2E2E', size, ...otherProps } = props
@@ -45,23 +37,34 @@ const BackIcon = (props: any) => {
   )
 }
 
+const items = [{ name: '+1' }, { name: '+86' }, { name: '+852' }]
+
+const EnterPhoneSchema = z.object({
+  phone: formFields.text.min(5).max(22),
+  countryCode: formFields.select,
+})
+
 export const EnterPhoneScreen = () => {
   const supabase = useSupabase()
   const router = useRouter()
-  const { countryCode, setCountryCode } = useCountryCode()
-  const { phone, setPhone } = usePhone()
+  const { setCountryCode } = useCountryCode()
+  const { setPhone } = usePhone()
 
   const formSendCode = useForm<z.infer<typeof EnterPhoneSchema>>()
 
-  async function sendCode({ phone }: z.infer<typeof EnterPhoneSchema>) {
-    const { error } = await supabase.auth.signInWithOtp({ phone })
+  async function sendCode({ phone, countryCode }: z.infer<typeof EnterPhoneSchema>) {
+    setCountryCode(countryCode)
+    const phoneWithCountryCode = `${countryCode}${phone}`
+    setPhone(phoneWithCountryCode)
+
+    const { error } = await supabase.auth.signInWithOtp({ phone: phoneWithCountryCode })
     if (error) {
       const errorMessage = error?.message.toLowerCase()
       if (errorMessage.includes('phone')) {
         formSendCode.setError('phone', { type: 'custom', message: errorMessage })
       }
     } else {
-      router.push('/enter-otp')
+      router.push({ pathname: '/enter-otp', query: { phone: phoneWithCountryCode } })
     }
   }
 
@@ -70,8 +73,20 @@ export const EnterPhoneScreen = () => {
       <SchemaForm
         form={formSendCode}
         schema={EnterPhoneSchema}
-        defaultValues={{ phone: '' }}
+        defaultValues={{ phone: '', countryCode: '+1' }}
         onSubmit={sendCode}
+        props={
+          {
+            phone: {},
+            countryCode: {
+              options: items.map((item) => ({
+                name: item.name,
+                value: item.name.toLowerCase(),
+              })),
+              native: true,
+            },
+          } as const
+        }
         renderAfter={({ submit }) => {
           return (
             <>
@@ -113,22 +128,15 @@ export const EnterPhoneScreen = () => {
 
 export function SelectDemo() {
   return (
-    <YStack space>
-      <XStack ai="center" space>
-        <Label f={1} fb={0}>
-          Custom
-        </Label>
-        <SelectDemoItem />
-      </XStack>
-
-      <XStack ai="center" space>
-        <Label f={1} fb={0}>
-          Native
-        </Label>
-
-        <SelectDemoItem native />
-      </XStack>
-    </YStack>
+    // <YStack space>
+    //   <XStack ai="center" space width="$8">
+    //     <SelectDemoItem />
+    //   </XStack>
+    // </YStack>
+    // <XStack ai="center" space width="$8">
+    //   <SelectDemoItem />
+    // </XStack>
+    <></>
   )
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -212,7 +220,7 @@ export function SelectDemoItem(props: any) {
               bottom={0}
               alignItems="center"
               justifyContent="center"
-              width={'$4'}
+              width="$4"
               pointerEvents="none"
             >
               <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? '$true')} />
@@ -234,17 +242,3 @@ export function SelectDemoItem(props: any) {
     </Select>
   )
 }
-const items = [
-  { name: 'Apple' },
-  { name: 'Pear' },
-  { name: 'Blackberry' },
-  { name: 'Peach' },
-  { name: 'Apricot' },
-  { name: 'Melon' },
-  { name: 'Honeydew' },
-  { name: 'Starfruit' },
-  { name: 'Blueberry' },
-  { name: 'Raspberry' },
-  { name: 'Strawberry' },
-  { name: 'Mango' },
-]

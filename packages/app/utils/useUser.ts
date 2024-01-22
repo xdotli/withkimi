@@ -31,7 +31,7 @@ export const useUser = () => {
   const user = session?.user
   const { data: profile, refetch, isLoading: isLoadingProfile } = useProfile()
 
-  const avatarUrl = (function () {
+  const avatarUrl = (() => {
     if (profile?.avatar_url) return profile.avatar_url
     if (typeof user?.user_metadata.avatar_url === 'string') return user.user_metadata.avatar_url
 

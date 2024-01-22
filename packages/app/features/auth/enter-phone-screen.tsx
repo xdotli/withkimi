@@ -215,7 +215,7 @@ export function SelectDemoItem(props: any) {
               bottom={0}
               alignItems="center"
               justifyContent="center"
-              width={'$4'}
+              width="$4"
               pointerEvents="none"
             >
               <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? '$true')} />
