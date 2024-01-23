@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { OpenAiModels, modelOptions } from 'utils/types'
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const models: OpenAiModels = {
     gptTurbo: 'gpt-4-1106-preview',
     gpt: 'gpt-4',
@@ -82,3 +82,5 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log('error: ', err)
   }
 }
+
+export default handler
