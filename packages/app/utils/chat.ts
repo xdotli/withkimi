@@ -1,6 +1,64 @@
+import { SetStateAction, Dispatch } from 'react'
 import EventSource from 'react-native-sse'
 
-import { DOMAIN } from './getBaseUrl'
+export const DOMAIN =
+  process.env.EXPO_PUBLIC_ENV === 'DEVELOPMENT'
+    ? process.env.EXPO_PUBLIC_URL
+    : process.env.EXPO_PUBLIC_URL
+
+export const MODELS = {
+  gpt: { name: 'GPT 4', label: 'gpt' },
+  gptTurbo: { name: 'GPT Turbo', label: 'gptTurbo' },
+  claude: { name: 'Claude', label: 'claude' },
+  claudeInstant: { name: 'Claude Instant', label: 'claudeInstant' },
+  cohere: { name: 'Cohere', label: 'cohere' },
+  cohereWeb: { name: 'Cohere Web', label: 'cohereWeb' },
+  mistral: { name: 'Mistral', label: 'mistral' },
+  gemini: { name: 'Gemini', label: 'gemini' },
+}
+
+export interface IIconProps {
+  type: string
+  props: any
+}
+
+export interface IOpenAIMessages {
+  role: string
+  content: string
+}
+
+export interface IOpenAIUserHistory {
+  user: string
+  assistant: string
+  fileIds?: any[]
+}
+
+export interface IOpenAIStateWithIndex {
+  index: string
+  messages: IOpenAIUserHistory[]
+}
+
+export interface IThemeContext {
+  theme: any
+  setTheme: Dispatch<SetStateAction<string>>
+  themeName: string
+}
+
+export interface Model {
+  name: string
+  label: string
+}
+
+export interface IAppContext {
+  chatType: Model
+  setChatType: Dispatch<SetStateAction<Model>>
+  handlePresentModalPress: () => void
+  setImageModel: Dispatch<SetStateAction<string>>
+  imageModel: string
+  closeModal: () => void
+  illusionImage: string
+  setIllusionImage: Dispatch<SetStateAction<string>>
+}
 
 export function getEventSource({
   headers,
@@ -11,7 +69,7 @@ export function getEventSource({
   body: any
   type: string
 }) {
-  const es = new EventSource(`${DOMAIN}/chat/${type}`, {
+  const es = new EventSource(`${DOMAIN}/api/chat`, {
     headers: {
       'Content-Type': 'application/json',
       ...headers,
@@ -53,5 +111,6 @@ export function getChatType(type: Model) {
   }
   if (type.label.includes('gemini')) {
     return 'gemini'
-  } else return 'claude'
+  }
+  return 'claude'
 }

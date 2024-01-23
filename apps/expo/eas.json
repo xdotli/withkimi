@@ -30,11 +30,7 @@
         "buildType": "apk"
       },
       "ios": {
-        "image": "latest",
-        "infoPlist": {
-          "NSSpeechRecognitionUsageDescription": "We need access to your speech recognition to process your voice commands",
-          "NSMicrophoneUsageDescription": "We need access to your speech recognition to process your voice commands"
-        }
+        "image": "latest"
       }
     },
     "preview": {
@@ -46,11 +42,7 @@
         "EXPO_NO_DOTENV": "1"
       },
       "ios": {
-        "image": "latest",
-        "infoPlist": {
-          "NSSpeechRecognitionUsageDescription": "We need access to your speech recognition to process your voice commands",
-          "NSMicrophoneUsageDescription": "We need access to your speech recognition to process your voice commands"
-        }
+        "image": "latest"
       },
       "autoIncrement": true
     },
