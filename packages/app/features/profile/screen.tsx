@@ -85,7 +85,11 @@ export function ProfileScreen() {
               <Settings.Item icon={ShoppingCart} accentColor="$blue9">
                 Purchase History
               </Settings.Item>
-              <Settings.Item {...useLink({ href: '/settings' })} icon={Cog} accentColor="$gray9">
+              <Settings.Item
+                {...useLink({ href: '/settings/profile-setting' })}
+                icon={Cog}
+                accentColor="$gray9"
+              >
                 Settings
               </Settings.Item>
             </Settings.Group>

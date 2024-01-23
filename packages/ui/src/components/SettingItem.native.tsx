@@ -15,10 +15,13 @@ export const SettingItem = ({
   return (
     <YGroup.Item>
       <ListItem cursor="pointer" gap="$4" hoverTheme pressTheme {...props}>
-        <YStack backgroundColor={accentColor} padding="$2" borderRadius="$3">
+        {/* <YStack backgroundColor={accentColor} padding="$2" borderRadius="$3">
           <Icon color="white" size={18} />
+        </YStack> */}
+        <YStack backgroundColor={accentColor} padding="$2" borderRadius="$3">
+          <Icon color="$color" size={20} />
         </YStack>
-        <SizableText color="$color" fontSize={18} flex={1}>
+        <SizableText color="$color" fontSize={15} flex={1}>
           {children}
         </SizableText>
         {rightLabel ? (
@@ -26,7 +29,7 @@ export const SettingItem = ({
             {rightLabel}
           </SizableText>
         ) : (
-          <ChevronRight size={20} color="$color9" />
+          <ChevronRight size={20} color="#a191da" />
         )}
       </ListItem>
     </YGroup.Item>

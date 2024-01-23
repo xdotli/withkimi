@@ -1,5 +1,4 @@
 import { H2, Separator, XStack, YGroup, YStack, withStaticProperties, styled } from 'tamagui'
-
 import { SettingItem } from './SettingItem'
 
 const SettingsWrapper = styled(YStack, {
@@ -24,7 +23,7 @@ const SettingsGroup = styled(YGroup, {
     separator: (
       <XStack>
         <YStack width={20} backgroundColor="$color2" />
-        <Separator borderColor="$color4" borderWidth="$0.25" />
+        {/* <Separator borderColor="$color4" borderWidth="$0.25" /> */}
       </XStack>
     ),
   },
