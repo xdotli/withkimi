@@ -9,7 +9,6 @@ import { ImageBackground, StyleSheet } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { useRouter } from 'solito/router'
 import * as DropdownMenu from 'zeego/dropdown-menu'
-import { DropdownMenuExample } from './menu'
 
 import { DropdownMenuExample } from './menu'
 
