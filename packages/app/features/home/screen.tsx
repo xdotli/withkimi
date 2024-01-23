@@ -20,6 +20,7 @@ import { useRouter } from 'solito/router'
 import * as DropdownMenu from 'zeego/dropdown-menu'
 
 import { DropdownMenuExample } from './menu'
+import { Tutorial } from '../tutorial/screen'
 
 Audio.setAudioModeAsync({
   allowsRecordingIOS: false,
@@ -191,6 +192,7 @@ export const HomeScreen = () => {
       }}
       jc="space-between"
     >
+      <Tutorial />
       <ImageBackground source={require('packages/app/assets/bg.png')} style={{ ...styles.image }}>
         <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
           <DropdownMenuExample />

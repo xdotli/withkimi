@@ -64,6 +64,7 @@
     "dotenv-cli": "^6.0.0",
     "elevenlabs": "^0.1.1",
     "eslint": "^8.46.0",
+    "lottie-react-native": "^6.5.1",
     "node-gyp": "^9.3.1",
     "prettier": "^2.7.1",
     "turbo": "^1.10.14",
