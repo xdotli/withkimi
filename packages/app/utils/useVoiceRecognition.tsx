@@ -35,12 +35,12 @@ export const useVoiceRecognition = () => {
       end: '',
       isRecording: false,
     })
-  }, [])
+  }, [setState])
 
   const startRecognizing = useCallback(async () => {
     resetState()
     try {
-      await Voice.start('en-US')
+      await Voice.start('en-GB')
     } catch (e) {
       console.error(e)
     }
@@ -72,17 +72,17 @@ export const useVoiceRecognition = () => {
   }, [resetState])
 
   useEffect(() => {
-    Voice.onSpeechStart = (_e: any) => {
+    Voice.onSpeechStart = (e: any) => {
       setState((prevState) => ({
         ...prevState,
-        started: 'Recording',
+        started: '√',
         isRecording: true,
       }))
     }
     Voice.onSpeechRecognized = () => {
       setState((prevState) => ({ ...prevState, recognized: '√' }))
     }
-    Voice.onSpeechEnd = (_e: any) => {
+    Voice.onSpeechEnd = (e: any) => {
       setState((prevState) => ({ ...prevState, end: '√', isRecording: false }))
     }
     Voice.onSpeechError = (e: SpeechErrorEvent) => {

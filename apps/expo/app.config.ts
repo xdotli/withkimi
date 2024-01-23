@@ -32,12 +32,26 @@ export default (_: ConfigContext): ExpoConfig => {
       supportsTablet: true,
       bundleIdentifier: config.scheme,
       associatedDomains: [`applinks:${config.nakedAppHost}`, `applinks:${config.nakedOIAHost}`],
+      infoPlist: {
+        NSSpeechRecognitionUsageDescription:
+          'We need access to your speech recognition to process your voice commands',
+        NSMicrophoneUsageDescription:
+          'We need access to your speech recognition to process your voice commands',
+      },
     },
     android: {
       package: config.scheme,
     },
     web: undefined,
     plugins: [
+      [
+        '@react-native-voice/voice',
+        {
+          microphonePermission: 'CUSTOM: Allow $(PRODUCT_NAME) to access the microphone',
+          speechRecognitionPermission:
+            'CUSTOM: Allow $(PRODUCT_NAME) to securely recognize user speech',
+        },
+      ],
       [
         'expo-notifications',
         {

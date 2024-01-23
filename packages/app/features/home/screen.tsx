@@ -69,7 +69,7 @@ export const HomeScreen = () => {
           <Button>Profile</Button>
         </XStack>
 
-        <YStack pos="absolute" top="$20" left="$14" zIndex={1000} gap="$2">
+        <YStack width="$20" pos="absolute" top="$20" left="$11" zIndex={1000} gap="$2">
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Your message: {JSON.stringify(state, null, 2)}
           </Text>
