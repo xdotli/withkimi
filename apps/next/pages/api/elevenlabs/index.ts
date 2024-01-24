@@ -6,6 +6,7 @@ const client = new ElevenLabsClient({
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const voiceId = req.query.voiceId as string
   const text = req.query.text as string
+  console.log(req.query.text)
   const stream = await client.textToSpeech.convertAsStream(voiceId, {
     text,
     voice_settings: {

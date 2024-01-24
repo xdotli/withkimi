@@ -1,17 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { OpenAiModels, modelOptions } from 'utils/types'
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const models: OpenAiModels = {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const models = {
     gptTurbo: 'gpt-4-1106-preview',
     gpt: 'gpt-4',
   }
+
   try {
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       Connection: 'keep-alive',
       'Cache-Control': 'no-cache',
     })
+
     const { model, messages } = req.body
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -26,6 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         stream: true,
       }),
     })
+
     const reader = response.body?.getReader()
     const decoder = new TextDecoder()
     let brokenLine = ''
@@ -79,8 +82,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.write('data: [DONE]\n\n')
   } catch (err) {
-    console.log('error: ', err)
+    console.error('error: ', err)
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 }
-
-export default handler

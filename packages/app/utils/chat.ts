@@ -69,7 +69,7 @@ export function getEventSource({
   body: any
   type: string
 }) {
-  const es = new EventSource(`${DOMAIN}/api/chat`, {
+  const es = new EventSource('https://rn-ai.fly.dev/chat/gpt', {
     headers: {
       'Content-Type': 'application/json',
       ...headers,
@@ -77,7 +77,7 @@ export function getEventSource({
     method: 'POST',
     body: JSON.stringify(body),
   })
-
+  console.log(es)
   return es
 }
 

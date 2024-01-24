@@ -1,7 +1,7 @@
-import { EditProfileScreen } from 'app/features/settings/edit-profile-screen'
+// import { EditProfileScreen } from 'app/features/settings/edit-profile-screen'
 import Head from 'next/head'
-import { userProtectedGetSSP } from 'utils/userProtected'
 import { NextPageWithLayout } from 'pages/_app'
+import { userProtectedGetSSP } from 'utils/userProtected'
 
 export const Page: NextPageWithLayout = () => {
   return (
@@ -9,7 +9,7 @@ export const Page: NextPageWithLayout = () => {
       <Head>
         <title>Edit Profile</title>
       </Head>
-      <EditProfileScreen />
+      {/* <EditProfileScreen /> */}
     </>
   )
 }

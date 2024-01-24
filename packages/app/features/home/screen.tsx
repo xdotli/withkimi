@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, View, Text, YStack, XStack, Avatar, ScrollView } from '@my/ui'
-import {
-  getEventSource,
-  getFirstN,
-  getFirstNCharsOrLess,
-  getChatType,
-  MODELS,
-} from 'app/utils/chat'
+import { getEventSource, getFirstNCharsOrLess, getChatType, MODELS } from 'app/utils/chat'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
@@ -17,10 +11,9 @@ import { ImageBackground, StyleSheet } from 'react-native'
 import uuid from 'react-native-uuid'
 import { WebView } from 'react-native-webview'
 import { useRouter } from 'solito/router'
-import * as DropdownMenu from 'zeego/dropdown-menu'
+import { set } from 'zod'
 
 import { DropdownMenuExample } from './menu'
-import { Tutorial } from '../tutorial/screen'
 
 Audio.setAudioModeAsync({
   allowsRecordingIOS: false,
@@ -37,8 +30,8 @@ export const HomeScreen = () => {
   const chatType = MODELS.gptTurbo
 
   // openai chatgpt
-  const [loading, setLoading] = useState<boolean>(false)
-  const [input_, setInput] = useState<string>('')
+  const [openAiCompleted, setOpenAiCompleted] = useState<boolean>(false)
+  const [input, setInput] = useState<string>('')
   const scrollViewRef = useRef<ScrollView>(null)
   const [openaiMessages, setOpenaiMessages] = useState<IOpenAIMessages[]>([])
   const [openaiResponse, setOpenaiResponse] = useState<IOpenAIStateWithIndex>({
@@ -54,29 +47,58 @@ export const HomeScreen = () => {
   const animation = useRef<LottieView>(null)
   const isFirstRun = useRef(true)
 
+  const toSpeech = async () => {
+    if (openAiCompleted) {
+      console.log(openAiCompleted, 'l50')
+      await Audio.setAudioModeAsync({ playsInSilentModeIOS: true })
+      const soundObj = new Audio.Sound()
+      const startTime = Date.now()
+      const encodedText = encodeURIComponent(
+        openaiResponse.messages[openaiResponse.messages.length - 1].assistant
+      )
+
+      await soundObj.loadAsync(
+        {
+          uri: `https://withkimi-next.vercel.app/api/elevenlabs?text=${encodedText}&voiceId=21m00Tcm4TlvDq8ikWAM`,
+        },
+        { progressUpdateIntervalMillis: 10 }
+      )
+      const endTime = Date.now()
+      const elapsed = endTime - startTime
+      setElapsedTime(elapsed)
+      await soundObj.playAsync()
+    }
+  }
+
   const handleSubmit = async () => {
-    await Audio.setAudioModeAsync({ playsInSilentModeIOS: true })
-    const soundObj = new Audio.Sound()
-    const startTime = Date.now()
-    await soundObj.loadAsync({
-      uri: '/api/elevenlabs?text=Hello%20World&voiceId=21m00Tcm4TlvDq8ikWAM',
-    })
-    await soundObj.playAsync()
-    const endTime = Date.now()
-    const elapsed = endTime - startTime
-    setElapsedTime(elapsed)
-    console.log(state.results)
     setInput(state.results[0])
-    fetchOpenAICompletion(state.results[0])
   }
 
-  const fetchOpenAICompletion = async (text: string) => {
-    await generateOpenaiResponse(text)
+  async function chat() {
+    if (!input) return
+    generateOpenaiResponse()
   }
 
-  async function generateOpenaiResponse(input: string) {
+  useEffect(() => {
+    if (input && input.length > 0) {
+      generateOpenaiResponse()
+    }
+    return () => {
+      setInput('')
+    }
+  }, [input])
+
+  useEffect(() => {
+    if (openAiCompleted) {
+      toSpeech()
+    }
+    return () => {
+      setOpenAiCompleted(false)
+    }
+  }, [openAiCompleted, toSpeech])
+
+  async function generateOpenaiResponse() {
     try {
-      setLoading(true)
       // set message state for openai to have context on previous conversations
       let messagesRequest = openaiMessages
 
@@ -125,8 +147,9 @@ export const HomeScreen = () => {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const listener = (event: any) => {
         if (event.type === 'open') {
+          setOpenAiCompleted(false)
+          // console.log(openAiCompleted, 'l150')
           console.log('Open SSE connection.')
-          setLoading(false)
         } else if (event.type === 'message') {
           if (event.data !== '[DONE]') {
             if (localResponse.length < 850) {
@@ -142,16 +165,17 @@ export const HomeScreen = () => {
               messages: JSON.parse(JSON.stringify(openaiArray)),
             }))
           } else {
-            setLoading(false)
+            setOpenAiCompleted(true)
+            // console.log(openAiCompleted, 'l168')
             eventSource.close()
           }
         } else if (event.type === 'error') {
           console.error('Connection error:', event.message)
-          setLoading(false)
+
           eventSource.close()
         } else if (event.type === 'exception') {
           console.error('Error:', event.message, event.error)
-          setLoading(false)
+
           eventSource.close()
         }
       }
@@ -197,7 +221,7 @@ export const HomeScreen = () => {
             Your message: {JSON.stringify(state, null, 2)}
           </Text>
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
-            Your message: {state.results[0]}
+            Your message: {!state.isRecording ? state.results[0] : 'Recording...'}
           </Text>
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Elapsed Time: {elapsedTime}ms
@@ -209,7 +233,7 @@ export const HomeScreen = () => {
                 padding="$3"
                 style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}
               >
-                Hello user
+                {input}
               </Text>
             ) : (
               <Text
@@ -251,7 +275,7 @@ export const HomeScreen = () => {
         <WebView
           // position="absolute"
           style={{ backgroundColor: 'transparent' }}
-          source={{ uri: 'https://live2d-one.vercel.app/catgirl2.html' }}
+          source={{ uri: 'https://live2d-one.vercel.app/nekomi.html' }}
           // incognito
         />
         <XStack jc="center" marginBottom={safeAreaInsets.bottom}>
@@ -266,6 +290,7 @@ export const HomeScreen = () => {
             onPressOut={() => {
               stopRecognizing()
               handleSubmit()
+              chat()
             }}
           >
             <Text fontWeight="600" padding="$3" fontSize="$4" color="white">

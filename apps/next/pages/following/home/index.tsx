@@ -1,7 +1,7 @@
-import { HomeScreen } from 'app/features/following/home-screen'
+// import { HomeScreen } from 'app/features/following/home-screen'
 import Head from 'next/head'
-import { userProtectedGetSSP } from 'utils/userProtected'
 import { NextPageWithLayout } from 'pages/_app'
+import { userProtectedGetSSP } from 'utils/userProtected'
 
 export const Page: NextPageWithLayout = () => {
   return (
@@ -9,7 +9,7 @@ export const Page: NextPageWithLayout = () => {
       <Head>
         <title>Home</title>
       </Head>
-      <HomeScreen />
+      {/* <HomeScreen /> */}
     </>
   )
 }
