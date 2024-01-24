@@ -65,22 +65,14 @@ export const HomeScreen = () => {
     const endTime = Date.now()
     const elapsed = endTime - startTime
     setElapsedTime(elapsed)
+    console.log(state.results)
+    setInput(state.results[0])
+    fetchOpenAICompletion(state.results[0])
   }
 
   const fetchOpenAICompletion = async (text: string) => {
     await generateOpenaiResponse(text)
   }
-
-  useEffect(() => {
-    if (state.results && state.results.length > 0) {
-      console.log(state.results)
-      if (!state.isRecording) {
-        setInput(state.results[0])
-      }
-      console.log('input from use effect', input_)
-      fetchOpenAICompletion(state.results[0])
-    }
-  }, [state.results[0]])
 
   async function generateOpenaiResponse(input: string) {
     try {
