@@ -1,11 +1,10 @@
+import { Ionicons } from '@expo/vector-icons'
+import React, { ComponentProps, useState } from 'react'
 import { StyleSheet, View, Text, Platform, Image } from 'react-native'
-
+import { useLink } from 'solito/link'
+import { useRouter } from 'solito/router'
 import * as ContextMenu from 'zeego/context-menu'
 import * as DropdownMenu from 'zeego/dropdown-menu'
-import React, { ComponentProps, useState } from 'react'
-import { useRouter } from 'solito/router'
-import { Ionicons } from '@expo/vector-icons'
-import { useLink } from 'solito/link'
 const select = (val: unknown) => () => alert(val)
 
 const itemHeight = 25
@@ -206,13 +205,6 @@ const DropdownMenuLabel = DropdownMenu.create(
   'ItemImage'
 )
 
-const DropdownMenuArrow = DropdownMenu.create(
-  (props: ComponentProps<typeof DropdownMenu.Arrow>) => (
-    <DropdownMenu.Arrow {...props} style={{ fill: '#fff' }} />
-  ),
-  'Arrow'
-)
-
 export const DropdownMenuExample = () => {
   const router = useRouter()
   const [arrowEnabled, setArrowEnabled] = useState<'on' | 'off' | 'mixed'>('off')
@@ -227,17 +219,17 @@ export const DropdownMenuExample = () => {
       <DropdownMenu.Content style={dropdownStyles.content}>
         <DropdownMenuLabel>Help</DropdownMenuLabel>
 
-        {['For you', 'Following'].map((i) => (
+        {['For you', 'Following'].map((i) =>
           i === 'Following' ? (
-              <DropdownMenuItem key={`list-${i}`} onSelect={() => router.push('/following/home')}>
-                <DropdownMenuItemTitle>{`${i}`}</DropdownMenuItemTitle>
-              </DropdownMenuItem>
+            <DropdownMenuItem key={`list-${i}`} onSelect={() => router.push('/following/home')}>
+              <DropdownMenuItemTitle>{`${i}`}</DropdownMenuItemTitle>
+            </DropdownMenuItem>
           ) : (
             <DropdownMenuItem key={`list-${i}`}>
               <DropdownMenuItemTitle>{`${i}`}</DropdownMenuItemTitle>
             </DropdownMenuItem>
           )
-        ))}
+        )}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )
