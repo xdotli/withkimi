@@ -1,6 +1,7 @@
 import { YStack, Button, Text } from '@my/ui'
 import LottieView, { AnimationObject } from 'lottie-react-native'
 import { useState } from 'react'
+import { StyleSheet } from 'react-native'
 import { useRouter } from 'solito/router'
 
 export const TestScreen = () => {
@@ -84,3 +85,11 @@ const SwipeVertical = () => {
     />
   )
 }
+
+const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'space-between',
+  },
+})

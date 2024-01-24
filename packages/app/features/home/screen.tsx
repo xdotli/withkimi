@@ -72,9 +72,11 @@ export const HomeScreen = () => {
   }
 
   useEffect(() => {
-    if (!state.isRecording && state.results && state.results.length > 0) {
+    if (state.results && state.results.length > 0) {
       console.log(state.results)
-      setInput(state.results[0])
+      if (!state.isRecording) {
+        setInput(state.results[0])
+      }
       console.log('input from use effect', input_)
       fetchOpenAICompletion(state.results[0])
     }
@@ -192,7 +194,6 @@ export const HomeScreen = () => {
       }}
       jc="space-between"
     >
-      <Tutorial />
       <ImageBackground source={require('packages/app/assets/bg.png')} style={{ ...styles.image }}>
         <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
           <DropdownMenuExample />
@@ -284,3 +285,11 @@ export const HomeScreen = () => {
     </YStack>
   )
 }
+
+const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'space-between',
+  },
+})
