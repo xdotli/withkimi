@@ -72,7 +72,7 @@ export const HomeScreen = () => {
   }
 
   useEffect(() => {
-    if (state.results && state.results.length > 0) {
+    if (!state.isRecording && state.results && state.results.length > 0) {
       console.log(state.results)
       setInput(state.results[0])
       console.log('input from use effect', input_)
@@ -284,11 +284,3 @@ export const HomeScreen = () => {
     </YStack>
   )
 }
-
-const styles = StyleSheet.create({
-  image: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'space-between',
-  },
-})
