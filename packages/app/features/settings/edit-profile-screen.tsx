@@ -5,6 +5,7 @@ import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'solito/router'
+import { appRouter } from '@my/api/src'
 import { z } from 'zod'
 
 const pronounsItems = [
@@ -40,6 +41,8 @@ export const EditProfileScreen = () => {
     setDob(currentDate)
   }
 
+  
+
   useEffect(() => {
     if (status === 'submitting') {
       const timer = setTimeout(() => setStatus('off'), 2000)
@@ -57,6 +60,7 @@ export const EditProfileScreen = () => {
     interests,
     occupation,
   }: z.infer<typeof profileEditSchema>) {
+    // console.log(appRouter.greeting.greet)
     console.log('Submitted name:', name)
     console.log('Submitted phone:', countryCode, phone)
     console.log('Submitted dob:', dob.toDateString())
@@ -118,21 +122,7 @@ export const EditProfileScreen = () => {
         {(fields) => (
           <>
             <YStack flex={1}>
-              <XStack jc="flex-start" height="$9">
-                <Button
-                  icon={<Back size={38} />}
-                  height="$5"
-                  width="$5"
-                  onPress={() => {
-                    router.push('/settings/profile-setting')
-                  }}
-                />
-              </XStack>
-              <XStack jc="center" marginTop="$-11">
-                <H4>Edit Profile</H4>
-              </XStack>
-
-              <H4 paddingTop="$4">Bacis Info</H4>
+              <H4>Bacis Info</H4>
               {Object.values(fields.name.props)}
               {Object.values(fields.phone.props)}
               {Object.values(fields.countryCode.props)}

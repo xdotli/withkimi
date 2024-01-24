@@ -1,4 +1,4 @@
-import { Paragraph, Settings, YStack, XStack, Button, useMedia, H4 } from '@my/ui'
+import { Paragraph, Settings, YStack, XStack, Button, useMedia, H4, Sheet, SheetProps, useSheet } from '@my/ui'
 import { Back } from '@my/ui/src/icons/back'
 import { Info, LogOut, Flag, User, LockKeyhole } from '@tamagui/lucide-icons'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
@@ -18,21 +18,6 @@ export const SettingsScreen = () => {
 
   return (
     <YStack flex={1}>
-      <XStack jc="flex-start" height="$9">
-        <Button
-          icon={<Back size={38} />}
-          height="$5"
-          width="$5"
-          top="$4"
-          left="$4"
-          onPress={() => {
-            router.push('/profile')
-          }}
-        />
-      </XStack>
-      <XStack jc="center" marginTop="$-10">
-        <H4>Profile Setting</H4>
-      </XStack>
       <Settings>
         <Settings.Items>
           <Settings.Group $gtSm={{ space: '$2' }}>
@@ -60,7 +45,7 @@ export const SettingsScreen = () => {
             <Settings.Item
               icon={Flag}
               isActive={pathname === '/give-feedback'}
-              {...useLink({ href: '/give-feedback' })}
+              {...useLink({ href: '/settings/feedback-app' })}
             >
               Give Feedback
             </Settings.Item>
