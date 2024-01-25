@@ -16733,6 +16733,7 @@ __metadata:
     react-native-reanimated: "npm:~3.3.0"
     react-native-safe-area-context: "npm:4.6.3"
     react-native-screens: "npm:~3.22.0"
+    react-native-sound: "npm:^0.11.2"
     react-native-svg: "npm:13.9.0"
     react-native-url-polyfill: "npm:^1.3.0"
     react-native-web: "npm:~0.19.6"
@@ -24881,6 +24882,15 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 5f9d5ffb46c59189e6a466df2c036144b7e84ca37f10908dd54dcffe8a5d4124699758d3a65d49fa498fb65e9ddfcc016919f1152fd056d629f89a3cdbc30af9
+  languageName: node
+  linkType: hard
+
+"react-native-sound@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "react-native-sound@npm:0.11.2"
+  peerDependencies:
+    react-native: ">=0.8.0"
+  checksum: 56dbd286ba9b013647b21f40bd792c9c6abac9bac94e764377e8c7aa21ef1a71e3396731e287d16ea65d028ab56b48ccb9a1b56328acf29212d8f94444aa3f43
   languageName: node
   linkType: hard
 

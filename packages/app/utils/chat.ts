@@ -69,7 +69,7 @@ export function getEventSource({
   body: any
   type: string
 }) {
-  const es = new EventSource('https://rn-ai.fly.dev/chat/gpt', {
+  const es = new EventSource(`http://localhost:3050/chat/gpt`, {
     headers: {
       'Content-Type': 'application/json',
       ...headers,

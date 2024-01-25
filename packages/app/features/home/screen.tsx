@@ -4,10 +4,10 @@ import { getEventSource, getFirstNCharsOrLess, getChatType, MODELS } from 'app/u
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
-import { Audio } from 'expo-av'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
 import { ImageBackground, StyleSheet } from 'react-native'
+import Sound from 'react-native-sound'
 import uuid from 'react-native-uuid'
 import { WebView } from 'react-native-webview'
 import { useRouter } from 'solito/router'
@@ -15,13 +15,7 @@ import { set } from 'zod'
 
 import { DropdownMenuExample } from './menu'
 
-Audio.setAudioModeAsync({
-  allowsRecordingIOS: false,
-  staysActiveInBackground: false,
-  playsInSilentModeIOS: true,
-  shouldDuckAndroid: true,
-  playThroughEarpieceAndroid: false,
-})
+import { size } from '../../../ui/src/themes/token-size'
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
@@ -33,6 +27,7 @@ export const HomeScreen = () => {
   const [openAiCompleted, setOpenAiCompleted] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const scrollViewRef = useRef<ScrollView>(null)
+  const [lastRes, setLastRes] = useState<string>('')
   const [openaiMessages, setOpenaiMessages] = useState<IOpenAIMessages[]>([])
   const [openaiResponse, setOpenaiResponse] = useState<IOpenAIStateWithIndex>({
     messages: [],
@@ -48,26 +43,34 @@ export const HomeScreen = () => {
   const isFirstRun = useRef(true)
 
   const toSpeech = async () => {
-    if (openAiCompleted) {
-      console.log(openAiCompleted, 'l50')
-      await Audio.setAudioModeAsync({ playsInSilentModeIOS: true })
-      const soundObj = new Audio.Sound()
-      const startTime = Date.now()
-      const encodedText = encodeURIComponent(
-        openaiResponse.messages[openaiResponse.messages.length - 1].assistant
-      )
+    // if (openAiCompleted) {
 
-      await soundObj.loadAsync(
-        {
-          uri: `https://withkimi-next.vercel.app/api/elevenlabs?text=${encodedText}&voiceId=21m00Tcm4TlvDq8ikWAM`,
-        },
-        { progressUpdateIntervalMillis: 10 }
-      )
-      const endTime = Date.now()
-      const elapsed = endTime - startTime
-      setElapsedTime(elapsed)
-      await soundObj.playAsync()
-    }
+    // }
+    console.log(openAiCompleted, 'l50')
+    const startTime = Date.now()
+    const text = openaiResponse.messages[openaiResponse.messages.length - 1].assistant
+
+    const uri = `https://withkimi-next.vercel.app/api/elevenlabs?text=${text}&voiceId=21m00Tcm4TlvDq8ikWAM`
+    const soundObj = new Sound(uri, '', (error) => {
+      if (error) {
+        console.error('Error loading sound:', error)
+        return
+      }
+      // Play the sound
+      soundObj.play((success) => {
+        if (success) {
+          console.log('successfully finished playing')
+          // Release the sound resource when playback is complete
+          soundObj.release()
+        } else {
+          console.log('playback failed due to audio decoding errors')
+        }
+      })
+    })
+
+    const endTime = Date.now()
+    const elapsed = endTime - startTime
+    setElapsedTime(elapsed)
   }
 
   const handleSubmit = async () => {
@@ -89,13 +92,14 @@ export const HomeScreen = () => {
   }, [input])
 
   useEffect(() => {
+    console.log(openAiCompleted, 'l94')
     if (openAiCompleted) {
       toSpeech()
     }
     return () => {
       setOpenAiCompleted(false)
     }
-  }, [openAiCompleted, toSpeech])
+  }, [openAiCompleted])
 
   async function generateOpenaiResponse() {
     try {
@@ -148,6 +152,7 @@ export const HomeScreen = () => {
       const listener = (event: any) => {
         if (event.type === 'open') {
           setOpenAiCompleted(false)
+          setLastRes('')
           // console.log(openAiCompleted, 'l150')
           console.log('Open SSE connection.')
         } else if (event.type === 'message') {
@@ -167,6 +172,7 @@ export const HomeScreen = () => {
           } else {
             setOpenAiCompleted(true)
             // console.log(openAiCompleted, 'l168')
+            setLastRes(localResponse)
             eventSource.close()
           }
         } else if (event.type === 'error') {
@@ -216,8 +222,8 @@ export const HomeScreen = () => {
           <Button>Profile</Button>
         </XStack>
 
-        <YStack width="$20" pos="absolute" top="$20" left="$11" zIndex={1000} gap="$2">
-          <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
+        <YStack width="$20" pos="absolute" bottom="$20" left="$11" zIndex={1000} gap="$2">
+          {/* <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Your message: {JSON.stringify(state, null, 2)}
           </Text>
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
@@ -225,22 +231,14 @@ export const HomeScreen = () => {
           </Text>
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Elapsed Time: {elapsedTime}ms
-          </Text>
-          <ScrollView>
+          </Text> */}
+          <ScrollView style={{ height: 120, backgroundColor: 'rgba(252,251,251,0.72)' }}>
             {openaiResponse.messages.length === 0 ? (
-              <Text
-                fontSize="$4"
-                padding="$3"
-                style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}
-              >
+              <Text fontSize="$4" padding="$3">
                 {input}
               </Text>
             ) : (
-              <Text
-                fontSize="$4"
-                padding="$3"
-                style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}
-              >
+              <Text fontSize="$4" padding="$3">
                 {openaiResponse.messages[openaiResponse.messages.length - 1].assistant}
               </Text>
             )}
