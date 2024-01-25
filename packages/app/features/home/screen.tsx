@@ -2,8 +2,10 @@
 import { Button, Text, YStack, XStack, Avatar, ScrollView } from '@my/ui'
 import { getFirstNCharsOrLess, MODELS } from 'app/utils/chat'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
+import { prompts } from 'app/utils/llm/constants'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
+import { Audio } from 'expo-av'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
 import { ImageBackground, StyleSheet } from 'react-native'
@@ -12,7 +14,6 @@ import { fetch } from 'react-native-fetch-api'
 import Sound from 'react-native-sound'
 import uuid from 'react-native-uuid'
 import { WebView } from 'react-native-webview'
-import { useRouter } from 'solito/router'
 import { WritableStream, ReadableStream, TransformStream } from 'web-streams-polyfill/ponyfill'
 
 import { TextLineStream } from './_lineSplitter'
@@ -29,14 +30,14 @@ export const HomeScreen = () => {
   const [input, setInput] = useState<string>('')
   const scrollViewRef = useRef<ScrollView>(null)
   const [openaiMessages, setOpenaiMessages] = useState<IOpenAIMessages[]>([
-    { role: 'system', content: '' },
+    { role: 'system', content: prompts.nekomi },
   ])
   const [openaiResponse, setOpenaiResponse] = useState<IOpenAIStateWithIndex>({
     messages: [],
     index: uuid.v4().toString(),
   })
 
-  const [elapsedTime, setElapsedTime] = useState<number | null>(null)
+  // const [elapsedTime, setElapsedTime] = useState<number | null>(null)
 
   const { state, startRecognizing, stopRecognizing, destroyRecognizer } = useVoiceRecognition()
 
@@ -44,11 +45,10 @@ export const HomeScreen = () => {
   const isFirstRun = useRef(true)
 
   const toSpeech = async () => {
-    console.log(openAiCompleted, 'l50')
-    const startTime = Date.now()
+    // const startTime = Date.now()
     const text = openaiResponse.messages[openaiResponse.messages.length - 1].assistant
 
-    const uri = `https://withkimi-next.vercel.app/api/elevenlabs?text=${text}&voiceId=OiPxMr8b7mL9wBqR0S9n`
+    const uri = `http://localhost:3000/api/elevenlabs?text=${text}&voiceId=Au3pA9ckLlUNxLbzZEfo`
     const soundObj = new Sound(uri, '', (error) => {
       if (error) {
         console.error('Error loading sound:', error)
@@ -65,10 +65,6 @@ export const HomeScreen = () => {
         }
       })
     })
-
-    const endTime = Date.now()
-    const elapsed = endTime - startTime
-    setElapsedTime(elapsed)
   }
 
   const handleSubmit = async () => {
@@ -223,7 +219,7 @@ export const HomeScreen = () => {
         </XStack>
 
         <YStack width="$20" pos="absolute" bottom="$20" left="$11" zIndex={1000} gap="$2">
-          <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
+          {/* <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Your message: {JSON.stringify(state, null, 2)}
           </Text>
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
@@ -231,7 +227,7 @@ export const HomeScreen = () => {
           </Text>
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Elapsed Time: {elapsedTime}ms
-          </Text>
+          </Text> */}
           <ScrollView style={{ height: 120, backgroundColor: 'rgba(252,251,251,0.72)' }}>
             {openaiResponse.messages.length === 0 ? (
               <Text fontSize="$4" padding="$3">
