@@ -12,7 +12,7 @@
     "android": "cd apps/expo && yarn android",
     "native": "cd apps/expo && yarn start",
     "watch": "yarn check:type:watch & yarn workspaces foreach -pi --all run watch",
-    "web": "yarn build && cd apps/next && yarn dev",
+    "web": "yarn build && cd apps/next && yarn dev --hostname 0.0.0.0",
     "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
     "web:prod": "yarn workspace next-app build",
     "web:prod:analyze": "ANALYZE=true yarn web:prod",
@@ -58,20 +58,25 @@
     "@nderscore/tamagui-typescript-plugin": "^0.6.0",
     "@tamagui/cli": "^1.85.12",
     "@turbo/gen": "^1.10.12",
+    "@types/eventsource": "^1.1.15",
     "change-case": "^4.1.2",
     "check-dependency-version-consistency": "^3.0.3",
     "dotenv": "^16.0.3",
     "dotenv-cli": "^6.0.0",
     "elevenlabs": "^0.1.1",
     "eslint": "^8.46.0",
+    "eventsource": "^2.0.2",
     "lottie-react-native": "^6.5.1",
+    "node-fetch": "^3.3.2",
     "node-gyp": "^9.3.1",
+    "openai": "^4.25.0",
     "prettier": "^2.7.1",
     "turbo": "^1.10.14",
     "typescript": "^5.3.3"
   },
   "packageManager": "yarn@4.0.2",
   "devDependencies": {
-    "@changesets/changelog-github": "^0.5.0"
+    "@changesets/changelog-github": "^0.5.0",
+    "patch-package": "^8.0.0"
   }
 }

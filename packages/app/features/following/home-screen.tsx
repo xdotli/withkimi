@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, View, Text, YStack, XStack, Avatar, ScrollView } from '@my/ui'
+import { UserCircle2 } from '@tamagui/lucide-icons'
 import {
   getEventSource,
   getFirstN,
@@ -13,13 +14,11 @@ import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
 import { Audio } from 'expo-av'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
-import { ImageBackground, StyleSheet } from 'react-native'
+import { ImageBackground, StyleSheet, TouchableOpacity } from 'react-native'
 import uuid from 'react-native-uuid'
 import { WebView } from 'react-native-webview'
 import { useRouter } from 'solito/router'
 import * as DropdownMenu from 'zeego/dropdown-menu'
-import { UserCircle2 } from '@tamagui/lucide-icons'
-import { TouchableOpacity } from 'react-native'
 
 import { DropdownMenuExample } from '../home/menu'
 import { Tutorial } from '../tutorial/screen'
@@ -199,16 +198,16 @@ export const HomeScreen = () => {
         <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
           <DropdownMenuExample />
           {/* <Button>Profile</Button> */}
-          <TouchableOpacity 
-            style={{right: 10}}
+          <TouchableOpacity
+            style={{ right: 10 }}
             onPress={() => {
               router.push('/settings/profile-setting')
             }}
           >
-              <UserCircle2 size={38} color='white'/>
+            <UserCircle2 size={38} color="white" />
           </TouchableOpacity>
         </XStack>
-        
+
         <YStack pos="absolute" top="$34" right="$2" zIndex={1000}>
           <Avatar circular size={50} borderColor="white" borderWidth={2}>
             <Avatar.Image

@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, View, Text, YStack, XStack, Avatar, ScrollView } from '@my/ui'
-import { getEventSource, getFirstNCharsOrLess, getChatType, MODELS } from 'app/utils/chat'
+import { Button, Text, YStack, XStack, Avatar, ScrollView } from '@my/ui'
+import { getFirstNCharsOrLess, MODELS } from 'app/utils/chat'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
 import { ImageBackground, StyleSheet } from 'react-native'
+// @ts-ignore
+import { fetch } from 'react-native-fetch-api'
 import Sound from 'react-native-sound'
 import uuid from 'react-native-uuid'
 import { WebView } from 'react-native-webview'
 import { useRouter } from 'solito/router'
-import { set } from 'zod'
+import { WritableStream, ReadableStream, TransformStream } from 'web-streams-polyfill/ponyfill'
 
+import { TextLineStream } from './_lineSplitter'
 import { DropdownMenuExample } from './menu'
-
-import { size } from '../../../ui/src/themes/token-size'
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
@@ -27,14 +28,14 @@ export const HomeScreen = () => {
   const [openAiCompleted, setOpenAiCompleted] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const scrollViewRef = useRef<ScrollView>(null)
-  const [lastRes, setLastRes] = useState<string>('')
-  const [openaiMessages, setOpenaiMessages] = useState<IOpenAIMessages[]>([])
+  const [openaiMessages, setOpenaiMessages] = useState<IOpenAIMessages[]>([
+    { role: 'system', content: '' },
+  ])
   const [openaiResponse, setOpenaiResponse] = useState<IOpenAIStateWithIndex>({
     messages: [],
     index: uuid.v4().toString(),
   })
 
-  const router = useRouter()
   const [elapsedTime, setElapsedTime] = useState<number | null>(null)
 
   const { state, startRecognizing, stopRecognizing, destroyRecognizer } = useVoiceRecognition()
@@ -43,14 +44,11 @@ export const HomeScreen = () => {
   const isFirstRun = useRef(true)
 
   const toSpeech = async () => {
-    // if (openAiCompleted) {
-
-    // }
     console.log(openAiCompleted, 'l50')
     const startTime = Date.now()
     const text = openaiResponse.messages[openaiResponse.messages.length - 1].assistant
 
-    const uri = `https://withkimi-next.vercel.app/api/elevenlabs?text=${text}&voiceId=21m00Tcm4TlvDq8ikWAM`
+    const uri = `https://withkimi-next.vercel.app/api/elevenlabs?text=${text}&voiceId=OiPxMr8b7mL9wBqR0S9n`
     const soundObj = new Sound(uri, '', (error) => {
       if (error) {
         console.error('Error loading sound:', error)
@@ -91,6 +89,7 @@ export const HomeScreen = () => {
     }
   }, [input])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     console.log(openAiCompleted, 'l94')
     if (openAiCompleted) {
@@ -137,57 +136,58 @@ export const HomeScreen = () => {
       }))
 
       let localResponse = ''
-      const eventSourceArgs = {
-        body: {
+      console.log('Gonna send', messagesRequest)
+      const response = await fetch('https://withkimi-next.vercel.app/api/chat', {
+        method: 'POST',
+        body: JSON.stringify({
           messages: messagesRequest,
           model: chatType.label,
-        },
-        type: getChatType(chatType),
-      }
+        }),
+        reactNative: { textStreaming: true },
+      })
+
       setInput('')
-      const eventSource = getEventSource(eventSourceArgs)
+      setOpenAiCompleted(false)
 
-      console.log('about to open listener...')
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      const listener = (event: any) => {
-        if (event.type === 'open') {
-          setOpenAiCompleted(false)
-          setLastRes('')
-          // console.log(openAiCompleted, 'l150')
-          console.log('Open SSE connection.')
-        } else if (event.type === 'message') {
-          if (event.data !== '[DONE]') {
-            if (localResponse.length < 850) {
-              scrollViewRef.current?.scrollTo({
-                animated: true,
-              })
-            }
-            // if (!JSON.parse(event.data).content) return
-            localResponse = localResponse + JSON.parse(event.data).content
-            openaiArray[openaiArray.length - 1].assistant = localResponse
-            setOpenaiResponse((c) => ({
-              index: c.index,
-              messages: JSON.parse(JSON.stringify(openaiArray)),
-            }))
-          } else {
-            setOpenAiCompleted(true)
-            // console.log(openAiCompleted, 'l168')
-            setLastRes(localResponse)
-            eventSource.close()
-          }
-        } else if (event.type === 'error') {
-          console.error('Connection error:', event.message)
-
-          eventSource.close()
-        } else if (event.type === 'exception') {
-          console.error('Error:', event.message, event.error)
-
-          eventSource.close()
-        }
-      }
-      eventSource.addEventListener('open', listener)
-      eventSource.addEventListener('message', listener)
-      eventSource.addEventListener('error', listener)
+      // console.log(response.body)
+      const body: ReadableStream<Uint8Array> = ReadableStream.from(response.body)
+      // console.log(response)
+      const myStringDecoder = new TextDecoder()
+      body
+        .pipeThrough(
+          new TransformStream<Uint8Array, string>({
+            transform: (chunk, controller) => {
+              controller.enqueue(myStringDecoder.decode(chunk, { stream: true }))
+            },
+          })
+        )
+        .pipeThrough(new TextLineStream())
+        .pipeTo(
+          new WritableStream<string>({
+            write: (str: string) => {
+              const newStr = str.replace('\0', '')
+              console.log('newStr', newStr)
+              if (newStr === '{}') {
+                // one message done...
+                setOpenAiCompleted(true)
+                console.log("just setOpenAiCompleted to true, let's see what happens")
+                return
+              }
+              if (localResponse.length < 850) {
+                scrollViewRef.current?.scrollTo({
+                  animated: true,
+                })
+              }
+              console.log(JSON.parse(str))
+              localResponse = localResponse + JSON.parse(str).content
+              openaiArray[openaiArray.length - 1].assistant = localResponse
+              setOpenaiResponse((c) => ({
+                index: c.index,
+                messages: JSON.parse(JSON.stringify(openaiArray)),
+              }))
+            },
+          })
+        )
     } catch (err) {
       console.log('error in generateOpenaiResponse: ', err)
     }
@@ -223,7 +223,7 @@ export const HomeScreen = () => {
         </XStack>
 
         <YStack width="$20" pos="absolute" bottom="$20" left="$11" zIndex={1000} gap="$2">
-          {/* <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
+          <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Your message: {JSON.stringify(state, null, 2)}
           </Text>
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
@@ -231,7 +231,7 @@ export const HomeScreen = () => {
           </Text>
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Elapsed Time: {elapsedTime}ms
-          </Text> */}
+          </Text>
           <ScrollView style={{ height: 120, backgroundColor: 'rgba(252,251,251,0.72)' }}>
             {openaiResponse.messages.length === 0 ? (
               <Text fontSize="$4" padding="$3">
@@ -300,7 +300,6 @@ export const HomeScreen = () => {
     </YStack>
   )
 }
-
 const styles = StyleSheet.create({
   image: {
     flex: 1,

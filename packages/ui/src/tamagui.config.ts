@@ -32,7 +32,7 @@ export const config = createTamagui({
     backgroundColor: theme.color5,
     color: theme.color11,
   }),
-  onlyAllowShorthands: true,
+  onlyAllowShorthands: false,
   shorthands,
   fonts: {
     heading: headingFont,
