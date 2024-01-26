@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, View, Text, YStack, XStack, Avatar, ScrollView } from '@my/ui'
+import { Button, View, Text, YStack, XStack, Avatar, ScrollView, HoldToRecordButton } from '@my/ui'
 import { UserCircle2 } from '@tamagui/lucide-icons'
 import {
   getEventSource,
@@ -232,6 +232,21 @@ export const HomeScreen = () => {
               loop={false}
             />
           </Button>
+          <Button
+            borderWidth="$0"
+            variant="outlined"
+            padding="$0"
+            my="$5"
+            onPress={() => setIsLiked(!isLiked)}
+          >
+            <LottieView
+              ref={animation}
+              style={{ width: 75, height: 75, marginLeft: -10 }}
+              source={require('packages/app/assets/like-2.json')}
+              autoPlay={false}
+              loop={false}
+            />
+          </Button>
         </YStack>
         <WebView
           // position="absolute"
@@ -240,23 +255,31 @@ export const HomeScreen = () => {
           // incognito
         />
         <XStack jc="center" marginBottom={safeAreaInsets.bottom}>
-          <Button
-            width="$20"
-            height="$6"
-            borderRadius="$12"
-            backgroundColor="#A191DA"
-            onPressIn={() => {
-              startRecognizing()
-            }}
-            onPressOut={() => {
-              stopRecognizing()
-              handleSubmit()
-            }}
-          >
-            <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
-              Hold to Record
-            </Text>
-          </Button>
+          <XStack pos="absolute" b={0} w={500} h={150}>
+            <HoldToRecordButton
+              onPressIn={() => {
+                startRecognizing()
+              }}
+              onPressOut={() => {
+                stopRecognizing()
+                handleSubmit()
+              }}
+              pressed={
+                <LottieView
+                  autoPlay
+                  style={{
+                    width: 135,
+                    height: 200,
+                  }}
+                  source={require('../../assets/sound-wave.json')}
+                />
+              }
+            >
+              <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
+                Hold to Record
+              </Text>
+            </HoldToRecordButton>
+          </XStack>
         </XStack>
       </ImageBackground>
     </YStack>

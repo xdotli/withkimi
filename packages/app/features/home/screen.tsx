@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Text, YStack, XStack, Avatar, ScrollView } from '@my/ui'
+import { Button, Text, YStack, XStack, Avatar, ScrollView, HoldToRecordButton } from '@my/ui'
 import { getFirstNCharsOrLess, MODELS } from 'app/utils/chat'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
 import { prompts } from 'app/utils/llm/constants'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
-import { Audio } from 'expo-av'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
 import { ImageBackground, StyleSheet } from 'react-native'
@@ -273,24 +272,32 @@ export const HomeScreen = () => {
           // incognito
         />
         <XStack jc="center" marginBottom={safeAreaInsets.bottom}>
-          <Button
-            width="$20"
-            height="$6"
-            borderRadius="$12"
-            backgroundColor="#A191DA"
-            onPressIn={() => {
-              startRecognizing()
-            }}
-            onPressOut={() => {
-              stopRecognizing()
-              handleSubmit()
-              chat()
-            }}
-          >
-            <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
-              Hold to Record
-            </Text>
-          </Button>
+          <XStack pos="absolute" b={0} w={500} h={150}>
+            <HoldToRecordButton
+              onPressIn={() => {
+                startRecognizing()
+              }}
+              onPressOut={() => {
+                stopRecognizing()
+                handleSubmit()
+                chat()
+              }}
+              pressed={
+                <LottieView
+                  autoPlay
+                  style={{
+                    width: 135,
+                    height: 200,
+                  }}
+                  source={require('../../assets/sound-wave.json')}
+                />
+              }
+            >
+              <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
+                Hold to Record
+              </Text>
+            </HoldToRecordButton>
+          </XStack>
         </XStack>
       </ImageBackground>
     </YStack>
