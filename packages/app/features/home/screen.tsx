@@ -48,7 +48,7 @@ export const HomeScreen = () => {
     // const startTime = Date.now()
     const text = openaiResponse.messages[openaiResponse.messages.length - 1].assistant
 
-    const uri = `http://localhost:3000/api/elevenlabs?text=${text}&voiceId=Au3pA9ckLlUNxLbzZEfo`
+    const uri = `https://withkimi-next.vercel.app/api/elevenlabs?text=${text}&voiceId=OiPxMr8b7mL9wBqR0S9n`
     const soundObj = new Sound(uri, '', (error) => {
       if (error) {
         console.error('Error loading sound:', error)
