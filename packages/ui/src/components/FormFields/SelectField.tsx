@@ -28,9 +28,11 @@ type SelectItem = {
 export const SelectField = ({
   options,
   native = true,
+  triggerWidth = 100,
   ...props
 }: {
   options: SelectItem[]
+  triggerWidth?: number
 } & Pick<SelectProps, 'size' | 'native'>) => {
   const {
     field,
@@ -58,7 +60,7 @@ export const SelectField = ({
             onValueChange={field.onChange}
             {...props}
           >
-            <Select.Trigger width={180} iconAfter={ChevronDown}>
+            <Select.Trigger width={triggerWidth} iconAfter={ChevronDown}>
               <Select.Value placeholder="Something" />
             </Select.Trigger>
 

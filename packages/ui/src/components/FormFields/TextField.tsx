@@ -5,20 +5,25 @@ import { Fieldset, Input, InputProps, Label, Theme, useThemeName } from 'tamagui
 import { FieldError } from '../FieldError'
 import { Shake } from '../Shake'
 
-export const TextField = (props: Pick<InputProps, 'size' | 'autoFocus' | 'secureTextEntry'>) => {
+export const TextField = ({
+  textType = 'text',
+  ...props
+}: {
+  textType?: string
+} & Pick<InputProps, 'size' | 'autoFocus' | 'secureTextEntry'>) => {
   const {
     field,
     error,
     formState: { isSubmitting },
   } = useTsController<string>()
-  const { label, placeholder, isOptional, maxLength, isEmail } = useStringFieldInfo()
+  const { label, placeholder, isOptional, maxLength, minLength, isEmail } = useStringFieldInfo()
   const themeName = useThemeName()
   const id = useId()
   const disabled = isSubmitting
 
   return (
     <Theme name={error ? 'red' : themeName} forceClassName>
-      <Fieldset>
+      <Fieldset flex={1}>
         {!!label && (
           <Label theme="alt1" size={props.size || '$3'} htmlFor={id}>
             {label} {isOptional && `(Optional)`}
@@ -31,9 +36,16 @@ export const TextField = (props: Pick<InputProps, 'size' | 'autoFocus' | 'secure
             placeholderTextColor="$color10"
             spellCheck={isEmail ? false : undefined}
             autoCapitalize={isEmail ? 'none' : undefined}
-            keyboardType={isEmail ? 'email-address' : undefined}
+            keyboardType={
+              isEmail ? 'email-address' : textType === 'number' ? 'number-pad' : undefined
+            }
             value={field.value}
-            onChangeText={(text) => field.onChange(text)}
+            onChangeText={(text) => {
+              if (textType === 'number') {
+                text = text.replace(/[^0-9]/g, '')
+              }
+              field.onChange(text)
+            }}
             onBlur={field.onBlur}
             ref={field.ref}
             placeholder={placeholder}
@@ -41,7 +53,16 @@ export const TextField = (props: Pick<InputProps, 'size' | 'autoFocus' | 'secure
             {...props}
           />
         </Shake>
-        <FieldError message={error?.errorMessage} />
+        <FieldError
+          message={
+            error?.errorMessage.includes('at least')
+              ? `${
+                  field.name[0].toUpperCase() +
+                  (field.name.length > 1 && field.name.substring(1).toLowerCase())
+                } must be at least ${minLength} characters`
+              : error?.errorMessage
+          }
+        />
       </Fieldset>
     </Theme>
   )

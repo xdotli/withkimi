@@ -1,5 +1,5 @@
 import { HomeLayout } from 'app/features/home/layout.web'
-import { EditProfileScreen } from 'app/features/profile/edit-screen'
+// import { EditProfileScreen } from 'app/features/profile/edit-screen'
 import Head from 'next/head'
 import { userProtectedGetSSP } from 'utils/userProtected'
 
@@ -11,7 +11,7 @@ const Page: NextPageWithLayout = () => {
       <Head>
         <title>Edit Profile</title>
       </Head>
-      <EditProfileScreen />
+      {/* <EditProfileScreen /> */}
     </>
   )
 }

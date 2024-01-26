@@ -6,44 +6,33 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'solito/router'
 import { z } from 'zod'
 
-import { usePhone } from './onboard-hooks'
-
-const EnterOtpSchema = z.object({
-  otp: formFields.text.max(6).length(6),
+const EnterBirthdaySchema = z.object({
+  birthday: formFields.date,
 })
 
-export const EnterOtpScreen = () => {
+export const EnterBirthdayScreen = () => {
   const supabase = useSupabase()
   const router = useRouter()
-  const { phone } = usePhone()
-  console.log(phone)
 
-  const formVerifyOtp = useForm<z.infer<typeof EnterOtpSchema>>()
-
-  async function verifyOtp({ otp }: z.infer<typeof EnterOtpSchema>) {
-    if (!phone) {
-      return
-    }
-    const { error } = await supabase.auth.verifyOtp({ phone, token: otp, type: 'sms' })
+  const formBirthday = useForm<z.infer<typeof EnterBirthdaySchema>>()
+  const updateBirthday = async ({ birthday }: z.infer<typeof EnterBirthdaySchema>) => {
+    const { error, data } = await supabase.auth.getUser()
     if (error) {
-      const errorMessage = error?.message.toLowerCase()
-      if (errorMessage.includes('phone')) {
-        formVerifyOtp.setError('otp', { type: 'custom', message: errorMessage })
-      }
-      formVerifyOtp.setError('otp', { type: 'custom', message: errorMessage })
+      formBirthday.setError('birthday', { type: 'custom', message: error.message })
     } else {
-      router.push('/enter-name')
+      supabase.from('users').update({ birthday }).eq('id', data.user?.id)
+      router.push('/')
     }
   }
-
   return (
-    <FormProvider {...formVerifyOtp}>
+    <FormProvider {...formBirthday}>
       <SchemaForm
-        form={formVerifyOtp}
-        schema={EnterOtpSchema}
-        defaultValues={{ otp: '' }}
-        props={{ otp: { textType: 'number' } }}
-        onSubmit={verifyOtp}
+        form={formBirthday}
+        schema={EnterBirthdaySchema}
+        defaultValues={{ birthday: undefined }}
+        props={{
+        }}
+        onSubmit={updateBirthday}
         renderAfter={({ submit }) => {
           return (
             <>
@@ -63,18 +52,20 @@ export const EnterOtpScreen = () => {
                   height="$5"
                   width="$5"
                   onPress={() => {
-                    router.push('/enter-phone')
+                    router.back()
                   }}
                 />
               </XStack>
               <YStack ai="flex-start" jc="center">
-                <H2>Verification</H2>
-                <Paragraph color="#717171" my="$3" fontWeight="600">
-                  Please enter the verification code.
+                <H2>Birthday</H2>
+                <Paragraph color="#717171" mt="$3" fontWeight="600" mb={10}>
+                  When's your birthday?
                 </Paragraph>
               </YStack>
-
-              {Object.values(fields)}
+              <XStack>{Object.values(fields)}</XStack>
+              <Paragraph color="#a7a7a7" mt="$2" fontSize="$1">
+                You can always change this later in Profile Settings
+              </Paragraph>
             </YStack>
           </>
         )}

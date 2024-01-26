@@ -23283,6 +23283,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-date-picker@npm:^4.3.5":
+  version: 4.3.5
+  resolution: "react-native-date-picker@npm:4.3.5"
+  peerDependencies:
+    react: ">= 17.0.1"
+    react-native: ">= 0.64.3"
+  checksum: d758b2db1cb8185dd5f5dd4f3a914213719c1ea9245ed151b664354b809c0af496d0e0d25cd97b13d17724c3cfd1dff2714e36f94080c927e999197e1b3b5a44
+  languageName: node
+  linkType: hard
+
 "react-native-dotenv@npm:^3.4.8":
   version: 3.4.9
   resolution: "react-native-dotenv@npm:3.4.9"
@@ -28166,6 +28176,7 @@ __metadata:
     openai: "npm:^4.25.0"
     patch-package: "npm:^8.0.0"
     prettier: "npm:^2.7.1"
+    react-native-date-picker: "npm:^4.3.5"
     turbo: "npm:^1.10.14"
     typescript: "npm:^5.3.3"
   languageName: unknown

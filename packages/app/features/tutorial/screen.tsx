@@ -86,6 +86,14 @@ const SwipeVertical = () => {
   )
 }
 
+// const SwipeHorizontal = () => {
+//   return (
+//     <TutorialAnimationBase
+//       source={require('packages/app/assets/swipe-horizontal.json')}
+//       tutorialText="Swipe Left and Right to see different sections"
+//     />
+//   )
+// }
 const styles = StyleSheet.create({
   image: {
     flex: 1,

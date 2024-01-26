@@ -27,8 +27,8 @@ import { usePhone, useCountryCode } from './onboard-hooks'
 const items = [{ name: '+1' }, { name: '+86' }, { name: '+852' }]
 
 const EnterPhoneSchema = z.object({
-  phone: formFields.text.min(5).max(22),
   countryCode: formFields.select,
+  phone: formFields.text.min(5).max(22),
 })
 
 export const EnterPhoneScreen = () => {
@@ -49,6 +49,8 @@ export const EnterPhoneScreen = () => {
       const errorMessage = error?.message.toLowerCase()
       if (errorMessage.includes('phone')) {
         formSendCode.setError('phone', { type: 'custom', message: errorMessage })
+      } else {
+        formSendCode.setError('phone', { type: 'custom', message: 'Invalid Phone Number' })
       }
     } else {
       router.push({ pathname: '/enter-otp', query: { phone: phoneWithCountryCode } })
@@ -93,18 +95,17 @@ export const EnterPhoneScreen = () => {
                   height="$5"
                   width="$5"
                   onPress={() => {
-                    router.push('/onboarding')
+                    router.back()
                   }}
                 />
               </XStack>
               <YStack ai="flex-start" jc="center">
                 <H2>Log In</H2>
-                <Paragraph color="#717171" mt="$3" fontWeight="600">
+                <Paragraph color="#717171" mt="$3" fontWeight="600" mb={10}>
                   Enter your phone number to start
                 </Paragraph>
               </YStack>
-              <SelectDemo />
-              {Object.values(fields)}
+              <XStack width="100%">{Object.values(fields)}</XStack>
             </YStack>
           </>
         )}

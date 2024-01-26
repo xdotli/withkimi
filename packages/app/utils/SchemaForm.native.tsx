@@ -23,6 +23,7 @@ import {
 } from '@my/ui'
 import { Star } from '@tamagui/lucide-icons'
 import { createTsForm, createUniqueFieldSchema } from '@ts-react/form'
+import { DateField } from 'app/features/auth/components/DateField.native'
 import React, { ComponentProps } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
@@ -124,6 +125,7 @@ const mapping = [
   [formFields.select, SelectField] as const,
   [formFields.address, AddressField] as const,
   [formFields.rating, RatingField] as const,
+  [formFields.date, DateField] as const,
 ] as const
 
 const FormComponent = (props: FormProps) => {
