@@ -1,6 +1,7 @@
 import { isWeb } from '@my/ui'
 
 import { replaceLocalhost } from './getLocalhost.native'
+import { URL } from '../constants/env'
 
 export const DOMAIN = getBaseUrl()
 
@@ -10,9 +11,9 @@ export function _getBaseUrl() {
     return ''
   }
 
-  if (process.env.EXPO_PUBLIC_URL) {
+  if (URL) {
     // overwrites the rest - set this on your native app deployment
-    return `${process.env.EXPO_PUBLIC_URL}`
+    return `${URL}`
   }
 
   if (process.env.VERCEL_URL) {

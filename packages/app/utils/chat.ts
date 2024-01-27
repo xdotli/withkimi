@@ -1,14 +1,13 @@
 import { SetStateAction, Dispatch } from 'react'
 import EventSource from 'react-native-sse'
 
+import { URL } from '../constants/env'
+
 export const runtime = 'nodejs'
 // This is required to enable streaming
 export const dynamic = 'force-dynamic'
 
-export const DOMAIN =
-  process.env.EXPO_PUBLIC_ENV === 'DEVELOPMENT'
-    ? process.env.EXPO_PUBLIC_URL
-    : process.env.EXPO_PUBLIC_URL
+export const DOMAIN = process.env.EXPO_PUBLIC_ENV === 'DEVELOPMENT' ? URL : URL
 
 export const MODELS = {
   gpt: { name: 'GPT 4', label: 'gpt' },

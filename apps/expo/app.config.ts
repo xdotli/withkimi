@@ -78,6 +78,9 @@ export default (_: ConfigContext): ExpoConfig => {
       OIA_HOST: config.oiaHost,
       NAKED_OIA_HOST: config.nakedOIAHost,
       ENV: environment,
+      URL: config.url,
+      SUPABASE_URL: config.supabaseUrl,
+      SUPABASE_ANON_KEY: config.supabaseAnonKey,
       eas: {
         projectId: process.env.EXPO_PROJECT_ID,
       },

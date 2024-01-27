@@ -4,6 +4,7 @@ import * as WebBrowser from 'expo-web-browser'
 import { useRouter } from 'solito/router'
 
 import { IconGoogle } from './IconGoogle'
+import { SUPABASE_URL } from '../../../constants/env'
 
 export function GoogleSignIn() {
   const supabase = useSupabase()
@@ -39,7 +40,7 @@ export function GoogleSignIn() {
       const redirectUri = 'myapp://'
       const provider = 'google'
       const response = await WebBrowser.openAuthSessionAsync(
-        `${process.env.EXPO_PUBLIC_SUPABASE_URL}/auth/v1/authorize?${new URLSearchParams({
+        `${SUPABASE_URL}/auth/v1/authorize?${new URLSearchParams({
           provider,
           redirect_to: redirectUri,
         })}`,

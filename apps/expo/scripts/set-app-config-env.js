@@ -23,6 +23,9 @@ function setAppConfigEnv() {
     NAKED_OIA_HOST: str(),
     OIA_HOST: str(),
     SLUG: str(),
+    SUPABASE_URL: str(),
+    SUPABASE_ANON_KEY: str(),
+    URL: str(),
   }
 
   const env = cleanEnv(process.env, validators)
@@ -33,6 +36,12 @@ function setAppConfigEnv() {
   const APP_HOST = env.APP_HOST
   const NAKED_OIA_HOST = env.NAKED_OIA_HOST
   const OIA_HOST = env.OIA_HOST
+
+  const baseConfig = {
+    url: env.SUPABASE_URL,
+    supabaseUrl: env.SUPABASE_URL,
+    supabaseAnonKey: env.SUPABASE_ANON_KEY,
+  }
 
   const envConfig = {
     development: {
@@ -83,7 +92,10 @@ function setAppConfigEnv() {
 
   return {
     version,
-    appConfig: envConfig[ENV],
+    appConfig: {
+      ...envConfig[ENV],
+      ...baseConfig,
+    },
     decreasedVersion: decrementVersion(version),
     environment: ENV,
     IS_DEV: ENV === 'development',
