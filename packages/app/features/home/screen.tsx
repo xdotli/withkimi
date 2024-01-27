@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Text, YStack, XStack, Avatar, ScrollView, HoldToRecordButton } from '@my/ui'
+import { UserCircle2, Volume2, VolumeX } from '@tamagui/lucide-icons'
 import { getFirstNCharsOrLess, MODELS } from 'app/utils/chat'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
 import { prompts } from 'app/utils/llm/constants'
@@ -7,20 +8,28 @@ import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
-import { ImageBackground, StyleSheet } from 'react-native'
-// @ts-ignore
+import { ImageBackground, StyleSheet, TouchableOpacity } from 'react-native'
 import { fetch } from 'react-native-fetch-api'
+// @ts-ignore
 import Sound from 'react-native-sound'
 import uuid from 'react-native-uuid'
 import { WebView } from 'react-native-webview'
+import { useRouter } from 'solito/router'
 import { WritableStream, ReadableStream, TransformStream } from 'web-streams-polyfill/ponyfill'
 
 import { TextLineStream } from './_lineSplitter'
+import { BottomSheet } from './bottom-sheet'
 import { DropdownMenuExample } from './menu'
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
   const [isLiked, setIsLiked] = useState(false)
+  const router = useRouter()
+  const [sheetOpen, setSheetOpen] = useState(false)
+
+  // background music
+  const [bgm, setBgm] = useState<Sound | null>(null)
+  const [bgmPause, setBgmPause] = useState<boolean>(false)
 
   const chatType = MODELS.gptTurbo
 
@@ -203,6 +212,67 @@ export const HomeScreen = () => {
     }
   }, [isLiked])
 
+  // Play bgm music and welcome music automatically once the user enter the main page
+  useEffect(() => {
+    // Load the background music
+    const bgmUri = require('packages/app/assets/background-music.mp3')
+    const bgmSound = new Sound(bgmUri, (error) => {
+      if (error) {
+        console.log('Failed to load bgmSound', error)
+        return
+      }
+      // bgmSound is loaded
+      setBgm(bgmSound)
+      // loaded successfully
+      bgmSound.setVolume(0.1) // decrease the volume
+      bgmSound.setNumberOfLoops(-1) // loop the music infinitely
+
+      bgmSound.play((success) => {
+        if (success) {
+          console.log('Successfully finished playing bgmSound')
+        } else {
+          console.log('Failed to play bgmSound')
+        }
+      })
+    })
+
+    const welcomeUri = require('packages/app/assets/welcome-to-the-kimi-world.mp3')
+    const welcomeSound = new Sound(welcomeUri, (error) => {
+      if (error) {
+        console.log('Failed to load welcomeSound', error)
+        return
+      }
+      // welcomeSound is loaded
+      // loaded successfully
+      welcomeSound.setVolume(1)
+
+      welcomeSound.play((success) => {
+        if (success) {
+          console.log('Successfully finished playing welcomeSound')
+        } else {
+          console.log('Failed to play welcomeSound')
+        }
+      })
+    })
+
+    // Clean up when the component unmounts
+    return () => {
+      bgmSound.release()
+      welcomeSound.release()
+    }
+  }, [])
+
+  function pauseBgm() {
+    if (bgmPause) {
+      bgm?.play()
+    } else {
+      bgm?.pause()
+    }
+    setBgmPause((prvPause) => {
+      return !prvPause
+    })
+  }
+
   return (
     <YStack
       style={{
@@ -214,7 +284,15 @@ export const HomeScreen = () => {
       <ImageBackground source={require('packages/app/assets/bg.png')} style={{ ...styles.image }}>
         <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
           <DropdownMenuExample />
-          <Button>Profile</Button>
+          {/* <Button>Profile</Button> */}
+          <TouchableOpacity
+            style={{ right: 10 }}
+            onPress={() => {
+              router.push('/settings/profile-setting')
+            }}
+          >
+            <UserCircle2 size={38} color="white" />
+          </TouchableOpacity>
         </XStack>
 
         <YStack width="$20" pos="absolute" bottom="$20" left="$11" zIndex={1000} gap="$2">
@@ -241,7 +319,13 @@ export const HomeScreen = () => {
         </YStack>
 
         <YStack pos="absolute" top="$34" right="$2" zIndex={1000}>
-          <Avatar circular size={50} borderColor="white" borderWidth={2}>
+          <Avatar
+            circular
+            size={50}
+            borderColor="white"
+            borderWidth={2}
+            onPress={() => setSheetOpen(true)}
+          >
             <Avatar.Image
               resizeMode="contain"
               width={48}
@@ -264,6 +348,29 @@ export const HomeScreen = () => {
               loop={false}
             />
           </Button>
+          <Button
+            borderWidth="$0"
+            variant="outlined"
+            padding="$0"
+            my="$5"
+            backgroundColor="transparent"
+            icon={
+              bgmPause ? (
+                <VolumeX
+                  color="white"
+                  size="$4"
+                  style={{ width: 75, height: 75, marginLeft: -10 }}
+                />
+              ) : (
+                <Volume2
+                  color="white"
+                  size="$4"
+                  style={{ width: 75, height: 75, marginLeft: -10 }}
+                />
+              )
+            }
+            onPress={pauseBgm}
+          />
         </YStack>
         <WebView
           // position="absolute"
@@ -300,6 +407,7 @@ export const HomeScreen = () => {
           </XStack>
         </XStack>
       </ImageBackground>
+      <BottomSheet open={sheetOpen} setOpen={setSheetOpen} />
     </YStack>
   )
 }
