@@ -13,8 +13,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       similarity_boost: 0.5,
       stability: 0.5,
     },
-    model_id: 'eleven_multilingual_v2',
+    model_id: 'eleven_turbo_v2',
     output_format: 'mp3_44100_192',
+    optimize_streaming_latency: 3,
   })
   for await (const chunk of stream) {
     res.write(chunk)
