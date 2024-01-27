@@ -1,5 +1,7 @@
 ⚠️️ **Please note**: Takeout is closed source for now. We've had a number of people create public repos on accident. Please be careful to keep the source private as per the license.
 
+trigger publish
+
 # Tamagui's Takeout Starter
 
 A good tutorial showing building a real app using Tamagui Takeout can be seen on the [notjust.dev YouTube stream](https://www.youtube.com/watch?v=XbKkKXH-dfc).
@@ -18,7 +20,7 @@ the `yarn create tamagui --template takeout-starter` command has a requirement o
 
 1. [gh install](https://cli.github.com/)
 1. `gh auth login`
-1. select ` https` from the menu
+1. select `https` from the menu
 1. authenticate
 
 Otherwise, ignore this section. If you're getting authentication issues with `yarn create tamagui`, clone the template (using `gh` or just `git`), cd into the project and run `yarn install`, and then `yarn setup`.
@@ -287,11 +289,13 @@ You may potentially want to have the native module transpiled for the next app. 
 - Root: `apps/next`
 - Install command to be `yarn set version 3.6 && yarn install` in `vercel.json`.
   Note: currently there's a bug where `takeout` Vercel builds break using `yarn 4`
+
   ```json
   {
     "installCommand": "yarn set version 3.6 && yarn install"
   }
   ```
+
 - Build command: leave default setting
 - Output dir: leave default setting
 
