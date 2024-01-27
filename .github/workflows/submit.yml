@@ -9,13 +9,14 @@ on:
       - packages/**
     inputs:
       platform:
-        description: "Platform to submit (ios or android)"
+        description: 'Platform to submit (ios or android)'
         required: true
 
 jobs:
   update:
     name: Submit
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Verify input
         run: |

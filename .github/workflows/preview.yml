@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: "Release type"
+        description: 'Release type'
         required: true
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
@@ -13,6 +13,7 @@ jobs:
   preview:
     name: Preview
     runs-on: macos-latest
+    timeout-minutes: 30
     permissions:
       pull-requests: write
       contents: write

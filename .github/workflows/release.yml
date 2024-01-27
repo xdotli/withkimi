@@ -14,6 +14,7 @@ jobs:
   release:
     name: Release
     runs-on: macos-latest
+    timeout-minutes: 30
     permissions:
       pull-requests: write
       contents: write
@@ -54,10 +55,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: changesets/action@v1
         with:
-          title: "chore: update versions from v${{ steps.release-type.outputs.oldVersion }} to v${{ steps.release-type.outputs.newVersion }}"
+          title: 'chore: update versions from v${{ steps.release-type.outputs.oldVersion }} to v${{ steps.release-type.outputs.newVersion }}'
           version: yarn run release:version
           publish: yarn run release:publish
-          commit: "chore: update versions [${{ steps.release-type.outputs.newVersion }}]"
+          commit: 'chore: update versions [${{ steps.release-type.outputs.newVersion }}]'
 
       - name: Trigger Publish Preview workflow
         if: steps.release-type.outputs.type != ''
