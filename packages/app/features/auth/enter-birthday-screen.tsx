@@ -20,8 +20,7 @@ export const EnterBirthdayScreen = () => {
     if (error) {
       formBirthday.setError('birthday', { type: 'custom', message: error.message })
     } else {
-      const { error } = await supabase.from('profiles').update({ birthday }).eq('id', data.user?.id)
-      console.log(error);
+      supabase.from('profiles').update({ birthday }).eq('id', data.user?.id)
       router.push('/')
     }
   }

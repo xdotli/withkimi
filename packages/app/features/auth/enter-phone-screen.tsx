@@ -52,7 +52,6 @@ export const EnterPhoneScreen = () => {
 
   async function sendCode({ phone, countryCode }: z.infer<typeof EnterPhoneSchema>) {
     countryCode = countryCode.substring(countryCode.indexOf('+'))
-    console.log(countryCode)
     setCountryCode(countryCode)
     const phoneWithCountryCode = `${countryCode}${phone}`
     setPhone(phoneWithCountryCode)

@@ -16,7 +16,6 @@ export const EnterOtpScreen = () => {
   const supabase = useSupabase()
   const router = useRouter()
   const { phone } = usePhone()
-  console.log(phone)
 
   const formVerifyOtp = useForm<z.infer<typeof EnterOtpSchema>>()
 

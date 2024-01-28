@@ -32,11 +32,10 @@ export const EnterPronounScreen = () => {
     if (error) {
       formPronoun.setError('pronoun', { type: 'custom', message: error.message })
     } else {
-      const { error } = await supabase
+      supabase
         .from('profiles')
         .update({ pronoun: pronoun === 'null' ? null : pronoun })
         .eq('id', data.user?.id)
-      console.log(error)
       router.push('/enter-birthday')
     }
   }

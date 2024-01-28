@@ -20,8 +20,7 @@ export const EnterNameScreen = () => {
     if (error) {
       formName.setError('name', { type: 'custom', message: error.message })
     } else {
-      const { error } = await supabase.from('profiles').update({ name }).eq('id', data.user?.id)
-      console.log(error)
+      supabase.from('profiles').update({ name }).eq('id', data.user?.id)
       router.push('/enter-pronoun')
     }
   }

@@ -67,7 +67,7 @@ export const SelectField = ({
           >
             <Select.Trigger width={triggerWidth} iconAfter={ChevronDown}>
               <Select.Value placeholder={placeholder}>
-                {triggerDisplay === 'value' ? field.value : field.name}
+                {triggerDisplay === 'value' ? field.value : null}
               </Select.Value>
             </Select.Trigger>
 
