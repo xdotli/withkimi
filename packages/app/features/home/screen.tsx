@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Text, YStack, XStack, Avatar, ScrollView, HoldToRecordButton } from '@my/ui'
-import { UserCircle2, Volume2, VolumeX } from '@tamagui/lucide-icons'
+import { UserCircle2, Volume2, VolumeX, FileClock } from '@tamagui/lucide-icons'
 import { getFirstNCharsOrLess, MODELS } from 'app/utils/chat'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
 import { prompts } from 'app/utils/llm/constants'
@@ -348,6 +348,17 @@ export const HomeScreen = () => {
               loop={false}
             />
           </Button>
+          <Button
+            borderWidth="$0"
+            variant="outlined"
+            padding="$0"
+            my="$5"
+            backgroundColor="transparent"
+            icon={<FileClock color="white" size="$4" style={{ width: 75, height: 75, marginLeft: -10 }}/>}
+            onPress={() => {
+              router.push('/history')
+            }}
+          />
           <Button
             borderWidth="$0"
             variant="outlined"
