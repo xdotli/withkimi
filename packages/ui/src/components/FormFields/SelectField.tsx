@@ -21,18 +21,23 @@ import { FieldError } from '../FieldError'
 import { Shake } from '../Shake'
 
 type SelectItem = {
+  triggerName?: string
   value: string
   name: string
 }
 
 export const SelectField = ({
   options,
+  triggerDisplay = 'name',
+  placeholder = 'Something',
   native = true,
   triggerWidth = 100,
   ...props
 }: {
+  triggerDisplay?: 'name' | 'value'
+  placeholder?: string
   options: SelectItem[]
-  triggerWidth?: number
+  triggerWidth?: any
 } & Pick<SelectProps, 'size' | 'native'>) => {
   const {
     field,
@@ -61,7 +66,9 @@ export const SelectField = ({
             {...props}
           >
             <Select.Trigger width={triggerWidth} iconAfter={ChevronDown}>
-              <Select.Value placeholder="Something" />
+              <Select.Value placeholder={placeholder}>
+                {triggerDisplay === 'value' ? field.value : field.name}
+              </Select.Value>
             </Select.Trigger>
 
             <Adapt when="sm" platform="touch">

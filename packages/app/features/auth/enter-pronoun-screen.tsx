@@ -1,38 +1,60 @@
 import { Button, YStack, XStack, H2, Text, SubmitButton, Paragraph } from '@my/ui'
 import { Back } from '@my/ui/src/icons/back'
-import { SchemaForm, formFields } from 'app/utils/SchemaForm'
+import { SchemaForm, formFields } from 'app/utils/SchemaForm.native'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'solito/router'
 import { z } from 'zod'
 
-const EnterBirthdaySchema = z.object({
-  birthday: formFields.date,
+const pronouns = [
+  { name: 'He / Him', value: 'he' },
+  { name: 'She / Her', value: 'she' },
+  { name: 'They / Them', value: 'they' },
+  { name: 'Other', value: 'other' },
+  { name: 'Prefer not to say', value: 'null' },
+]
+
+const EnterPronounSchema = z.object({
+  pronoun: formFields.select,
 })
 
-export const EnterBirthdayScreen = () => {
+export const EnterPronounScreen = () => {
   const supabase = useSupabase()
   const router = useRouter()
 
-  const formBirthday = useForm<z.infer<typeof EnterBirthdaySchema>>()
-  const updateBirthday = async ({ birthday }: z.infer<typeof EnterBirthdaySchema>) => {
+  const formPronoun = useForm<z.infer<typeof EnterPronounSchema>>()
+  const updatePronoun = async ({ pronoun }: z.infer<typeof EnterPronounSchema>) => {
+    if (!pronoun) {
+      formPronoun.setError('pronoun', { type: 'custom', message: 'Please select your pronoun' })
+      return
+    }
     const { error, data } = await supabase.auth.getUser()
     if (error) {
-      formBirthday.setError('birthday', { type: 'custom', message: error.message })
+      formPronoun.setError('pronoun', { type: 'custom', message: error.message })
     } else {
-      const { error } = await supabase.from('profiles').update({ birthday }).eq('id', data.user?.id)
-      console.log(error);
-      router.push('/')
+      const { error } = await supabase
+        .from('profiles')
+        .update({ pronoun: pronoun === 'null' ? null : pronoun })
+        .eq('id', data.user?.id)
+      console.log(error)
+      router.push('/enter-birthday')
     }
   }
   return (
-    <FormProvider {...formBirthday}>
+    <FormProvider {...formPronoun}>
       <SchemaForm
-        form={formBirthday}
-        schema={EnterBirthdaySchema}
-        defaultValues={{ birthday: undefined }}
-        props={{}}
-        onSubmit={updateBirthday}
+        form={formPronoun}
+        schema={EnterPronounSchema}
+        defaultValues={{ pronoun: undefined }}
+        props={{
+          pronoun: {
+            options: pronouns.map(({ name, value }) => ({ name, value })),
+            native: false,
+            triggerWidth: 335,
+            placeholder: 'Select your pronoun',
+          },
+        }}
+        onSubmit={updatePronoun}
         renderAfter={({ submit }) => {
           return (
             <>
@@ -57,15 +79,12 @@ export const EnterBirthdayScreen = () => {
                 />
               </XStack>
               <YStack ai="flex-start" jc="center">
-                <H2>Birthday</H2>
+                <H2>Pronoun</H2>
                 <Paragraph color="#717171" mt="$3" fontWeight="600" mb={10}>
-                  When's your birthday?
+                  What's your pronoun?
                 </Paragraph>
               </YStack>
               <XStack>{Object.values(fields)}</XStack>
-              <Paragraph color="#a7a7a7" mt="$2" fontSize="$1">
-                You can always change this later in Profile Settings
-              </Paragraph>
             </YStack>
           </>
         )}

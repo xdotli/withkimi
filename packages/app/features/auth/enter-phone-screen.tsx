@@ -1,30 +1,41 @@
-import {
-  Button,
-  YStack,
-  XStack,
-  H2,
-  Text,
-  SubmitButton,
-  Paragraph,
-  Select,
-  Adapt,
-  FontSizeTokens,
-  Sheet,
-  getFontSize,
-} from '@my/ui'
+import { Button, YStack, XStack, H2, Text, SubmitButton, Paragraph } from '@my/ui'
 import { Back } from '@my/ui/src/icons/back'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
-import { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'solito/router'
-import { LinearGradient } from 'tamagui/linear-gradient'
 import { z } from 'zod'
 
 import { usePhone, useCountryCode } from './onboard-hooks'
 
-const items = [{ name: '+1' }, { name: '+86' }, { name: '+852' }]
+type phoneCodeInfo = {
+  name: string
+  flag: string
+  country: string
+}
+
+const items: phoneCodeInfo[] = [
+  { name: '+1', flag: '🇺🇸', country: 'United States' },
+  { name: '+61', flag: '🇦🇺', country: 'Australia' },
+  { name: '+1', flag: '🇨🇦', country: 'Canada' },
+  { name: '+86', flag: '🇨🇳', country: 'China' },
+  { name: '+62', flag: '🇮🇩', country: 'Indonesia' },
+  { name: '+81', flag: '🇯🇵', country: 'Japan' },
+  { name: '+60', flag: '🇲🇾', country: 'Malaysia' },
+  { name: '+52', flag: '🇲🇽', country: 'Mexico' },
+  { name: '+7', flag: '🇷🇺', country: 'Russia' },
+  { name: '+65', flag: '🇸🇬', country: 'Singapore' },
+  { name: '+886', flag: '🇹🇼', country: 'Taiwan' },
+  { name: '+44', flag: '🇬🇧', country: 'United Kingdom' },
+]
+
+const getValue = (item: phoneCodeInfo) => {
+  return `${item.flag} ${item.name}`
+}
+
+const getName = (item: phoneCodeInfo) => {
+  return `${item.flag} ${item.country} (${item.name})`
+}
 
 const EnterPhoneSchema = z.object({
   countryCode: formFields.select,
@@ -40,6 +51,8 @@ export const EnterPhoneScreen = () => {
   const formSendCode = useForm<z.infer<typeof EnterPhoneSchema>>()
 
   async function sendCode({ phone, countryCode }: z.infer<typeof EnterPhoneSchema>) {
+    countryCode = countryCode.substring(countryCode.indexOf('+'))
+    console.log(countryCode)
     setCountryCode(countryCode)
     const phoneWithCountryCode = `${countryCode}${phone}`
     setPhone(phoneWithCountryCode)
@@ -62,16 +75,18 @@ export const EnterPhoneScreen = () => {
       <SchemaForm
         form={formSendCode}
         schema={EnterPhoneSchema}
-        defaultValues={{ phone: '', countryCode: '+1' }}
+        defaultValues={{ phone: '', countryCode: getValue(items[0]) }}
         onSubmit={sendCode}
         props={
           {
-            phone: {},
+            phone: { textType: 'number' },
             countryCode: {
               options: items.map((item) => ({
-                name: item.name,
-                value: item.name.toLowerCase(),
+                name: getName(item),
+                value: getValue(item),
               })),
+              triggerDisplay: 'value',
+              triggerWidth: 120,
               native: true,
             },
           } as const
@@ -111,138 +126,5 @@ export const EnterPhoneScreen = () => {
         )}
       </SchemaForm>
     </FormProvider>
-  )
-}
-
-export function SelectDemo() {
-  return (
-    // <YStack space>
-    //   <XStack ai="center" space width="$8">
-    //     <SelectDemoItem />
-    //   </XStack>
-    // </YStack>
-    // <XStack ai="center" space width="$8">
-    //   <SelectDemoItem />
-    // </XStack>
-    <></>
-  )
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export function SelectDemoItem(props: any) {
-  const [val, setVal] = useState('apple')
-  return (
-    <Select id="food" value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
-      <Select.Trigger width={220} iconAfter={ChevronDown}>
-        <Select.Value placeholder="Something" />
-      </Select.Trigger>
-      <Adapt when="sm" platform="touch">
-        <Sheet
-          native={!!props.native}
-          modal
-          dismissOnSnapToBottom
-          animationConfig={{
-            type: 'direct',
-          }}
-        >
-          <Sheet.Frame>
-            <Sheet.ScrollView>
-              <Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-
-          <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
-        </Sheet>
-      </Adapt>
-      <Select.Content zIndex={200000}>
-        <Select.ScrollUpButton
-          alignItems="center"
-          justifyContent="center"
-          position="relative"
-          width="100%"
-          height="$3"
-        >
-          <YStack zIndex={10}>
-            <ChevronUp size={20} />
-          </YStack>
-
-          <LinearGradient
-            start={[0, 0]}
-            end={[0, 1]}
-            fullscreen
-            colors={['$background', 'transparent']}
-            borderRadius="$4"
-          />
-        </Select.ScrollUpButton>
-        <Select.Viewport
-          // to do animations:
-          // animation="quick"
-          // animateOnly={['transform', 'opacity']}
-          // enterStyle={{ o: 0, y: -10 }}
-          // exitStyle={{ o: 0, y: 10 }}
-          minWidth={200}
-        >
-          <Select.Group>
-            <Select.Label>Country</Select.Label>
-
-            {/* for longer lists memoizing these is useful */}
-
-            {/* biome-ignore lint/correctness/useExhaustiveDependencies: <explanation> */}
-            {useMemo(
-              () =>
-                items.map((item, i) => {
-                  return (
-                    <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
-                      <Select.ItemText>{item.name}</Select.ItemText>
-
-                      <Select.ItemIndicator marginLeft="auto">
-                        <Check size={16} />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                  )
-                }),
-
-              [items]
-            )}
-          </Select.Group>
-
-          {/* Native gets an extra icon */}
-
-          {props.native && (
-            <YStack
-              position="absolute"
-              right={0}
-              top={0}
-              bottom={0}
-              alignItems="center"
-              justifyContent="center"
-              width="$4"
-              pointerEvents="none"
-            >
-              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? '$true')} />
-            </YStack>
-          )}
-        </Select.Viewport>
-        <Select.ScrollDownButton
-          alignItems="center"
-          justifyContent="center"
-          position="relative"
-          width="100%"
-          height="$3"
-        >
-          <YStack zIndex={10}>
-            <ChevronDown size={20} />
-          </YStack>
-
-          <LinearGradient
-            start={[0, 0]}
-            end={[0, 1]}
-            fullscreen
-            colors={['transparent', '$background']}
-            borderRadius="$4"
-          />
-        </Select.ScrollDownButton>
-      </Select.Content>
-    </Select>
   )
 }
