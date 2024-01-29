@@ -1,7 +1,7 @@
-import { ChatHistoryScreen } from 'app/features/home/chat-history-screen'
+// import { ChatHistoryScreen } from 'app/features/home/chat-history-screen'
 import Head from 'next/head'
-import { userProtectedGetSSP } from 'utils/userProtected'
 import { NextPageWithLayout } from 'pages/_app'
+import { userProtectedGetSSP } from 'utils/userProtected'
 
 export const Page: NextPageWithLayout = () => {
   return (
@@ -9,12 +9,12 @@ export const Page: NextPageWithLayout = () => {
       <Head>
         <title>Chat History</title>
       </Head>
-      <ChatHistoryScreen />
+      {/* <ChatHistoryScreen /> */}
     </>
   )
 }
 
-// 
+//
 // Page.getLayout = (page) => <YourLayout>{page}</YourLayout>
 
 export const getServerSideProps = userProtectedGetSSP()
