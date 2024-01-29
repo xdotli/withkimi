@@ -20,6 +20,8 @@ import { WritableStream, ReadableStream, TransformStream } from 'web-streams-pol
 import { TextLineStream } from './_lineSplitter'
 import { BottomSheet } from './bottom-sheet'
 import { DropdownMenuExample } from './menu'
+import BgmService from './bgm'
+import { Audio } from 'expo-av'
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
@@ -28,8 +30,8 @@ export const HomeScreen = () => {
   const [sheetOpen, setSheetOpen] = useState(false)
 
   // background music
-  const [bgm, setBgm] = useState<Sound | null>(null)
   const [bgmPause, setBgmPause] = useState<boolean>(false)
+  const bgmService = BgmService.getInstance()
 
   const chatType = MODELS.gptTurbo
 
@@ -214,59 +216,50 @@ export const HomeScreen = () => {
 
   // Play bgm music and welcome music automatically once the user enter the main page
   useEffect(() => {
-    // Load the background music
-    const bgmUri = require('packages/app/assets/background-music.mp3')
-    const bgmSound = new Sound(bgmUri, (error) => {
-      if (error) {
-        console.log('Failed to load bgmSound', error)
-        return
-      }
-      // bgmSound is loaded
-      setBgm(bgmSound)
-      // loaded successfully
-      bgmSound.setVolume(0.1) // decrease the volume
-      bgmSound.setNumberOfLoops(-1) // loop the music infinitely
+    // Load the welcome music
+    let welcomeSound = new Audio.Sound()
 
-      bgmSound.play((success) => {
-        if (success) {
-          console.log('Successfully finished playing bgmSound')
-        } else {
-          console.log('Failed to play bgmSound')
-        }
-      })
-    })
-
-    const welcomeUri = require('packages/app/assets/welcome-to-the-kimi-world.mp3')
-    const welcomeSound = new Sound(welcomeUri, (error) => {
-      if (error) {
+    const loadWelcome = async () => {
+      try {
+        welcomeSound = new Audio.Sound()
+        await welcomeSound.loadAsync(require('packages/app/assets/welcome-to-the-kimi-world.mp3'))
+      } catch (error) {
         console.log('Failed to load welcomeSound', error)
-        return
       }
-      // welcomeSound is loaded
-      // loaded successfully
-      welcomeSound.setVolume(1)
+      console.log("LOAD welcome")
+    }
 
-      welcomeSound.play((success) => {
-        if (success) {
-          console.log('Successfully finished playing welcomeSound')
-        } else {
-          console.log('Failed to play welcomeSound')
-        }
-      })
-    })
+    // Load the background music
+    const loadBgm = async () => {
+      try {
+        await bgmService.loadBgm()
+        // bgmService.playBgm()
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    }
+
+    loadWelcome()
+    loadBgm()
+
+    const timerId = setTimeout(() => {
+      welcomeSound.playAsync()
+      bgmService.playBgm()
+    }, 2000)
 
     // Clean up when the component unmounts
     return () => {
-      bgmSound.release()
-      welcomeSound.release()
+      clearTimeout(timerId)
+      bgmService.pauseBgm()
+      welcomeSound.unloadAsync()
     }
   }, [])
 
   function pauseBgm() {
     if (bgmPause) {
-      bgm?.play()
+      bgmService.playBgm()
     } else {
-      bgm?.pause()
+      bgmService.pauseBgm()
     }
     setBgmPause((prvPause) => {
       return !prvPause
