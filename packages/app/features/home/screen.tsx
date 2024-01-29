@@ -301,8 +301,8 @@ export const HomeScreen = () => {
           </Text>
           <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Your message: {!state.isRecording ? state.results[0] : 'Recording...'}
-          </Text>
-          <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
+          </Text> */}
+          {/* <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
             Elapsed Time: {elapsedTime}ms
           </Text> */}
           <ScrollView style={{ height: 120, backgroundColor: 'rgba(252,251,251,0.72)' }}>
@@ -354,7 +354,13 @@ export const HomeScreen = () => {
             padding="$0"
             my="$5"
             backgroundColor="transparent"
-            icon={<FileClock color="white" size="$4" style={{ width: 75, height: 75, marginLeft: -10 }}/>}
+            icon={
+              <FileClock
+                color="white"
+                size="$4"
+                style={{ width: 75, height: 75, marginLeft: -10 }}
+              />
+            }
             onPress={() => {
               router.push('/history')
             }}
