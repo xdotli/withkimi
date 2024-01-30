@@ -33,6 +33,12 @@ export const HomeScreen = () => {
   const [bgmPause, setBgmPause] = useState<boolean>(false)
   const bgmService = BgmService.getInstance()
 
+  // webview ref
+  const webViewRef = useRef(null)
+
+  // the state of Nekomi speaking
+  const [isSoundPlaying, setIsSoundPlaying] = useState(false);
+
   const chatType = MODELS.gptTurbo
 
   // openai chatgpt
@@ -65,6 +71,7 @@ export const HomeScreen = () => {
         return
       }
       // Play the sound
+      setIsSoundPlaying(true)
       soundObj.play((success) => {
         if (success) {
           console.log('successfully finished playing')
@@ -73,6 +80,7 @@ export const HomeScreen = () => {
         } else {
           console.log('playback failed due to audio decoding errors')
         }
+        setIsSoundPlaying(false)
       })
     })
   }
@@ -216,19 +224,6 @@ export const HomeScreen = () => {
 
   // Play bgm music and welcome music automatically once the user enter the main page
   useEffect(() => {
-    // Load the welcome music
-    let welcomeSound = new Audio.Sound()
-
-    const loadWelcome = async () => {
-      try {
-        welcomeSound = new Audio.Sound()
-        await welcomeSound.loadAsync(require('packages/app/assets/welcome-to-the-kimi-world.mp3'))
-      } catch (error) {
-        console.log('Failed to load welcomeSound', error)
-      }
-      console.log("LOAD welcome")
-    }
-
     // Load the background music
     const loadBgm = async () => {
       try {
@@ -239,11 +234,10 @@ export const HomeScreen = () => {
       }
     }
 
-    loadWelcome()
     loadBgm()
 
     const timerId = setTimeout(() => {
-      welcomeSound.playAsync()
+      setWebviewStartMotion()
       bgmService.playBgm()
     }, 2000)
 
@@ -251,7 +245,6 @@ export const HomeScreen = () => {
     return () => {
       clearTimeout(timerId)
       bgmService.pauseBgm()
-      welcomeSound.unloadAsync()
     }
   }, [])
 
@@ -264,6 +257,35 @@ export const HomeScreen = () => {
     setBgmPause((prvPause) => {
       return !prvPause
     })
+  }
+
+  useEffect(() => {
+    if (isSoundPlaying) {
+      // Start the motion when the sound begins playing
+      setWebviewTalkingMotion()
+    } else {
+      // Stop the motion when the sound playback is complete
+      setWebviewIdleMotion()
+    }
+  }, [isSoundPlaying]);
+
+  // interactions with webview
+  const setWebviewTalkingMotion = () => {
+    (webViewRef.current as WebView | null)?.injectJavaScript(
+      `window.onHappy1()`
+    )
+  }
+
+  const setWebviewIdleMotion = () => {
+    (webViewRef.current as WebView | null)?.injectJavaScript(
+      `window.onIdle()`
+    )
+  }
+
+  const setWebviewStartMotion = () => {
+    (webViewRef.current as WebView | null)?.injectJavaScript(
+      `window.onStart()`
+    )
   }
 
   return (
@@ -384,6 +406,7 @@ export const HomeScreen = () => {
         </YStack>
         <WebView
           // position="absolute"
+          ref={webViewRef}
           style={{ backgroundColor: 'transparent' }}
           source={{ uri: 'https://live2d-one.vercel.app/nekomi.html' }}
           // incognito
