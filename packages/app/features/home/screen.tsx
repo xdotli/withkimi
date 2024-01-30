@@ -3,12 +3,14 @@ import { Button, Text, YStack, XStack, Avatar, ScrollView, HoldToRecordButton } 
 import { UserCircle2, Volume2, VolumeX, FileClock } from '@tamagui/lucide-icons'
 import { api } from 'app/utils/api'
 import { getFirstNCharsOrLess, MODELS } from 'app/utils/chat'
+import { ChatItem, chatHistoryStore } from 'app/utils/chatHistory'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
 import { getBaseUrl } from 'app/utils/getBaseUrl'
 import { prompts } from 'app/utils/llm/constants'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
+import { Audio } from 'expo-av'
 import { useAtom } from 'jotai'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
@@ -22,14 +24,13 @@ import { useRouter } from 'solito/router'
 import { WritableStream, ReadableStream, TransformStream } from 'web-streams-polyfill/ponyfill'
 
 import { TextLineStream } from './_lineSplitter'
-import { BottomSheet } from './bottom-sheet'
-import { ChatItem, chatHistoryStore } from 'app/utils/chatHistory'
-import { DropdownMenuExample } from './menu'
 import BgmService from './bgm'
-import { Audio } from 'expo-av'
+import { BottomSheet } from './bottom-sheet'
+import { DropdownMenuExample } from './menu'
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
+  const supabase = useSupabase()
   const [isLiked, setIsLiked] = useState(false)
   const router = useRouter()
   const [sheetOpen, setSheetOpen] = useState(false)
@@ -44,7 +45,7 @@ export const HomeScreen = () => {
   const webViewRef = useRef(null)
 
   // the state of Nekomi speaking
-  const [isSoundPlaying, setIsSoundPlaying] = useState(false);
+  const [isSoundPlaying, setIsSoundPlaying] = useState(false)
 
   const chatType = MODELS.gptTurbo
 
@@ -153,9 +154,10 @@ export const HomeScreen = () => {
       }))
 
       let localResponse = ''
-      const accessToken = (await useSupabase().auth.getSession()).data.session?.access_token
-      const refreshToken = (await useSupabase().auth.getSession()).data.session?.refresh_token
-      const response = await fetch(getBaseUrl() + '/api/chat', {
+      const { data, error } = await supabase.auth.getSession()
+      const accessToken = data.session?.access_token
+      const refreshToken = data.session?.refresh_token
+      const response = await fetch(`${getBaseUrl()}/api/chat`, {
         method: 'POST',
         headers: {
           authorization: `Bearer ${accessToken}`,
@@ -164,8 +166,8 @@ export const HomeScreen = () => {
         body: JSON.stringify({
           content: input,
           model: chatType.label,
-          chatId: chatId,
-          isFirst: chatId == undefined,
+          chatId,
+          isFirst: chatId === undefined,
           characterId: 0,
         }),
         reactNative: { textStreaming: true },
@@ -290,25 +292,19 @@ export const HomeScreen = () => {
       // Stop the motion when the sound playback is complete
       setWebviewIdleMotion()
     }
-  }, [isSoundPlaying]);
+  }, [isSoundPlaying])
 
   // interactions with webview
   const setWebviewTalkingMotion = () => {
-    (webViewRef.current as WebView | null)?.injectJavaScript(
-      `window.onHappy1()`
-    )
+    ;(webViewRef.current as WebView | null)?.injectJavaScript(`window.onHappy1()`)
   }
 
   const setWebviewIdleMotion = () => {
-    (webViewRef.current as WebView | null)?.injectJavaScript(
-      `window.onIdle()`
-    )
+    ;(webViewRef.current as WebView | null)?.injectJavaScript(`window.onIdle()`)
   }
 
   const setWebviewStartMotion = () => {
-    (webViewRef.current as WebView | null)?.injectJavaScript(
-      `window.onStart()`
-    )
+    ;(webViewRef.current as WebView | null)?.injectJavaScript(`window.onStart()`)
   }
 
   return (
