@@ -103,7 +103,7 @@ export const HomeScreen = () => {
   async function generateMotion() {
     // call
     try {
-      const response = await fetch('http://localhost:3000/api/motion', {
+      const response = await fetch('https://withkimi-next.vercel.app/api/motion', {
         method: 'POST',
         body: JSON.stringify({
           messages: [
@@ -291,11 +291,10 @@ export const HomeScreen = () => {
   useEffect(() => {
     if (isSoundPlaying) {
       // Start the motion when the sound begins playing
-      if (motion === 'speaking1') {
-        setWebviewTalkingMotion()
-      } else if (motion === 'Idle') {
-        setWebviewIdleMotion()
-      } else if (motion === 'Shake')
+      if (motion === 'speaking1')
+        (webViewRef.current as WebView | null)?.injectJavaScript('window.onSpeaking1()')
+      else if (motion === 'Idle') setWebviewIdleMotion()
+      else if (motion === 'Shake')
         (webViewRef.current as WebView | null)?.injectJavaScript('window.onShake()')
       else if (motion === 'dance')
         (webViewRef.current as WebView | null)?.injectJavaScript('window.onDance()')
@@ -311,10 +310,6 @@ export const HomeScreen = () => {
       setWebviewIdleMotion()
     }
   }, [isSoundPlaying])
-
-  // interactions with webview
-  const setWebviewTalkingMotion = () =>
-    (webViewRef.current as WebView | null)?.injectJavaScript('window.onHappy1()')
 
   const setWebviewIdleMotion = () =>
     (webViewRef.current as WebView | null)?.injectJavaScript('window.onIdle()')
@@ -421,7 +416,7 @@ export const HomeScreen = () => {
                 zIndex={1000}
                 gap="$2"
                 jc="center"
-                width="$20"
+                width="$16"
                 // style={{ transform: 'translateY(-100px);' }}
                 style={{ transform: `translateY(${translateYValue}px)` }}
               >
