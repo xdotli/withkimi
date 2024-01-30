@@ -11,10 +11,10 @@ export function _getBaseUrl() {
     return ''
   }
 
-  // if (URL) {
-  //   // overwrites the rest - set this on your native app deployment
-  //   return `${URL}`
-  // }
+  if (URL) {
+    // overwrites the rest - set this on your native app deployment
+    return `${URL}`
+  }
 
   if (process.env.VERCEL_URL) {
     // reference for vercel.com

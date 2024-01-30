@@ -38,7 +38,7 @@ function setAppConfigEnv() {
   const OIA_HOST = env.OIA_HOST
 
   const baseConfig = {
-    url: env.SUPABASE_URL,
+    url: env.URL,
     supabaseUrl: env.SUPABASE_URL,
     supabaseAnonKey: env.SUPABASE_ANON_KEY,
   }

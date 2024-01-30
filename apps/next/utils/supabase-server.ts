@@ -17,8 +17,19 @@ export const UNAUTHORIZED_ERROR = NextResponse.json(
   }
 )
 export async function getUser(cookie: ReadonlyRequestCookies, headers: Headers) {
-  const auth = (headers.get('Authorization') as string).split('Bearer ').pop() as string
-  const refresh_token = headers.get('refresh-token') as string
+  const authHeader = headers.get('Authorization')
+  if (!authHeader) {
+    return undefined
+  }
+  const authParts = (headers.get('Authorization') as string).split('Bearer ')
+  if (authParts.length != 2) {
+    return undefined
+  }
+  const auth = authParts[1]
+  const refresh_token = headers.get('refresh-token')
+  if (!refresh_token) {
+    return undefined
+  }
   const {
     data: { user },
   } = await supabaseAdmin.auth.setSession({
