@@ -330,7 +330,7 @@ export const HomeScreen = () => {
       }}
       jc="space-between"
     >
-      <ImageBackground source={require('packages/app/assets/bg.png')} style={{ ...styles.image }}>
+      <ImageBackground source={require('packages/app/assets/bg.gif')} style={{ ...styles.image }}>
         <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
           <DropdownMenuExample />
           {/* <Button>Profile</Button> */}

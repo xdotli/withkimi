@@ -31,7 +31,7 @@ export const EnterOtpScreen = () => {
       }
       formVerifyOtp.setError('otp', { type: 'custom', message: errorMessage })
     } else {
-      router.push('/enter-name')
+      router.push('/')
     }
   }
 

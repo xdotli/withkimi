@@ -40,11 +40,11 @@ export const OnboardingScreen = () => {
             Get Started
           </Text>
         </Button>
-        <Button height="$6" variant="outlined" borderRadius="$11">
+        {/* <Button height="$6" variant="outlined" borderRadius="$11">
           <Text fontWeight="600" padding="$3" fontSize="$4">
             Continue as Guest
           </Text>
-        </Button>
+        </Button> */}
       </YStack>
     </YStack>
   )

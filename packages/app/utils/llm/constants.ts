@@ -105,4 +105,5 @@ export const prompts = {
       "motion": "Shake"
   }
   '''`,
+  nekomiIntro: `Hey, I'm Nekomi, your catgirl buddy! 😸 Let's bake, explore, and share sweet moments! 🍰 On a quest to fix a mix-up, with hugs and kisses, meow~ Even with oopsies, we'll have fun! 🌟`
 }
