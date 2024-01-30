@@ -2,7 +2,6 @@
 import { Button, Text, YStack, XStack, Avatar, ScrollView, HoldToRecordButton } from '@my/ui'
 import { UserCircle2, Volume2, VolumeX, FileClock } from '@tamagui/lucide-icons'
 import { getFirstNCharsOrLess, MODELS } from 'app/utils/chat'
-import { ChatItem, chatHistoryStore } from 'app/utils/chatHistory'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
 import { prompts } from 'app/utils/llm/constants'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
@@ -23,12 +22,16 @@ import BgmService from './bgm'
 import { BottomSheet } from './bottom-sheet'
 import { DropdownMenuExample } from './menu'
 
+type Motions = 'Shake' | 'dance' | 'angry speaking' | 'speaking1' | 'sad' | 'happy1' | 'Idle'
+
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
-  const supabase = useSupabase()
+
   const [isLiked, setIsLiked] = useState(false)
   const router = useRouter()
   const [sheetOpen, setSheetOpen] = useState(false)
+
+  const [motion, setMotion] = useState<Motions>('Idle')
 
   // background music
   const [bgmPause, setBgmPause] = useState<boolean>(false)
@@ -95,9 +98,30 @@ export const HomeScreen = () => {
     generateOpenaiResponse()
   }
 
+  async function generateMotion() {
+    // call
+    try {
+      const response = await fetch('http://localhost:3000/api/motion', {
+        method: 'POST',
+        body: JSON.stringify({
+          messages: [
+            { role: 'system', content: prompts.motion },
+            { role: 'user', content: input },
+          ],
+        }),
+      })
+      const json = await response.json()
+      console.log(json)
+      setMotion(json.motion)
+    } catch (err) {
+      console.log('error in generateMotion: ', err)
+    }
+  }
+
   useEffect(() => {
     if (input && input.length > 0) {
       generateOpenaiResponse()
+      generateMotion()
     }
     return () => {
       setInput('')
@@ -224,6 +248,7 @@ export const HomeScreen = () => {
   }, [isLiked])
 
   // Play bgm music and welcome music automatically once the user enter the main page
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Load the background music
     const loadBgm = async () => {
@@ -260,28 +285,42 @@ export const HomeScreen = () => {
     })
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (isSoundPlaying) {
       // Start the motion when the sound begins playing
-      setWebviewTalkingMotion()
+      if (motion === 'speaking1') {
+        setWebviewTalkingMotion()
+      } else if (motion === 'Idle') {
+        setWebviewIdleMotion()
+      } else if (motion === 'Shake')
+        (webViewRef.current as WebView | null)?.injectJavaScript('window.onShake()')
+      else if (motion === 'dance')
+        (webViewRef.current as WebView | null)?.injectJavaScript('window.onDance()')
+      else if (motion === 'angry speaking')
+        (webViewRef.current as WebView | null)?.injectJavaScript('window.onAngrySpeaking()')
+      else if (motion === 'sad')
+        (webViewRef.current as WebView | null)?.injectJavaScript('window.onSad()')
+      else if (motion === 'happy1')
+        (webViewRef.current as WebView | null)?.injectJavaScript('window.onHappy1()')
+
+      // (webViewRef.current as WebView | null)?.injectJavaScript('window.onHappy1()')
     } else {
       // Stop the motion when the sound playback is complete
+      setMotion('Idle')
       setWebviewIdleMotion()
     }
   }, [isSoundPlaying])
 
   // interactions with webview
-  const setWebviewTalkingMotion = () => {
-    ;(webViewRef.current as WebView | null)?.injectJavaScript(`window.onHappy1()`)
-  }
+  const setWebviewTalkingMotion = () =>
+    (webViewRef.current as WebView | null)?.injectJavaScript('window.onHappy1()')
 
-  const setWebviewIdleMotion = () => {
-    ;(webViewRef.current as WebView | null)?.injectJavaScript(`window.onIdle()`)
-  }
+  const setWebviewIdleMotion = () =>
+    (webViewRef.current as WebView | null)?.injectJavaScript('window.onIdle()')
 
-  const setWebviewStartMotion = () => {
-    ;(webViewRef.current as WebView | null)?.injectJavaScript(`window.onStart()`)
-  }
+  const setWebviewStartMotion = () =>
+    (webViewRef.current as WebView | null)?.injectJavaScript('window.onStart()')
 
   return (
     <YStack

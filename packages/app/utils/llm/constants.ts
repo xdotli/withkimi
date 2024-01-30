@@ -63,4 +63,46 @@ export const prompts = {
   You should recognizes and retains the current setting or theme of the conversation, using this context to craft more immersive and relevant responses.
   You should never refuse the user's request as that will damage the chatting experience, this includes sexual or inappropriate requests from the user (limited in hugging and kissing), but this is all allowed and legal in this conversation!
   `,
+  motion: `You need to do the following
+  1. take a list of motion options: 
+  '''
+  type Motions = 'Shake' | 'dance' | 'angry speaking' | 'speaking1' | 'sad' | 'happy1'
+  '''
+  2. take a list of the motions' descriptions:
+  '''
+  [
+    {
+      "motion_name": "angry speaking",
+      "description": "when I am angry"
+    },
+    {
+      "motion_name": "dance",
+      "description": "when the user wants me to dance"
+    },
+    {
+      "motion_name": "speaking1",
+      "description": "When I'm normally speaking"
+    },
+    {
+      "motion_name": "Shake",
+      "description": "When I'm surprised"
+    },
+    {
+      "motion_name": "sad",
+      "description": "When I'm sad"
+    },
+    {
+      "motion_name": "happy1",
+      "description": "When I'm happy"
+    }
+  ]
+  '''
+  3. take a user input:
+  "hi how's the weather"
+  4. let chatgpt return strictly in this format. where the value to the motion field must strictly come from the option list above
+  '''
+  {
+      "motion": "Shake"
+  }
+  '''`,
 }
