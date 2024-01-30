@@ -44,6 +44,7 @@ export const SignInScreen = () => {
       token,
       type: 'sms',
     })
+
     if (errorVeiry) {
       const errorMessage = errorVeiry?.message.toLowerCase()
       if (errorMessage.includes('phone')) {

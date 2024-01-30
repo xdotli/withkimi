@@ -1,17 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Text, YStack, XStack, Avatar, ScrollView, HoldToRecordButton } from '@my/ui'
 import { UserCircle2, Volume2, VolumeX, FileClock } from '@tamagui/lucide-icons'
-import { api } from 'app/utils/api'
 import { getFirstNCharsOrLess, MODELS } from 'app/utils/chat'
 import { ChatItem, chatHistoryStore } from 'app/utils/chatHistory'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
-import { getBaseUrl } from 'app/utils/getBaseUrl'
 import { prompts } from 'app/utils/llm/constants'
-import { useSupabase } from 'app/utils/supabase/useSupabase'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
-import { Audio } from 'expo-av'
-import { useAtom } from 'jotai'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
 import { ImageBackground, StyleSheet, TouchableOpacity } from 'react-native'
@@ -34,8 +29,6 @@ export const HomeScreen = () => {
   const [isLiked, setIsLiked] = useState(false)
   const router = useRouter()
   const [sheetOpen, setSheetOpen] = useState(false)
-
-  const [chatId, setChatId] = useState<number | undefined>(undefined)
 
   // background music
   const [bgmPause, setBgmPause] = useState<boolean>(false)
@@ -60,8 +53,7 @@ export const HomeScreen = () => {
     messages: [],
     index: uuid.v4().toString(),
   })
-  const [chatHistory, setChatHistory] = useState([] as ChatItem[])
-  const [globalChatHistory, setGlobalChatHistory] = useAtom(chatHistoryStore)
+
   // const [elapsedTime, setElapsedTime] = useState<number | null>(null)
 
   const { state, startRecognizing, stopRecognizing, destroyRecognizer } = useVoiceRecognition()
@@ -96,6 +88,11 @@ export const HomeScreen = () => {
 
   const handleSubmit = async () => {
     setInput(state.results[0])
+  }
+
+  async function chat() {
+    if (!input) return
+    generateOpenaiResponse()
   }
 
   useEffect(() => {
@@ -154,25 +151,16 @@ export const HomeScreen = () => {
       }))
 
       let localResponse = ''
-      const { data, error } = await supabase.auth.getSession()
-      const accessToken = data.session?.access_token
-      const refreshToken = data.session?.refresh_token
-      const response = await fetch(`${getBaseUrl()}/api/chat`, {
+      console.log('Gonna send', messagesRequest)
+      const response = await fetch('https://withkimi-next.vercel.app/api/chat', {
         method: 'POST',
-        headers: {
-          authorization: `Bearer ${accessToken}`,
-          'refresh-token': refreshToken,
-        },
         body: JSON.stringify({
-          content: input,
+          messages: messagesRequest,
           model: chatType.label,
-          chatId,
-          isFirst: chatId === undefined,
-          characterId: 0,
         }),
         reactNative: { textStreaming: true },
       })
-      setChatId(response.headers.get('chat_id'))
+
       setInput('')
       setOpenAiCompleted(false)
 
@@ -180,7 +168,7 @@ export const HomeScreen = () => {
       const body: ReadableStream<Uint8Array> = ReadableStream.from(response.body)
       // console.log(response)
       const myStringDecoder = new TextDecoder()
-      await body
+      body
         .pipeThrough(
           new TransformStream<Uint8Array, string>({
             transform: (chunk, controller) => {
@@ -215,18 +203,6 @@ export const HomeScreen = () => {
             },
           })
         )
-      chatHistory.push({
-        isUser: true,
-        content: input,
-        length: 0,
-      })
-      chatHistory.push({
-        isUser: false,
-        content: localResponse,
-        length: 0,
-      })
-      setChatHistory(chatHistory)
-      setGlobalChatHistory(chatHistory)
     } catch (err) {
       console.log('error in generateOpenaiResponse: ', err)
     }
@@ -396,9 +372,7 @@ export const HomeScreen = () => {
               />
             }
             onPress={() => {
-              router.push({
-                pathname: '/history',
-              })
+              router.push('/history')
             }}
           />
           <Button
@@ -441,6 +415,7 @@ export const HomeScreen = () => {
               onPressOut={() => {
                 stopRecognizing()
                 handleSubmit()
+                chat()
               }}
               pressed={
                 <LottieView

@@ -34,24 +34,24 @@ class BgmService {
 
   public playBgm(): void {
     if (this.bgmInstance) {
-      console.log('play bgm')
+      console.log("play bgm")
       this.bgmInstance.playAsync()
     }
   }
 
   public pauseBgm(): void {
     if (this.bgmInstance) {
-      console.log('pause bgm')
+      console.log("pause bgm")
       this.bgmInstance.pauseAsync()
     }
   }
 
   public stopBgm(): void {
     if (this.bgmInstance) {
-      console.log('stop bgm')
+      console.log("stop bgm")
       this.bgmInstance.stopAsync()
     }
   }
 }
 
-export default BgmService
+export default BgmService;
