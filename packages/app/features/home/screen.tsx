@@ -29,6 +29,17 @@ export const HomeScreen = () => {
   const screenHeight = Dimensions.get('window').height
   const translateYValue = screenHeight > 880 ? -200 : screenHeight > 700 ? -150 : -100
 
+  const screenWidth = Dimensions.get('window').width
+  let dynamicWidth: string
+
+  if (screenWidth > 400) {
+    dynamicWidth = '$19' // Adjust these values as per your requirement
+  } else if (screenWidth > 200) {
+    dynamicWidth = '$16'
+  } else {
+    dynamicWidth = '$14'
+  }
+
   const [isLiked, setIsLiked] = useState(false)
   const router = useRouter()
   const [sheetOpen, setSheetOpen] = useState(false)
@@ -416,7 +427,8 @@ export const HomeScreen = () => {
                 zIndex={1000}
                 gap="$2"
                 jc="center"
-                width="$16"
+                // @ts-ignore
+                width={dynamicWidth}
                 // style={{ transform: 'translateY(-100px);' }}
                 style={{ transform: `translateY(${translateYValue}px)` }}
               >
