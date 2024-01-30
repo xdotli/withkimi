@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
-import { ImageBackground, StyleSheet, TouchableOpacity } from 'react-native'
+import { ImageBackground, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 // @ts-ignore
 import { fetch } from 'react-native-fetch-api'
 import Sound from 'react-native-sound'
@@ -26,6 +26,8 @@ type Motions = 'Shake' | 'dance' | 'angry speaking' | 'speaking1' | 'sad' | 'hap
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
+  const screenHeight = Dimensions.get('window').height
+  const translateYValue = screenHeight > 880 ? -200 : screenHeight > 700 ? -150 : -100
 
   const [isLiked, setIsLiked] = useState(false)
   const router = useRouter()
@@ -303,8 +305,6 @@ export const HomeScreen = () => {
         (webViewRef.current as WebView | null)?.injectJavaScript('window.onSad()')
       else if (motion === 'happy1')
         (webViewRef.current as WebView | null)?.injectJavaScript('window.onHappy1()')
-
-      // (webViewRef.current as WebView | null)?.injectJavaScript('window.onHappy1()')
     } else {
       // Stop the motion when the sound playback is complete
       setMotion('Idle')
@@ -344,30 +344,7 @@ export const HomeScreen = () => {
           </TouchableOpacity>
         </XStack>
 
-        <YStack width="$20" pos="absolute" bottom="$20" left="$11" zIndex={1000} gap="$2">
-          {/* <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
-            Your message: {JSON.stringify(state, null, 2)}
-          </Text>
-          <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
-            Your message: {!state.isRecording ? state.results[0] : 'Recording...'}
-          </Text> */}
-          {/* <Text fontSize="$4" padding="$3" style={{ backgroundColor: 'rgba(252,251,251,0.72)' }}>
-            Elapsed Time: {elapsedTime}ms
-          </Text> */}
-          <ScrollView style={{ height: 120, backgroundColor: 'rgba(252,251,251,0.72)' }}>
-            {openaiResponse.messages.length === 0 ? (
-              <Text fontSize="$4" padding="$3">
-                {input}
-              </Text>
-            ) : (
-              <Text fontSize="$4" padding="$3">
-                {openaiResponse.messages[openaiResponse.messages.length - 1].assistant}
-              </Text>
-            )}
-          </ScrollView>
-        </YStack>
-
-        <YStack pos="absolute" top="$34" right="$2" zIndex={1000}>
+        <YStack pos="absolute" bottom="$25" right="$2" zIndex={1000}>
           <Avatar
             circular
             size={50}
@@ -386,12 +363,13 @@ export const HomeScreen = () => {
             borderWidth="$0"
             variant="outlined"
             padding="$0"
-            my="$5"
+            my="$2"
+            mt="$4"
             onPress={() => setIsLiked(!isLiked)}
           >
             <LottieView
               ref={animation}
-              style={{ width: 75, height: 75, marginLeft: -10 }}
+              style={{ width: 75, height: 75, marginLeft: -12 }}
               source={require('packages/app/assets/like-2.json')}
               autoPlay={false}
               loop={false}
@@ -401,24 +379,7 @@ export const HomeScreen = () => {
             borderWidth="$0"
             variant="outlined"
             padding="$0"
-            my="$5"
-            backgroundColor="transparent"
-            icon={
-              <FileClock
-                color="white"
-                size="$4"
-                style={{ width: 75, height: 75, marginLeft: -10 }}
-              />
-            }
-            onPress={() => {
-              router.push('/history')
-            }}
-          />
-          <Button
-            borderWidth="$0"
-            variant="outlined"
-            padding="$0"
-            my="$5"
+            my="$3"
             backgroundColor="transparent"
             icon={
               bgmPause ? (
@@ -445,32 +406,69 @@ export const HomeScreen = () => {
           source={{ uri: 'https://live2d-one.vercel.app/nekomi.html' }}
           // incognito
         />
+
         <XStack jc="center" marginBottom={safeAreaInsets.bottom}>
           <XStack pos="absolute" b={0} w={500} h={150}>
-            <HoldToRecordButton
-              onPressIn={() => {
-                startRecognizing()
+            <YStack
+              style={{
+                height: '100%',
+                width: '100%',
               }}
-              onPressOut={() => {
-                stopRecognizing()
-                handleSubmit()
-                chat()
-              }}
-              pressed={
-                <LottieView
-                  autoPlay
-                  style={{
-                    width: 135,
-                    height: 200,
-                  }}
-                  source={require('../../assets/sound-wave.json')}
-                />
-              }
+              jc="space-between"
+              ai="center"
             >
-              <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
-                Hold to Record
-              </Text>
-            </HoldToRecordButton>
+              <YStack
+                zIndex={1000}
+                gap="$2"
+                jc="center"
+                width="$20"
+                // style={{ transform: 'translateY(-100px);' }}
+                style={{ transform: `translateY(${translateYValue}px)` }}
+              >
+                <ScrollView
+                  style={{
+                    height: 120,
+                    backgroundColor: 'rgba(252,251,251,0.72)',
+                    borderRadius: 20,
+                    // padding: 20,
+                  }}
+                >
+                  {openaiResponse.messages.length === 0 ? (
+                    <Text fontSize="$4" padding="$4">
+                      {/* {input} */}
+                    </Text>
+                  ) : (
+                    <Text fontSize="$5" padding="$5" color="#525252">
+                      {openaiResponse.messages[openaiResponse.messages.length - 1].assistant}
+                    </Text>
+                  )}
+                </ScrollView>
+              </YStack>
+              <HoldToRecordButton
+                onPressIn={() => {
+                  startRecognizing()
+                }}
+                onPressOut={() => {
+                  stopRecognizing()
+                  handleSubmit()
+                  chat()
+                }}
+                pressed={
+                  <LottieView
+                    autoPlay
+                    style={{
+                      width: 135,
+                      height: 200,
+                    }}
+                    source={require('../../assets/sound-wave.json')}
+                  />
+                }
+              >
+                <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
+                  Hold to Record
+                </Text>
+              </HoldToRecordButton>
+            </YStack>
           </XStack>
         </XStack>
       </ImageBackground>

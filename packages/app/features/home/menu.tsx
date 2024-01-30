@@ -219,9 +219,9 @@ export const DropdownMenuExample = () => {
       <DropdownMenu.Content style={dropdownStyles.content}>
         <DropdownMenuLabel>Help</DropdownMenuLabel>
 
-        {['For you', 'Following'].map((i) =>
-          i === 'Following' ? (
-            <DropdownMenuItem key={`list-${i}`} onSelect={() => router.push('/following/home')}>
+        {['For you', 'Coming soon'].map((i) =>
+          i === 'Coming soon' ? (
+            <DropdownMenuItem key={`list-${i}`} onSelect={() => router.push('/')}>
               <DropdownMenuItemTitle>{`${i}`}</DropdownMenuItemTitle>
             </DropdownMenuItem>
           ) : (
