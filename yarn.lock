@@ -15428,6 +15428,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jotai@npm:^2.6.3":
+  version: 2.6.3
+  resolution: "jotai@npm:2.6.3"
+  peerDependencies:
+    "@types/react": ">=17.0.0"
+    react: ">=17.0.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: b0daf3da93524a61e7a7c1892b9e34ada05982575dfa477626021f877389c58379b55a470e34cb74dc466b5f758c4b0aa92b48a923522d081649ffa5cb8dd100
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -23990,6 +24005,7 @@ __metadata:
     elevenlabs: "npm:^0.1.1"
     eslint: "npm:^8.46.0"
     eventsource: "npm:^2.0.2"
+    jotai: "npm:^2.6.3"
     lottie-react-native: "npm:^6.5.1"
     node-fetch: "npm:^3.3.2"
     node-gyp: "npm:^9.3.1"
