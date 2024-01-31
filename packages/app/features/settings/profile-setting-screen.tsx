@@ -1,8 +1,20 @@
-import { Paragraph, Settings, YStack, XStack, Button, useMedia, H4, Sheet, SheetProps, useSheet } from '@my/ui'
+import {
+  Paragraph,
+  Settings,
+  YStack,
+  XStack,
+  Button,
+  useMedia,
+  H4,
+  Sheet,
+  SheetProps,
+  useSheet,
+} from '@my/ui'
 import { Back } from '@my/ui/src/icons/back'
 import { Info, LogOut, Flag, User, LockKeyhole } from '@tamagui/lucide-icons'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
 import { usePathname } from 'app/utils/usePathname'
+import { Linking } from 'react-native'
 import { useLink } from 'solito/link'
 import { useRouter } from 'solito/router'
 
@@ -31,14 +43,22 @@ export const SettingsScreen = () => {
             <Settings.Item
               icon={LockKeyhole}
               isActive={pathname === '/privacy-policy'}
-              {...useLink({ href: '/privacy-policy' })}
+              onPress={() =>
+                Linking.openURL(
+                  'https://www.privacypolicies.com/live/50fc385b-b5bf-4caa-aa30-d81de048347f'
+                )
+              }
             >
               Privacy Policy
             </Settings.Item>
             <Settings.Item
               icon={Info}
               isActive={pathname === '/terms-of-service'}
-              {...useLink({ href: '/terms-of-service' })}
+              onPress={() =>
+                Linking.openURL(
+                  'https://www.privacypolicies.com/live/02f5f03f-7d94-47cf-9452-bad360949cf5'
+                )
+              }
             >
               Terms and Policies
             </Settings.Item>
