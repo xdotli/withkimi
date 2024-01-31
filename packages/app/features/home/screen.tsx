@@ -276,7 +276,6 @@ export const HomeScreen = () => {
     loadBgm()
 
     const timerId = setTimeout(() => {
-      setWebviewStartMotion()
       bgmService.playBgm()
     }, 2000)
 
@@ -327,6 +326,12 @@ export const HomeScreen = () => {
 
   const setWebviewStartMotion = () =>
     (webViewRef.current as WebView | null)?.injectJavaScript('window.onStart()')
+
+  const playWelcomeMotion = () => {
+    setTimeout(() => {
+      setWebviewStartMotion()
+    }, 2000)
+  }
 
   return (
     <YStack
@@ -411,6 +416,7 @@ export const HomeScreen = () => {
           style={{ backgroundColor: 'transparent' }}
           source={{ uri: 'https://live2d-one.vercel.app/nekomi.html' }}
           // incognito
+          onLoad={playWelcomeMotion}
         />
 
         <XStack jc="center" marginBottom={safeAreaInsets.bottom}>
@@ -454,11 +460,13 @@ export const HomeScreen = () => {
               <HoldToRecordButton
                 onPressIn={() => {
                   startRecognizing()
+                  bgmService.pauseBgm()
                 }}
                 onPressOut={() => {
                   stopRecognizing()
                   handleSubmit()
                   chat()
+                  bgmService.playBgm()
                 }}
                 pressed={
                   <LottieView
