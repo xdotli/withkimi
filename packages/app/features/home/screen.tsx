@@ -286,7 +286,7 @@ export const HomeScreen = () => {
     }
   }, [])
 
-  function pauseBgm() {
+  function pauseResumeBgm() {
     if (bgmPause) {
       bgmService.playBgm()
     } else {
@@ -332,6 +332,16 @@ export const HomeScreen = () => {
       setWebviewStartMotion()
     }, 2000)
   }
+
+  useEffect(() => {
+    if(!bgmPause){
+      if(state.isRecording){
+        bgmService.pauseBgm()
+      }else{
+        bgmService.playBgm()
+      }
+    }
+  },[state.isRecording])
 
   return (
     <YStack
@@ -407,7 +417,7 @@ export const HomeScreen = () => {
                 />
               )
             }
-            onPress={pauseBgm}
+            onPress={pauseResumeBgm}
           />
         </YStack>
         <WebView
@@ -460,13 +470,11 @@ export const HomeScreen = () => {
               <HoldToRecordButton
                 onPressIn={() => {
                   startRecognizing()
-                  bgmService.pauseBgm()
                 }}
                 onPressOut={() => {
                   stopRecognizing()
                   handleSubmit()
                   chat()
-                  bgmService.playBgm()
                 }}
                 pressed={
                   <LottieView
