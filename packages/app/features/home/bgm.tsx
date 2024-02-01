@@ -17,13 +17,14 @@ class BgmService {
   public async loadBgm(): Promise<void> {
     if (!this.bgmInstance) {
       const uri = 'https://live2d-one.vercel.app/background-music.mp3'
+      Sound.setCategory('Playback')
       this.bgmInstance = new Sound(uri, '', (error) => {
         if (error) {
           console.error('Error loading sound:', error)
           return
         }
         // Play the sound
-        if(this.bgmInstance){
+        if (this.bgmInstance) {
           this.bgmInstance.setNumberOfLoops(-1)
           this.bgmInstance.setVolume(0.1)
         }
@@ -33,7 +34,7 @@ class BgmService {
 
   public playBgm(): void {
     if (this.bgmInstance) {
-      console.log("play bgm")
+      console.log('play bgm')
       this.bgmInstance.play((success) => {
         if (success) {
           console.log('successfully finished playing')
@@ -48,28 +49,28 @@ class BgmService {
 
   public pauseBgm(): void {
     if (this.bgmInstance) {
-      console.log("pause bgm")
+      console.log('pause bgm')
       this.bgmInstance.pause()
     }
   }
 
   public stopBgm(): void {
     if (this.bgmInstance) {
-      console.log("stop bgm")
+      console.log('stop bgm')
       this.bgmInstance.stop(() => {
         // Note: If you want to play a sound after stopping and rewinding it,
         // it is important to call play() in a callback.
-        this.bgmInstance?.play();
+        this.bgmInstance?.play()
       })
     }
   }
 
   public releaseBgm(): void {
     if (this.bgmInstance) {
-      console.log("unload bgm")
+      console.log('unload bgm')
       this.bgmInstance.release()
     }
   }
 }
 
-export default BgmService;
+export default BgmService

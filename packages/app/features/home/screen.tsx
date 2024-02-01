@@ -29,6 +29,8 @@ export const HomeScreen = () => {
   const screenHeight = Dimensions.get('window').height
   const translateYValue = screenHeight > 880 ? -200 : screenHeight > 700 ? -150 : -100
 
+  Sound.setCategory('Playback')
+
   const screenWidth = Dimensions.get('window').width
   let dynamicWidth: string
 
