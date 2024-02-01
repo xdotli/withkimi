@@ -398,7 +398,7 @@ export const HomeScreen = () => {
           >
             <LottieView
               ref={animation}
-              style={{ width: 75, height: 75, marginLeft: -12 }}
+              style={{ width: 68, height: 68, marginLeft: -10 }}
               source={require('packages/app/assets/like-2.json')}
               autoPlay={false}
               loop={false}
@@ -415,13 +415,13 @@ export const HomeScreen = () => {
                 <VolumeX
                   color="white"
                   size="$4"
-                  style={{ width: 75, height: 75, marginLeft: -10 }}
+                  style={{ width: 68, height: 68, marginLeft: -10 }}
                 />
               ) : (
                 <Volume2
                   color="white"
                   size="$4"
-                  style={{ width: 75, height: 75, marginLeft: -10 }}
+                  style={{ width: 68, height: 68, marginLeft: -10 }}
                 />
               )
             }
@@ -469,7 +469,7 @@ export const HomeScreen = () => {
                       {/* {input} */}
                     </Text>
                   ) : (
-                    <Text fontSize="$5" padding="$5" color="#525252">
+                    <Text fontSize="$4" padding="$4" color="#525252">
                       {openaiResponse.messages[openaiResponse.messages.length - 1].assistant}
                     </Text>
                   )}
@@ -503,7 +503,7 @@ export const HomeScreen = () => {
                 }
               >
                 <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
-                  Hold to Record
+                  Hold to Talk
                 </Text>
               </HoldToRecordButton>
             </YStack>
