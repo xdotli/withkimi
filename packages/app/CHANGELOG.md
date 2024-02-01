@@ -1,5 +1,11 @@
 # app
 
+## 0.4.0
+
+### Minor Changes
+
+- [#110](https://github.com/imaginix-inc/withkimi/pull/110) [`cf40ddf`](https://github.com/imaginix-inc/withkimi/commit/cf40ddfa0d0170d1d053b1cf891dab1b50c8d101) Thanks [@xdotli](https://github.com/xdotli)! - ci: trigger preview
+
 ## 0.3.0
 
 ### Minor Changes

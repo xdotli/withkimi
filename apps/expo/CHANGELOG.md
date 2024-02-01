@@ -1,5 +1,12 @@
 # expo-app
 
+## 0.4.0
+
+### Patch Changes
+
+- Updated dependencies [[`cf40ddf`](https://github.com/imaginix-inc/withkimi/commit/cf40ddfa0d0170d1d053b1cf891dab1b50c8d101)]:
+  - app@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes
