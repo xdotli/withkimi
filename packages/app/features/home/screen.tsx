@@ -282,7 +282,7 @@ export const HomeScreen = () => {
     // Clean up when the component unmounts
     return () => {
       clearTimeout(timerId)
-      bgmService.pauseBgm()
+      bgmService.releaseBgm()
     }
   }, [])
 
@@ -332,16 +332,6 @@ export const HomeScreen = () => {
       setWebviewStartMotion()
     }, 2000)
   }
-
-  useEffect(() => {
-    if(!bgmPause){
-      if(state.isRecording){
-        bgmService.pauseBgm()
-      }else{
-        bgmService.playBgm()
-      }
-    }
-  },[state.isRecording])
 
   return (
     <YStack
@@ -470,11 +460,17 @@ export const HomeScreen = () => {
               <HoldToRecordButton
                 onPressIn={() => {
                   startRecognizing()
+                  if(!bgmPause){
+                    bgmService.pauseBgm()
+                  }
                 }}
                 onPressOut={() => {
                   stopRecognizing()
                   handleSubmit()
                   chat()
+                  if(!bgmPause){
+                    bgmService.playBgm()
+                  }
                 }}
                 pressed={
                   <LottieView
