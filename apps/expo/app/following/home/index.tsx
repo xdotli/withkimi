@@ -1,4 +1,4 @@
-import { HomeScreen } from 'app/features/following/home-screen'
+// import { HomeScreen } from 'app/features/following/home-screen'
 import { Stack } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -10,7 +10,7 @@ export default function Screen() {
           headerShown: false,
         }}
       />
-      <HomeScreen />
+      {/* <HomeScreen /> */}
     </SafeAreaView>
   )
 }
