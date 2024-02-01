@@ -13,6 +13,7 @@ import { ImageBackground, StyleSheet, TouchableOpacity, Dimensions, Vibration } 
 import { fetch } from 'react-native-fetch-api'
 import Sound from 'react-native-sound'
 import uuid from 'react-native-uuid'
+import Video from 'react-native-video'
 import { WebView } from 'react-native-webview'
 import { useRouter } from 'solito/router'
 import { WritableStream, ReadableStream, TransformStream } from 'web-streams-polyfill/ponyfill'
@@ -23,6 +24,8 @@ import { BottomSheet } from './bottom-sheet'
 import { DropdownMenuExample } from './menu'
 
 type Motions = 'Shake' | 'dance' | 'angry speaking' | 'speaking1' | 'sad' | 'happy1' | 'Idle'
+
+const { height } = Dimensions.get('window')
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
@@ -341,157 +344,159 @@ export const HomeScreen = () => {
       }}
       jc="space-between"
     >
-      <ImageBackground source={require('packages/app/assets/bg.gif')} style={{ ...styles.image }}>
-        <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
-          <DropdownMenuExample />
-          {/* <Button>Profile</Button> */}
-          <TouchableOpacity
-            style={{ right: 10 }}
-            onPress={() => {
-              router.push('/settings/profile-setting')
-            }}
-          >
-            <UserCircle2 size={38} color="white" />
-          </TouchableOpacity>
-        </XStack>
+      {/* <ImageBackground source={require('packages/app/assets/bg.gif')} style={{ ...styles.image }}> */}
+      <Video
+        source={{ uri: 'http://live2d-one.vercel.app/bg.mp4' }} // The video file
+        style={styles.backgroundVideo}
+        muted
+        repeat
+        resizeMode="cover"
+        rate={1.0}
+        ignoreSilentSwitch="obey"
+      />
+      <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
+        <DropdownMenuExample />
+        {/* <Button>Profile</Button> */}
+        <TouchableOpacity
+          style={{ right: 10 }}
+          onPress={() => {
+            router.push('/settings/profile-setting')
+          }}
+        >
+          <UserCircle2 size={38} color="white" />
+        </TouchableOpacity>
+      </XStack>
 
-        <YStack pos="absolute" bottom="$25" right="$2" zIndex={1000}>
-          <Avatar
-            circular
-            size={50}
-            borderColor="white"
-            borderWidth={2}
-            onPress={() => setSheetOpen(true)}
-          >
-            <Avatar.Image
-              resizeMode="contain"
-              width={48}
-              height={48}
-              source={{ uri: require('packages/app/assets/avatar.png') }}
-            />
-          </Avatar>
-          <Button
-            borderWidth="$0"
-            variant="outlined"
-            padding="$0"
-            my="$2"
-            mt="$4"
-            onPress={() => setIsLiked(!isLiked)}
-          >
-            <LottieView
-              ref={animation}
-              style={{ width: 68, height: 68, marginLeft: -10 }}
-              source={require('packages/app/assets/like-2.json')}
-              autoPlay={false}
-              loop={false}
-            />
-          </Button>
-          <Button
-            borderWidth="$0"
-            variant="outlined"
-            padding="$0"
-            my="$3"
-            backgroundColor="transparent"
-            icon={
-              bgmPause ? (
-                <VolumeX
-                  color="white"
-                  size="$4"
-                  style={{ width: 68, height: 68, marginLeft: -10 }}
-                />
-              ) : (
-                <Volume2
-                  color="white"
-                  size="$4"
-                  style={{ width: 68, height: 68, marginLeft: -10 }}
-                />
-              )
-            }
-            onPress={pauseResumeBgm}
+      <YStack pos="absolute" bottom="$25" right="$2" zIndex={1000}>
+        <Avatar
+          circular
+          size={50}
+          borderColor="white"
+          borderWidth={2}
+          onPress={() => setSheetOpen(true)}
+        >
+          <Avatar.Image
+            resizeMode="contain"
+            width={48}
+            height={48}
+            source={{ uri: require('packages/app/assets/avatar.png') }}
           />
-        </YStack>
-        <WebView
-          // position="absolute"
-          ref={webViewRef}
-          style={{ backgroundColor: 'transparent' }}
-          source={{ uri: 'https://live2d-one.vercel.app/nekomi.html' }}
-          // incognito
-          onLoad={playWelcomeMotion}
+        </Avatar>
+        <Button
+          borderWidth="$0"
+          variant="outlined"
+          padding="$0"
+          my="$2"
+          mt="$4"
+          onPress={() => setIsLiked(!isLiked)}
+        >
+          <LottieView
+            ref={animation}
+            style={{ width: 68, height: 68, marginLeft: -10 }}
+            source={require('packages/app/assets/like-2.json')}
+            autoPlay={false}
+            loop={false}
+          />
+        </Button>
+        <Button
+          borderWidth="$0"
+          variant="outlined"
+          padding="$0"
+          my="$3"
+          backgroundColor="transparent"
+          icon={
+            bgmPause ? (
+              <VolumeX color="white" size="$4" style={{ width: 68, height: 68, marginLeft: -10 }} />
+            ) : (
+              <Volume2 color="white" size="$4" style={{ width: 68, height: 68, marginLeft: -10 }} />
+            )
+          }
+          onPress={pauseResumeBgm}
         />
+      </YStack>
+      <WebView
+        // position="absolute"
+        ref={webViewRef}
+        style={{ backgroundColor: 'transparent' }}
+        source={{ uri: 'https://live2d-one.vercel.app/nekomi.html' }}
+        // incognito
+        onLoad={playWelcomeMotion}
+      />
 
-        <XStack jc="center" marginBottom={safeAreaInsets.bottom}>
-          <XStack pos="absolute" b={0} w={500} h={150}>
+      <XStack jc="center" marginBottom={safeAreaInsets.bottom}>
+        <XStack pos="absolute" b={0} w={500} h={150}>
+          <YStack
+            style={{
+              height: '100%',
+              width: '100%',
+            }}
+            jc="space-between"
+            ai="center"
+          >
             <YStack
-              style={{
-                height: '100%',
-                width: '100%',
-              }}
-              jc="space-between"
-              ai="center"
+              zIndex={1000}
+              gap="$2"
+              jc="center"
+              // @ts-ignore
+              width={dynamicWidth}
+              // style={{ transform: 'translateY(-100px);' }}
+              style={{ transform: `translateY(${translateYValue}px)` }}
             >
-              <YStack
-                zIndex={1000}
-                gap="$2"
-                jc="center"
-                // @ts-ignore
-                width={dynamicWidth}
-                // style={{ transform: 'translateY(-100px);' }}
-                style={{ transform: `translateY(${translateYValue}px)` }}
-              >
-                <ScrollView
-                  style={{
-                    height: 120,
-                    backgroundColor: 'rgba(252,251,251,0.72)',
-                    borderRadius: 20,
-                    // padding: 20,
-                  }}
-                >
-                  {openaiResponse.messages.length === 0 ? (
-                    <Text fontSize="$4" padding="$4">
-                      {/* {input} */}
-                    </Text>
-                  ) : (
-                    <Text fontSize="$4" padding="$4" color="#525252">
-                      {openaiResponse.messages[openaiResponse.messages.length - 1].assistant}
-                    </Text>
-                  )}
-                </ScrollView>
-              </YStack>
-              <HoldToRecordButton
-                onPressIn={() => {
-                  startRecognizing()
-                  // Vibration.vibrate(500) // vibrate the phone when press in
-                  if (!bgmPause) {
-                    bgmService.pauseBgm()
-                  }
+              <ScrollView
+                style={{
+                  height: 120,
+                  backgroundColor: 'rgba(252,251,251,0.72)',
+                  borderRadius: 20,
+                  // padding: 20,
                 }}
-                onPressOut={() => {
-                  stopRecognizing()
-                  handleSubmit()
-                  chat()
-                  if (!bgmPause) {
-                    bgmService.playBgm()
-                  }
-                }}
-                pressed={
-                  <LottieView
-                    autoPlay
-                    style={{
-                      width: 135,
-                      height: 200,
-                    }}
-                    source={require('../../assets/sound-wave.json')}
-                  />
-                }
               >
-                <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
-                  Hold to Talk
-                </Text>
-              </HoldToRecordButton>
+                {openaiResponse.messages.length === 0 ? (
+                  <Text fontSize="$4" padding="$4">
+                    {/* {input} */}
+                  </Text>
+                ) : (
+                  <Text fontSize="$4" padding="$4" color="#525252">
+                    {openaiResponse.messages[openaiResponse.messages.length - 1].assistant}
+                  </Text>
+                )}
+              </ScrollView>
             </YStack>
-          </XStack>
+            <HoldToRecordButton
+              onPressIn={() => {
+                startRecognizing()
+                // Vibration.vibrate(500) // vibrate the phone when press in
+                if (!bgmPause) {
+                  bgmService.pauseBgm()
+                }
+              }}
+              onPressOut={() => {
+                stopRecognizing()
+                handleSubmit()
+                chat()
+                if (!bgmPause) {
+                  bgmService.playBgm()
+                }
+              }}
+              pressed={
+                <LottieView
+                  autoPlay
+                  style={{
+                    width: 135,
+                    height: 200,
+                  }}
+                  source={require('../../assets/sound-wave.json')}
+                />
+              }
+            >
+              <Text fontWeight="600" padding="$3" fontSize="$4" color="white">
+                Hold to Talk
+              </Text>
+            </HoldToRecordButton>
+          </YStack>
         </XStack>
-      </ImageBackground>
+      </XStack>
+
+      {/* </ImageBackground> */}
       <BottomSheet open={sheetOpen} setOpen={setSheetOpen} />
     </YStack>
   )
@@ -501,5 +506,14 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'space-between',
+  },
+  backgroundVideo: {
+    height,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    alignItems: 'stretch',
+    bottom: 0,
+    right: 0,
   },
 })

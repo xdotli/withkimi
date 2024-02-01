@@ -19,7 +19,7 @@ export default (_: ConfigContext): ExpoConfig => {
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#D9DBFA',
     },
     updates: {
       url: process.env.UPDATES_URL,
