@@ -69,12 +69,14 @@ export const HomeScreen = () => {
     messages: [],
     index: uuid.v4().toString(),
   })
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   // const [elapsedTime, setElapsedTime] = useState<number | null>(null)
 
   const { state, startRecognizing, stopRecognizing, destroyRecognizer } = useVoiceRecognition()
 
   const animation = useRef<LottieView>(null)
+  const loadingAnimation = useRef(null)
   const isFirstRun = useRef(true)
 
   const toSpeech = async () => {
@@ -328,6 +330,7 @@ export const HomeScreen = () => {
     (webViewRef.current as WebView | null)?.injectJavaScript('window.onStart()')
 
   const playWelcomeMotion = () => {
+    setIsLoading(false)
     setTimeout(() => {
       setWebviewStartMotion()
     }, 2000)
@@ -341,6 +344,21 @@ export const HomeScreen = () => {
       }}
       jc="space-between"
     >
+      {isLoading ? (
+        <YStack style={styles.animationContainer}>
+          <LottieView
+            autoPlay
+            ref={loadingAnimation}
+            style={{
+              width: 200,
+              height: 200,
+            }}
+            source={require('packages/app/assets/loading.json')}
+          />
+        </YStack>
+      ) : (
+        <></>
+      )}
       <ImageBackground source={require('packages/app/assets/bg.gif')} style={{ ...styles.image }}>
         <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
           <DropdownMenuExample />
@@ -501,5 +519,12 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'space-between',
+  },
+  animationContainer: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    zIndex: 10000,
   },
 })
