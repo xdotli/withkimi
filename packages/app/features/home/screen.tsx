@@ -304,8 +304,6 @@ export const HomeScreen = () => {
       if (motion === 'speaking1')
         (webViewRef.current as WebView | null)?.injectJavaScript('window.onSpeaking1()')
       else if (motion === 'Idle') setWebviewIdleMotion()
-      else if (motion === 'Shake')
-        (webViewRef.current as WebView | null)?.injectJavaScript('window.onShake()')
       else if (motion === 'dance')
         (webViewRef.current as WebView | null)?.injectJavaScript('window.onDance()')
       else if (motion === 'angry speaking')
@@ -460,8 +458,8 @@ export const HomeScreen = () => {
               <HoldToRecordButton
                 onPressIn={() => {
                   startRecognizing()
-                  Vibration.vibrate(500) // vibrate the phone when press in
-                  if(!bgmPause){
+                  // Vibration.vibrate(500) // vibrate the phone when press in
+                  if (!bgmPause) {
                     bgmService.pauseBgm()
                   }
                 }}
@@ -469,7 +467,7 @@ export const HomeScreen = () => {
                   stopRecognizing()
                   handleSubmit()
                   chat()
-                  if(!bgmPause){
+                  if (!bgmPause) {
                     bgmService.playBgm()
                   }
                 }}
