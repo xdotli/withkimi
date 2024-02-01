@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { useRouter } from 'solito/router'
 
+// trigger preview
+
 export const TestScreen = () => {
   const router = useRouter()
   return (
