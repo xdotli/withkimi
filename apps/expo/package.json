@@ -1,6 +1,6 @@
 {
   "name": "expo-app",
-  "version": "0.0.4",
+  "version": "0.2.0",
   "main": "index.js",
   "private": true,
   "description": "Kimi App.",
