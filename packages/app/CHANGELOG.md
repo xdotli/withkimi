@@ -1,5 +1,11 @@
 # app
 
+## 0.3.0
+
+### Minor Changes
+
+- [#106](https://github.com/imaginix-inc/withkimi/pull/106) [`9600b48`](https://github.com/imaginix-inc/withkimi/commit/9600b487a20015fce7cfcc7ee7736c08257c3ac0) Thanks [@xdotli](https://github.com/xdotli)! - feat: video background, update on splash screen
+
 ## 0.2.0
 
 ### Minor Changes
