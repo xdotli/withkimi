@@ -56,6 +56,12 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appName": "Kimi: Soulful AI Anime",
+        "ascAppId": "6477160641",
+        "appleId": "kaizhao66@outlook.com"
+      }
+    }
   }
 }
