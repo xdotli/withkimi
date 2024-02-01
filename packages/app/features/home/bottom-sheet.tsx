@@ -15,6 +15,7 @@ import { FlashList } from '@shopify/flash-list'
 import { PenLine } from '@tamagui/lucide-icons'
 import { prompts } from 'app/utils/llm/constants'
 import { useState } from 'react'
+import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 
 interface BottomSheetProps {
   open: boolean
@@ -47,6 +48,7 @@ const memoryData = [
 export const BottomSheet: React.FC<BottomSheetProps> = ({ open, setOpen }) => {
   const [position, setPosition] = useState(0)
   const snapPoints = [68, 50, 40]
+  const safeAreaInsets = useSafeAreaInsets()
 
   return (
     <Sheet
@@ -65,9 +67,9 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({ open, setOpen }) => {
       <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
       {/* <Sheet.Handle /> */}
       <Sheet.Frame padding="$2" justifyContent="center" alignItems="center" space="$5">
-        <Sheet.ScrollView>
+        <Sheet.ScrollView width={"100%"}>
           <YStack p="$5" gap="$8">
-            <XStack flex={1} space="$5">
+            <XStack flex={1}>
               <Avatar circular size={100} borderColor="white" borderWidth={2}>
                 <Avatar.Image
                   resizeMode="contain"
@@ -86,6 +88,8 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({ open, setOpen }) => {
                 fontSize="$1"
                 fontWeight="$8"
                 color="#6F6C8F"
+                position='absolute'
+                right={safeAreaInsets.right}
               >
                 Follow
               </Button>

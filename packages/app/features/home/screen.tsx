@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
-import { ImageBackground, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
+import { ImageBackground, StyleSheet, TouchableOpacity, Dimensions, Vibration } from 'react-native'
 // @ts-ignore
 import { fetch } from 'react-native-fetch-api'
 import Sound from 'react-native-sound'
@@ -460,6 +460,7 @@ export const HomeScreen = () => {
               <HoldToRecordButton
                 onPressIn={() => {
                   startRecognizing()
+                  Vibration.vibrate(500) // vibrate the phone when press in
                   if(!bgmPause){
                     bgmService.pauseBgm()
                   }
