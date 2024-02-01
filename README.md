@@ -2,6 +2,8 @@
 
 trigger redeploy
 
+trigger preview
+
 # Tamagui's Takeout Starter
 
 A good tutorial showing building a real app using Tamagui Takeout can be seen on the [notjust.dev YouTube stream](https://www.youtube.com/watch?v=XbKkKXH-dfc).
