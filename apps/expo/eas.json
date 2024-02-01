@@ -52,7 +52,11 @@
         "FLIPPER_DISABLE": "1",
         "EXPO_NO_DOTENV": "1"
       },
-      "channel": "production"
+      "ios": {
+        "image": "latest"
+      },
+      "channel": "production",
+      "autoIncrement": true
     }
   },
   "submit": {

@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "react-native-clean-project",
     "start": "EXPO_NO_DOTENV=1 STAGE=development expo start --dev-client -c",
+    "export:ios": "EXPO_NO_DOTENV=1 STAGE=development expo export -c -p ios",
     "android": "EXPO_NO_DOTENV=1 STAGE=development expo run:android",
     "android:test": "EXPO_NO_DOTENV=1 STAGE=test expo run:android",
     "android:test:release": "EXPO_NO_DOTENV=1 STAGE=test expo run:android --variant release",
