@@ -1,5 +1,11 @@
 # app
 
+## 0.6.0
+
+### Minor Changes
+
+- [#117](https://github.com/imaginix-inc/withkimi/pull/117) [`d5f90bd`](https://github.com/imaginix-inc/withkimi/commit/d5f90bd62418c51a92955d91a1a4b117e1478acc) Thanks [@xdotli](https://github.com/xdotli)! - fix: fix recording multiple times in a row breaks
+
 ## 0.5.0
 
 ### Minor Changes

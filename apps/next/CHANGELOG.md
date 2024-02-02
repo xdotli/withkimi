@@ -1,5 +1,12 @@
 # next-app
 
+## 0.6.0
+
+### Patch Changes
+
+- Updated dependencies [[`d5f90bd`](https://github.com/imaginix-inc/withkimi/commit/d5f90bd62418c51a92955d91a1a4b117e1478acc)]:
+  - app@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes
