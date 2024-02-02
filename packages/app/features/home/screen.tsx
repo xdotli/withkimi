@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Text, YStack, XStack, Avatar, ScrollView, HoldToRecordButton } from '@my/ui'
-import { UserCircle2, Volume2, VolumeX, FileClock } from '@tamagui/lucide-icons'
+import { UserCircle2, Volume2, VolumeX } from '@tamagui/lucide-icons'
 import { getFirstNCharsOrLess, MODELS } from 'app/utils/chat'
 import { IOpenAIMessages, IOpenAIStateWithIndex } from 'app/utils/chatTypes'
 import { prompts } from 'app/utils/llm/constants'
@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useVoiceRecognition } from 'app/utils/useVoiceRecognition'
 import LottieView from 'lottie-react-native'
 import { useRef, useState, useEffect } from 'react'
-import { ImageBackground, StyleSheet, TouchableOpacity, Dimensions, Vibration } from 'react-native'
+import { ImageBackground, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 // @ts-ignore
 import { fetch } from 'react-native-fetch-api'
 import Sound from 'react-native-sound'
@@ -23,8 +23,6 @@ import { BottomSheet } from './bottom-sheet'
 import { DropdownMenuExample } from './menu'
 
 type Motions = 'Shake' | 'dance' | 'angry speaking' | 'speaking1' | 'sad' | 'happy1' | 'Idle'
-
-const { height } = Dimensions.get('window')
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
@@ -121,10 +119,11 @@ export const HomeScreen = () => {
       const response = await fetch('https://withkimi-next.vercel.app/api/motion', {
         method: 'POST',
         body: JSON.stringify({
-          messages: [
-            { role: 'system', content: prompts.motion },
-            { role: 'user', content: input },
-          ],
+          // message: [
+          //   { role: 'system', content: prompts.motion },
+          //   { role: 'user', content: input },
+          // ],
+          message: { role: 'user', content: input },
         }),
       })
       const json = await response.json()
@@ -498,6 +497,7 @@ export const HomeScreen = () => {
     </YStack>
   )
 }
+
 const styles = StyleSheet.create({
   image: {
     flex: 1,
@@ -505,7 +505,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   backgroundVideo: {
-    height,
     position: 'absolute',
     top: 0,
     left: 0,

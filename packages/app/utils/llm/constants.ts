@@ -81,15 +81,15 @@ export const prompts = {
     },
     {
       "motion_name": "speaking1",
-      "description": "Most situations. not very happy, not very sad, a normal state of emotion"
+      "description": "Most situations. When the context indicates a normal state of emotion"
     },
     {
       "motion_name": "sad",
-      "description": "When the user criticizes you, or you believe you have disappointed the user, or when the user says something that makes you feel sad"
+      "description": "when the context indicates sadness or invokes empathy"
     },
     {
       "motion_name": "happy1",
-      "description": "When you are praised by the user, or when you feel excited and happy"
+      "description": "when the context indicates a delightful mood. e.g. the user praises you or share good news"
     }
   ]
   '''
