@@ -1,5 +1,16 @@
 # next-app
 
+## 0.5.0
+
+### Minor Changes
+
+- [#114](https://github.com/imaginix-inc/withkimi/pull/114) [`7b39775`](https://github.com/imaginix-inc/withkimi/commit/7b39775feb73ed55e3efb64b22e79af93a8134cc) Thanks [@xdotli](https://github.com/xdotli)! - fix: recording not working
+
+### Patch Changes
+
+- Updated dependencies [[`7b39775`](https://github.com/imaginix-inc/withkimi/commit/7b39775feb73ed55e3efb64b22e79af93a8134cc)]:
+  - app@0.5.0
+
 ## 0.4.0
 
 ### Patch Changes
