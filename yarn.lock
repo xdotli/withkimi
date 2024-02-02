@@ -4554,7 +4554,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/normalize-color@npm:*, @react-native/normalize-color@npm:^2.0.0, @react-native/normalize-color@npm:^2.1.0":
+"@react-native/normalize-color@npm:^2.0.0, @react-native/normalize-color@npm:^2.1.0":
   version: 2.1.0
   resolution: "@react-native/normalize-color@npm:2.1.0"
   checksum: 10/a72b98538e6b7e265fb0669b8767d5f788777fb1a0ac1df7b0c82d8b3a804c8122aa7b819688c5e36fcf90b5ba93050b0070e29d3f0d70ab9530c2abd2bb9f9e
@@ -7087,27 +7087,6 @@ __metadata:
   version: 1.8.2
   resolution: "@types/react-native-get-random-values@npm:1.8.2"
   checksum: 10/08f3f82efbb5b6d9acd8f7f55a2dac9f228886323ac3018a1bab46cd1b45f24809d194fd2a3fe02a9ec4196606325e5cfffde0b0057ae785208b658fdc83c821
-  languageName: node
-  linkType: hard
-
-"@types/react-native-video@npm:^5":
-  version: 5.0.19
-  resolution: "@types/react-native-video@npm:5.0.19"
-  dependencies:
-    "@types/react": "npm:*"
-    react-native: "npm:*"
-  checksum: 10/a9fda25d816bb7841f8d3aa0ad92bf86a589b1efac8f19a135ce2cb1f3c0d365b8680339fadf2d0906ab6f538e2077614842e79d279f6309663e2e76124b5222
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:*":
-  version: 18.2.51
-  resolution: "@types/react@npm:18.2.51"
-  dependencies:
-    "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
-    csstype: "npm:^3.0.2"
-  checksum: 10/af2935027172ea40695b90b02e98520a097160fa8517f6022e2e2cf8518017e0b84991cc34ee8d72cd91dcb7c5404784d4bada7a4836edf2727c3d6703c16ff8
   languageName: node
   linkType: hard
 
@@ -10833,17 +10812,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deprecated-react-native-prop-types@npm:^2.2.0":
-  version: 2.3.0
-  resolution: "deprecated-react-native-prop-types@npm:2.3.0"
-  dependencies:
-    "@react-native/normalize-color": "npm:*"
-    invariant: "npm:*"
-    prop-types: "npm:*"
-  checksum: 10/5abbad5b6d6830ca92151167f42611256ada1e8991b5066ed3659f3bbe909ae87949f3e7f075f1b685256138cad81423222220f4c6d5740376db19cb9f793312
-  languageName: node
-  linkType: hard
-
 "destroy@npm:1.2.0":
   version: 1.2.0
   resolution: "destroy@npm:1.2.0"
@@ -11192,13 +11160,6 @@ __metadata:
     qs: "npm:6.11.2"
     url-join: "npm:4.0.1"
   checksum: 10/90b547f66163c49ba83d31ca9576549ee996c51442647d532e92bcd8ab7c2ef6c005aca2047d0007006f0b0b20d1097e599b6cf2aa0d4c7f1503cb62652de193
-  languageName: node
-  linkType: hard
-
-"eme-encryption-scheme-polyfill@npm:^2.0.1":
-  version: 2.1.1
-  resolution: "eme-encryption-scheme-polyfill@npm:2.1.1"
-  checksum: 10/312fab39d5f2d59fcca97148c9f85c50081591b465f6f43b6ab30dc0cab27609ce32a59b67849a8b9316bdcc25b3ff7ebb1f923ae470d10c3136ba95e5496371
   languageName: node
   linkType: hard
 
@@ -12293,7 +12254,6 @@ __metadata:
     "@shopify/flash-list": "npm:^1.6.3"
     "@tamagui/babel-plugin": "npm:^1.85.12"
     "@types/react-native-get-random-values": "npm:^1"
-    "@types/react-native-video": "npm:^5"
     "@types/text-encoding": "npm:^0"
     app: "npm:*"
     babel-plugin-module-resolver: "npm:^4.1.0"
@@ -12343,7 +12303,6 @@ __metadata:
     react-native-sound: "npm:^0.11.2"
     react-native-svg: "npm:13.9.0"
     react-native-url-polyfill: "npm:^1.3.0"
-    react-native-video: "npm:^5.2.1"
     react-native-web: "npm:~0.19.6"
     react-native-webview: "npm:^13.6.4"
     text-encoding: "npm:^0.7.0"
@@ -15758,13 +15717,6 @@ __metadata:
     jwa: "npm:^1.4.1"
     safe-buffer: "npm:^5.0.1"
   checksum: 10/70b016974af8a76d25030c80a0097b24ed5b17a9cf10f43b163c11cb4eb248d5d04a3fe48c0d724d2884c32879d878ccad7be0663720f46b464f662f7ed778fe
-  languageName: node
-  linkType: hard
-
-"keymirror@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "keymirror@npm:0.1.1"
-  checksum: 10/be8f0bc5ff7d561d729f935ef55b4dbbea7b56a4714f044a2212088730f4d52f73935c38c5a9604e0f1157611725ee493cb7d08d1f3eb34151c0aa999236206a
   languageName: node
   linkType: hard
 
@@ -19930,18 +19882,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-video@npm:^5.2.1":
-  version: 5.2.1
-  resolution: "react-native-video@npm:5.2.1"
-  dependencies:
-    deprecated-react-native-prop-types: "npm:^2.2.0"
-    keymirror: "npm:^0.1.1"
-    prop-types: "npm:^15.7.2"
-    shaka-player: "npm:^2.5.9"
-  checksum: 10/bd44c45bbcfa13209bf317ec7e5bf63aa73778ab38a7868d74ea1e4b9b7d781fd155cbc8612d5cd1579f89ae324e3c7956de47a20645c026cf91784b9db7d714
-  languageName: node
-  linkType: hard
-
 "react-native-web-internals@npm:1.88.13":
   version: 1.88.13
   resolution: "react-native-web-internals@npm:1.88.13"
@@ -21157,15 +21097,6 @@ __metadata:
   version: 1.0.0
   resolution: "sf-symbols-typescript@npm:1.0.0"
   checksum: 10/008ddfcadceb33ec29fb182104516234cc3f771254619696918481744bc28be51070f226859e4dfc2faf5f094dd8ca13e0364b2bb3d22e8cf044ce37f749df0b
-  languageName: node
-  linkType: hard
-
-"shaka-player@npm:^2.5.9":
-  version: 2.5.23
-  resolution: "shaka-player@npm:2.5.23"
-  dependencies:
-    eme-encryption-scheme-polyfill: "npm:^2.0.1"
-  checksum: 10/985ec3baaeb239d68e8af6a631eed53cb7a3d7b2eb877c95954cf645ef9d946421c94fc52fc4a305ce7fce1931426f26c401278a27e87a9479d82ddb729d1fa8
   languageName: node
   linkType: hard
 
