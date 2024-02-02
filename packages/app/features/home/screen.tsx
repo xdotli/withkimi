@@ -22,14 +22,14 @@ import BgmService from './bgm'
 import { BottomSheet } from './bottom-sheet'
 import { DropdownMenuExample } from './menu'
 
+Sound.setCategory('Playback')
+
 type Motions = 'Shake' | 'dance' | 'angry speaking' | 'speaking1' | 'sad' | 'happy1' | 'Idle'
 
 export const HomeScreen = () => {
   const safeAreaInsets = useSafeAreaInsets()
   const screenHeight = Dimensions.get('window').height
   const translateYValue = screenHeight > 880 ? -200 : screenHeight > 700 ? -150 : -100
-
-  Sound.setCategory('Playback')
 
   const screenWidth = Dimensions.get('window').width
   let dynamicWidth: string

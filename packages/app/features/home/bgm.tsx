@@ -1,5 +1,7 @@
 import Sound from 'react-native-sound'
 
+Sound.setCategory('Playback')
+
 class BgmService {
   private static instance: BgmService | null = null
   private bgmInstance: Sound | null = null
@@ -17,7 +19,6 @@ class BgmService {
   public async loadBgm(): Promise<void> {
     if (!this.bgmInstance) {
       const uri = 'https://live2d-one.vercel.app/background-music.mp3'
-      Sound.setCategory('Playback')
       this.bgmInstance = new Sound(uri, '', (error) => {
         if (error) {
           console.error('Error loading sound:', error)
