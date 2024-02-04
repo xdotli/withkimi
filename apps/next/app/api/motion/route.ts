@@ -43,7 +43,9 @@ for example "hi how's the weather"
 {
     "motion": "speaking1"
 }
-'''`
+'''
+note that the value in the motion field must strictly come from the option list above
+`
 
 export async function POST(req: Request) {
   const { message } = await req.json()
