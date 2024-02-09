@@ -67,7 +67,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({ open, setOpen }) => {
       <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
       {/* <Sheet.Handle /> */}
       <Sheet.Frame padding="$2" justifyContent="center" alignItems="center" space="$5">
-        <Sheet.ScrollView width={"100%"}>
+        <Sheet.ScrollView width={'100%'}>
           <YStack p="$5" gap="$8">
             <XStack flex={1}>
               <Avatar circular size={100} borderColor="white" borderWidth={2}>
@@ -78,8 +78,10 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({ open, setOpen }) => {
                   source={{ uri: require('packages/app/assets/greetings.png') }}
                 />
               </Avatar>
-              <H2 alignSelf="flex-start">Nekomi</H2>
-              <Button
+              <H2 alignSelf="flex-start" ml={20} mt={10}>
+                Nekomi
+              </H2>
+              {/* <Button
                 alignSelf="flex-end"
                 width="$10"
                 height="$3"
@@ -92,7 +94,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({ open, setOpen }) => {
                 right={safeAreaInsets.right}
               >
                 Follow
-              </Button>
+              </Button> */}
             </XStack>
             <HorizontalTabs />
           </YStack>
