@@ -344,7 +344,7 @@ export const HomeScreen = () => {
     >
       <ImageBackground source={require('packages/app/assets/bg.png')} style={{ ...styles.image }}>
         <XStack jc="space-between" marginTop={safeAreaInsets.top} marginBottom="$-8" zIndex={1000}>
-          <DropdownMenuExample />
+          <DropdownMenuExample title="For you" />
           {/* <Button>Profile</Button> */}
           <TouchableOpacity
             style={{ right: 10 }}

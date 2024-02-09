@@ -205,7 +205,7 @@ const DropdownMenuLabel = DropdownMenu.create(
   'ItemImage'
 )
 
-export const DropdownMenuExample = () => {
+export const DropdownMenuExample = ({ title, list }: { title: string; list?: string[] }) => {
   const router = useRouter()
   const [arrowEnabled, setArrowEnabled] = useState<'on' | 'off' | 'mixed'>('off')
   const [bookmarked, setBookmarked] = useState<'on' | 'off' | 'mixed'>('on')
@@ -213,24 +213,26 @@ export const DropdownMenuExample = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <View>
-          <Text style={styles.button}>For you</Text>
+          <Text style={styles.button}>{title}</Text>
         </View>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content style={dropdownStyles.content}>
-        <DropdownMenuLabel>Help</DropdownMenuLabel>
+      {list && (
+        <DropdownMenu.Content style={dropdownStyles.content}>
+          <DropdownMenuLabel>Help</DropdownMenuLabel>
 
-        {['For you', 'Coming soon'].map((i) =>
-          i === 'Coming soon' ? (
-            <DropdownMenuItem key={`list-${i}`} onSelect={() => router.push('/')}>
-              <DropdownMenuItemTitle>{`${i}`}</DropdownMenuItemTitle>
-            </DropdownMenuItem>
-          ) : (
-            <DropdownMenuItem key={`list-${i}`}>
-              <DropdownMenuItemTitle>{`${i}`}</DropdownMenuItemTitle>
-            </DropdownMenuItem>
-          )
-        )}
-      </DropdownMenu.Content>
+          {list.map((i) =>
+            i === 'Coming soon' ? (
+              <DropdownMenuItem key={`list-${i}`} onSelect={() => router.push('/')}>
+                <DropdownMenuItemTitle>{`${i}`}</DropdownMenuItemTitle>
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem key={`list-${i}`}>
+                <DropdownMenuItemTitle>{`${i}`}</DropdownMenuItemTitle>
+              </DropdownMenuItem>
+            )
+          )}
+        </DropdownMenu.Content>
+      )}
     </DropdownMenu.Root>
   )
 }
@@ -299,7 +301,7 @@ const ContextMenuExample = () => {
 export default function App() {
   return (
     <View style={styles.container}>
-      <DropdownMenuExample />
+      <DropdownMenuExample title="For you" />
       <View style={{ height: 30 }} />
       <ContextMenuExample />
     </View>
