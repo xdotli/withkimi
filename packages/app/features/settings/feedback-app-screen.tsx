@@ -14,6 +14,7 @@ import {
   RadioGroup,
   ToggleGroup,
   H4,
+  useToastController
 } from '@my/ui'
 import { Back } from '@my/ui/src/icons/back'
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
@@ -26,6 +27,7 @@ import { Link } from 'solito/link'
 import { useRouter } from 'solito/router'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { z } from 'zod'
+import { useUser } from 'app/utils/useUser'
 import { useRating } from './feedback-hooks'
 
 const EnterFeedbackSchema = z.object({
@@ -38,7 +40,10 @@ const EnterFeedbackSchema = z.object({
 
 export const FeedbackAppScreen = () => {
   const supabase = useSupabase()
+  const { user } = useUser()
   const router = useRouter()
+  const toast = useToastController()
+
   const {
     overallExperienceRating,
     voiceQualityRating,
@@ -52,11 +57,7 @@ export const FeedbackAppScreen = () => {
 
   const formFeedback = useForm<z.infer<typeof EnterFeedbackSchema>>()
 
-  async function sendCode({
-    overallExperienceRating,
-    voiceQualityRating,
-    contextRelevencyRating,
-    characteristicsConsistencyRating,
+  async function sendFeedback({
     comment,
   }: z.infer<typeof EnterFeedbackSchema>) {
     // const { error } = await supabase.auth.signInWithOtp({ phone: phoneWithCountryCode })
@@ -68,13 +69,36 @@ export const FeedbackAppScreen = () => {
     // } else {
     //   router.push({ pathname: '/enter-otp', query: { phone: phoneWithCountryCode } })
     // }
+    if(user){
+      // console.log(user.id + " " + comment + " " + overallExperienceRating + " " + voiceQualityRating + " " + contextRelevencyRating + " " + characteristicsConsistencyRating)
+      
+      const { data, error } = await supabase
+        .from('feedback')
+        .insert([
+          { uid: user.id, overall_experience_rating: overallExperienceRating, voice_quality_rating: voiceQualityRating, context_relevency_rating: contextRelevencyRating, characteristics_consistency_rating: characteristicsConsistencyRating, comment: comment },
+        ])
+        .select()
+
+      if(error){
+        toast.show('Fail to submit, please try again')
+        console.log(error)
+      }else{
+        toast.show('Successfully submitted, thank you!')
+        router.back()
+      }
+
+    }else{
+      toast.show('Please log in first')
+    }
   }
-  console.log(
-    overallExperienceRating,
-    voiceQualityRating,
-    contextRelevencyRating,
-    characteristicsConsistencyRating
-  )
+
+  // console.log(
+  //   overallExperienceRating,
+  //   voiceQualityRating,
+  //   contextRelevencyRating,
+  //   characteristicsConsistencyRating
+  // )
+
   return (
     <FormProvider {...formFeedback}>
       <SchemaForm
@@ -87,7 +111,7 @@ export const FeedbackAppScreen = () => {
           contextRelevencyRating: '',
           characteristicsConsistencyRating: '',
         }}
-        onSubmit={sendCode}
+        onSubmit={sendFeedback}
         props={
           {
             overallExperienceRating: {
