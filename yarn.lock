@@ -4504,6 +4504,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-menu/menu@npm:^0.9.1":
+  version: 0.9.1
+  resolution: "@react-native-menu/menu@npm:0.9.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/b4d4e950fb691f5d796bb51ea90dd3fd628373357054f16d5027f17dbc8a143b05f3655a6b8e318379d4c27605f45b9f3e33ab5d31119626e9fed9dc0a3bdd6f
+  languageName: node
+  linkType: hard
+
 "@react-native-voice/voice@npm:^3.2.4":
   version: 3.2.4
   resolution: "@react-native-voice/voice@npm:3.2.4"
@@ -12250,6 +12260,7 @@ __metadata:
     "@react-native-async-storage/async-storage": "npm:1.18.2"
     "@react-native-community/datetimepicker": "npm:^7.6.2"
     "@react-native-community/netinfo": "npm:9.3.10"
+    "@react-native-menu/menu": "npm:^0.9.1"
     "@react-native-voice/voice": "npm:^3.2.4"
     "@shopify/flash-list": "npm:^1.6.3"
     "@tamagui/babel-plugin": "npm:^1.85.12"
